@@ -1,13 +1,13 @@
 //-- Copyright 2015 Intrig
 //-- See https://github.com/intrig/xenon for license.
 
-#include <ict/xml_parser_base.h>
+// #include <ict/xml_parser_base.h>
 
 #include <ict/ict.h>
 
 namespace ict {
 // order matters here, index is state()
-const char * state_names[] = {
+static const char * state_names[] = {
         "First",
         "StateStart",
         "Start1",
@@ -38,7 +38,7 @@ const char * state_names[] = {
         "Epilog1"
     };
 
-xml_parser_base::xml_parser_base()
+inline xml_parser_base::xml_parser_base()
 {
     int i;
     // init once stuff
@@ -63,15 +63,15 @@ xml_parser_base::xml_parser_base()
 
 // this doen't make sense since its pretty much impossible to copy the state of the parser right now
 // but at least we won't get any bad deallocs
-xml_parser_base::xml_parser_base(const xml_parser_base &) : xml_parser_base() {
+inline xml_parser_base::xml_parser_base(const xml_parser_base &) : xml_parser_base() {
 }
 
-xml_parser_base & xml_parser_base::operator=(const xml_parser_base &) {
+inline xml_parser_base & xml_parser_base::operator=(const xml_parser_base &) {
     reset();
     return *this;
 }
 
-xml_parser_base::~xml_parser_base()
+inline xml_parser_base::~xml_parser_base()
 {
     int i;
     for (i=0; i<MaxAtts; ++i) 
@@ -88,21 +88,21 @@ xml_parser_base::~xml_parser_base()
     
 }
 
-void xml_parser_base::stop()
+inline void xml_parser_base::stop()
 {
     if (_finished) IT_PANIC("cannot stop a finished parser");
     if (_suspended) IT_PANIC("cannot suspend a suspended parser");
     _suspended = true;
 }
 
-void xml_parser_base::resume()
+inline void xml_parser_base::resume()
 {
     if (_finished) IT_PANIC("cannot resume a finished parser");
     if (!_suspended) IT_PANIC("cannot resume a running parser");
     _suspended = false;
 }
 
-void xml_parser_base::reset()
+inline void xml_parser_base::reset()
 {
     _done = false;
     _finished = false;
@@ -131,7 +131,7 @@ void xml_parser_base::reset()
 }
 // See http://www.w3.org/TR/REC-xml/REC-xml-20040204.xml for implementation
 // details.
-void xml_parser_base::parse(const char * s, int len, bool final)
+inline void xml_parser_base::parse(const char * s, int len, bool final)
 {
     if (_finished) IT_PANIC("finished parsing");
     if (_suspended) IT_PANIC("parsing suspended");

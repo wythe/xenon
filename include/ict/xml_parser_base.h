@@ -366,5 +366,6 @@ class xml_parser_base
     bool _finished;
     bool _suspended;
 };
-
 }
+
+#include <../src/xml_parser_base.cpp>

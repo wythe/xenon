@@ -12,4 +12,4 @@ add_custom_command(
     MAIN_DEPENDENCY ${CMAKE_CURRENT_SOURCE_DIR}/xddl.xspx
     VERBATIM)
 
-add_library(xenon ${CMAKE_SOURCE_DIR}/include/ict/xddl.h lua-5.1.4/src/lua_all.cpp xml_parser_base.cpp message.cpp xddl.cpp)
+add_library(xenon ${CMAKE_SOURCE_DIR}/include/ict/xddl.h lua-5.1.4/src/lua_all.cpp message.cpp xddl.cpp)
