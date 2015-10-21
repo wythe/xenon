@@ -9,5 +9,8 @@ namespace ict {
 #include "lua.h"
 #include "lualib.h"
 #include "lauxlib.h"
+
+#define luaall_c
+#include <../src/lua-5.1.4/src/lapi.c>
     }
 }

@@ -13,7 +13,7 @@ namespace ict {
 #pragma warning(disable : 4996)
 #endif
 
-#include "lapi.c"
+//#include "lapi.c"
 #include "lcode.c"
 #include "ldebug.c"
 #include "ldo.c"
