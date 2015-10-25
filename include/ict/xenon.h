@@ -14,9 +14,15 @@ inline bitstring serialize(message & m) {
     return bs.bits();
 }
 
-message parse(spec & spec, ibitstream & bs);
+message parse(xddl::cursor start, ibitstream & bs);
+
+message parse(xddl::cursor start, const bitstring & bits);
 
 message parse(spec & spec, const bitstring & bits);
+
+xddl::cursor get_record(spec & spec, const url & href);
+
+xddl::cursor get_type(spec & spec, const url & href);
 
 }
 

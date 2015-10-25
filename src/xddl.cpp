@@ -1,11 +1,10 @@
 //-- Copyright 2015 Intrig
 //-- See https://github.com/intrig/xenon for license.
 #include <algorithm>
-#include <ict/spec.h>
+#include <ict/xenon.h>
 #include <ict/node.h>
 #include <ict/xddl.h>
 #include <ict/bitstring.h>
-#include <ict/message.h>
 #include <ict/ximsi.h>
 #include <ict/DateTime.h>
 #include <set>
@@ -297,7 +296,8 @@ void parse_ref(xddl::cursor self, message::cursor parent, ibitstream &bs, xddl::
     const url& href, Parser parser) {
     try {
         if (ref == self.end()) {
-            ref = parser->open("record", href);
+            auto url = ict::relative_url(parser->file, href); // create an abs url.
+            ref = get_record(*parser->owner, url);
         }
         parse_children(ref, parent, bs);
     } catch (ict::exception & e) {
@@ -325,9 +325,10 @@ void jump::vparse(xddl::cursor self, message::cursor parent, ibitstream &bs) con
         auto f = std::dynamic_pointer_cast<field>(elem->v);
         if (!f) IT_PANIC(base << " is not a field");
 
-        if (f->ref == elem.end()) f->ref = elem->parser->open("type", f->href);
-
-        // f->ref is the type cursor
+        if (f->ref == elem.end()) {
+            auto url = ict::relative_url(elem->parser->file, f->href); // create an abs url.
+            f->ref = get_type(*elem->parser->owner, url);
+        }
 
         // get the item out of the type with this value (or range)
         auto t = std::dynamic_pointer_cast<type>(f->ref->v);
@@ -578,7 +579,8 @@ std::string get_description(const T * self_ptr, xddl::cursor self, message::cons
     if (self_ptr->href.empty()) return "";
     else if (self_ptr->ref == self.end()) {
         try { 
-            self_ptr->ref = self->parser->open("type", self_ptr->href);
+            auto url = ict::relative_url(self->parser->file, self_ptr->href); // create an abs url.
+            self_ptr->ref = get_type(*self->parser->owner, url);
         } catch (ict::exception & e) {
             return e.what();
         }
@@ -638,56 +640,26 @@ int64_t node::value() const {
 
 size_t node::line() const {return elem->line; }
 std::string node::file() const { return elem->parser->file; }
-xddl::cursor xddl::open(string64 tag, const url & href) { return owner->add_spec(tag, file, href); }
 
-xddl::cursor spec::add_spec(string64 tag, const std::string & file, const url & href) {
-    auto url = ict::relative_url(file, href);
-    auto full = url.path + url.file;
-    // TODO create these tag constants automatically in xddl.h
-    static auto type_tag = string64("type");
-    static auto record_tag = string64("record");
+xddl::cursor get_record(spec & spec, const url & href) {
+    auto full = href.path + href.file; // get the filename
 
-    xddl::cursor root;
-    auto i = std::find_if(doms.begin(), doms.end(), [&](const xddl & dom){ return dom.file == full;} );
-    if (i == doms.end()) {
-        // not found, let's load the spec
-        add_spec(full);
-        root = doms.back().ast.root();
-        // file was found but not even the <xddl> tag was correct
-        if (root.empty()) IT_THROW("invalid root node: " << href); 
-    } else {
-        root = i->ast.root();
-    }
-    
+    auto root = spec.add_spec(full);
     auto p = root.begin()->parser;
-    if (tag == type_tag) { 
-        auto i = p->type_map.find(href.anchor);
-        if (i != p->type_map.end()) return i->second;
-    } else if (tag == record_tag) {
-        auto i = p->recdef_map.find(href.anchor);
-        if (i != p->recdef_map.end()) return i->second;
-    }
+    auto j = p->recdef_map.find(href.anchor);
+    if (j != p->recdef_map.end()) return j->second;
     IT_THROW("cannot locate anchor: " << href);
 }
 
-#if 0
-spec::spec(const spec & b) : xddl_path(b.xddl_path), doms(b.doms) {
-    for (auto & d : doms) {
-        d.recdef_map.clear();
-        d.type_map.clear();
-        d.owner = this;
-        auto doc_root = d.ast.root().begin(); // the <xddl> element
-        auto v = std::dynamic_pointer_cast<xddl_root>(doc_root->v);
-        assert(v);
-        v->vend_handler(doc_root, d);
-    }
-}
+xddl::cursor get_type(spec & spec, const url & href) {
+    auto full = href.path + href.file; // get the filename
 
-spec& spec::operator=(const spec & b) {
-    doms.clear();
-
+    auto root = spec.add_spec(full);
+    auto p = root.begin()->parser;
+    auto j = p->type_map.find(href.anchor);
+    if (j != p->type_map.end()) return j->second;
+    IT_THROW("cannot locate anchor: " << href);
 }
-#endif
 
 // algos
 std::ostream& operator<<(std::ostream& os, const node & n) {
