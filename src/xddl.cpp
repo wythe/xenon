@@ -191,7 +191,7 @@ void build_type_struct(spec::cursor parent, T type_ptr) {
 template <typename T>
 void create_anon_type(T * self_ptr, spec::cursor self, spec & parser) {
     self_ptr->href= "anon";
-    std::shared_ptr<var_type> v = std::make_shared<type>("anon");
+    std::shared_ptr<element::var_type> v = std::make_shared<type>("anon");
 
     build_type_struct(self, std::dynamic_pointer_cast<type>(v));
 
@@ -393,7 +393,7 @@ inline void parse_children(spec::cursor self, message::cursor parent, ibitstream
 }
 
 // the default vparse is just to parse the children (<xddl> for example)
-void var_type::vparse(spec::cursor self, message::cursor parent, ibitstream & bs) const {
+void element::var_type::vparse(spec::cursor self, message::cursor parent, ibitstream & bs) const {
     parse_children(self, parent, bs);
 }
 
