@@ -344,20 +344,14 @@ std::ostream& xsp_parser::start_handler_contents(std::ostream& os, const elem_ty
         }
         if (!params.empty()) os << "auto first = leaf(parent);";
 
-#if 1
-            os << "auto c = parent.emplace(" << elem.name << "(" << ict::join(params.begin(), params.end(), ", //;") <<
-            "), " << qt(elem.tag);
-#else
-            os << "std::shared_ptr<element::var_type> v = std::make_shared<" << elem.name << ">(";
-            if (!params.empty()) os << ict::join(params.begin(), params.end(), ", //;");
-            os << ");";
-            os << "auto c = parent.emplace(v, " << qt(elem.tag);
-#endif
+        os << "auto c = parent.emplace(" << elem.name << "(" << ict::join(params.begin(), params.end(), ", //;") <<
+        "), " << qt(elem.tag);
+
         params.clear();
         for (const auto & att : elem.attributes) {
             if (!att.local) {
                 std::ostringstream param;
-                att_param(param, "leaf(parent)", att);
+                att_param(param, "first", att);
                 params.push_back(param.str());
             }
         }

@@ -162,8 +162,8 @@ void xcase::vend_handler(spec::cursor, spec & parser) {
     xs->cases[value] = i;
 }
 
-template <typename T>
-void build_type_struct(spec::cursor parent, T type_ptr) {
+std::shared_ptr<element::var_type> build_type_struct_x(ict::url url, spec::cursor parent) {
+    auto type_ptr = std::make_shared<type>(url);
     for (auto c = parent.begin(); c!= parent.end(); ++c) {
         auto t = c->tag();
         if (t == "script") {
@@ -186,18 +186,18 @@ void build_type_struct(spec::cursor parent, T type_ptr) {
             type_ptr->ranges[key] = type::item_data { r->value, parent.end(), r->href };
         }
     }
+    return type_ptr;
 }
 
 template <typename T>
 void create_anon_type(T * self_ptr, spec::cursor self, spec & parser) {
-    self_ptr->href= "anon";
-    std::shared_ptr<element::var_type> v = std::make_shared<type>("anon");
-
-    build_type_struct(self, std::dynamic_pointer_cast<type>(v));
-
-    // we now have a complete type struct.  Remove all the current children and replace them with it.
+    // TODO: implement multivector::detach to move instead of copy
+    auto mv = multivector<element>(self); // copy into temp multivector
     self.clear();
-    auto e = self.emplace(v, "type", "anon");
+
+    self_ptr->href= "anon";
+
+    auto e = self.emplace(build_type_struct_x("anon", mv.root()), "type", "anon");
     e->parser = &parser;
     e->line = self->line;
 }
@@ -250,10 +250,9 @@ void script::vend_handler(spec::cursor, spec & dom) {
 }
 
 void type::vend_handler(spec::cursor self, spec &) {
-    build_type_struct(self, this);
-    // now that we built all the needed data structures, we can delete the child items.
-    // TODO: get this to work
-    if (!self.empty()) self.clear();
+    auto mv = multivector<element>(self); // copy into temp multivector
+    self.clear();
+    self->v = build_type_struct_x(id, mv.root());
 }
 
 template <typename T, typename Cursor, typename Map>
