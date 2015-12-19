@@ -260,8 +260,9 @@ std::ostream& xsp_parser::to_decl(std::ostream& os, const elem_type & elem, cons
     if (elem.is_base) {
         os << "struct var_type;";
         os << "inline " << elem.name << "();";
-        os << "inline " << elem.name << "(std::shared_ptr<var_type> v, string64 tag, const std::string & name = \"\"" <<
-            ");";
+        os << "inline " << elem.name << "(std::shared_ptr<var_type> v, string64 tag, const std::string & name = \"\"" << ");";
+        os << "template <typename T> \n";
+        os << "inline " << elem.name << "(T x, string64 tag, const std::string & name = \"\"" << ");";
     } else {
         auto plist = to_param_list(elem.attributes, custom_types);
         if (!plist.empty()) {
@@ -296,6 +297,9 @@ std::ostream& xsp_parser::to_decl(std::ostream& os, const elem_type & elem, cons
         os << "inline element::element() { v = std::make_shared<var_type>(); }";
         os << "inline element::element(std::shared_ptr<var_type> v, string64 tag, const std::string & name" <<
             ") : v(v), tag_(tag), name_(name) {}";
+        os << "template <typename T> \n";
+        os << "inline element::element(T x, string64 tag, const std::string & name) : v(std::make_shared<T>(std::move(x))), tag_(tag), "
+            "name_(name) { }";
         
     }
 
@@ -335,12 +339,17 @@ std::ostream& xsp_parser::start_handler_contents(std::ostream& os, const elem_ty
             }
         }
         if (!params.empty()) os << "auto first = leaf(parent);";
-        os << "std::shared_ptr<element::var_type> v = std::make_shared<" << elem.name << ">(";
-        if (!params.empty()) os << ict::join(params.begin(), params.end(), ", //;");
-        os << ");";
-        params.clear();
 
-        os << "auto c = parent.emplace(v, " << qt(elem.tag);
+#if 1
+            os << "auto c = parent.emplace(" << elem.name << "(" << ict::join(params.begin(), params.end(), ", //;") <<
+            "), " << qt(elem.tag);
+#else
+            os << "std::shared_ptr<element::var_type> v = std::make_shared<" << elem.name << ">(";
+            if (!params.empty()) os << ict::join(params.begin(), params.end(), ", //;");
+            os << ");";
+            os << "auto c = parent.emplace(v, " << qt(elem.tag);
+#endif
+        params.clear();
         for (const auto & att : elem.attributes) {
             if (!att.local) {
                 std::ostringstream param;
