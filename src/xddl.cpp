@@ -189,19 +189,6 @@ std::shared_ptr<element::var_type> build_type_struct_x(ict::url url, spec::curso
     return type_ptr;
 }
 
-template <typename T>
-void create_anon_type(T * self_ptr, spec::cursor self, spec & parser) {
-    // TODO: implement multivector::detach to move instead of copy
-    auto mv = multivector<element>(self); // copy into temp multivector
-    self.clear();
-
-    self_ptr->href= "anon";
-
-    auto e = self.emplace(build_type_struct_x("anon", mv.root()), "type", "anon");
-    e->parser = &parser;
-    e->line = self->line;
-}
-
 inline bool has_anon_type(spec::cursor self) {
     if (self.empty()) return false;
     for (auto first = self.begin(); first != self.end(); ++first) {
@@ -212,7 +199,13 @@ inline bool has_anon_type(spec::cursor self) {
 
 void field::vend_handler(spec::cursor self, spec &parser) {
     if (has_anon_type(self)) {
-        create_anon_type(this, self, parser);
+        auto mv = multivector<element>(self); // copy into temp multivector
+        self.clear();
+
+        href= "anon";
+        auto e = self.emplace(build_type_struct_x("anon", mv.root()), "type", "anon");
+        e->parser = &parser;
+        e->line = self->line;
     }
 }
 
