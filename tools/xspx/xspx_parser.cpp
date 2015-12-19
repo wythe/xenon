@@ -260,7 +260,7 @@ std::ostream& xsp_parser::to_decl(std::ostream& os, const elem_type & elem, cons
     if (elem.is_base) {
         os << "struct var_type;";
         os << "inline " << elem.name << "();";
-#if 0
+#if 1
         os << "inline " << elem.name << "(std::shared_ptr<var_type> v, string64 tag, const std::string & name = \"\"" << ");";
 #endif
         os << "template <typename T> \n";
@@ -297,7 +297,7 @@ std::ostream& xsp_parser::to_decl(std::ostream& os, const elem_type & elem, cons
         os << "namespace ict {";
         os << "struct element::var_type {" << code_seg(code_refs, "var_type") << "};";
         os << "inline element::element() { v = std::make_shared<var_type>(); }";
-#if 0
+#if 1
         os << "inline element::element(std::shared_ptr<var_type> v, string64 tag, const std::string & name" <<
             ") : v(v), tag_(tag), name_(name) {}";
 #endif
