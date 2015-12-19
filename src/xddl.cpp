@@ -162,6 +162,69 @@ void xcase::vend_handler(spec::cursor, spec & parser) {
     xs->cases[value] = i;
 }
 
+#if 1
+type create_type_struct(ict::url url, spec::cursor parent) {
+    ict::lua::lua_State * l = 0;
+    std::map<int, type::item_data> items;
+    std::map<std::pair<int, int>, type::item_data> ranges;
+
+    for (auto c = parent.begin(); c!= parent.end(); ++c) {
+        auto t = c->tag();
+        if (t == "script") {
+            if (l) IT_PANIC("multiple scripts in type definition");
+            l = get_ptr<script>(c->v)->l;
+        }
+        else if (t == "item") {
+            auto item = get_ptr<xitem>(c->v);
+            auto i = items.find(item->key);
+            if (i != items.end()) IT_PANIC("<item> \"" << item->value << "\" with key " << 
+                item->key << " already defined");
+            items[item->key] = type::item_data { item->value, parent.end(), item->href };
+        }
+        else if (t == "range") {
+            auto r = get_ptr<range>(c->v);
+            if (r->start > r->end) IT_PANIC("invalid <range>");
+            auto key = std::make_pair(r->start, r->end);
+            auto i = ranges.find(key);
+            if (i != ranges.end()) IT_PANIC("<range> already defined");
+            ranges[key] = type::item_data { r->value, parent.end(), r->href };
+        }
+    }
+    return type(url, l, items, ranges);
+}
+#else
+template <typename Cursor>
+Cursor create_type_struct(Cursor self, ict::url url, spec::cursor parent) {
+    ict::lua::lua_State * l = 0;
+    std::map<int, type::item_data> items;
+    std::map<std::pair<int, int>, type::item_data> ranges;
+
+    for (auto c = parent.begin(); c!= parent.end(); ++c) {
+        auto t = c->tag();
+        if (t == "script") {
+            if (l) IT_PANIC("multiple scripts in type definition");
+            l = get_ptr<script>(c->v)->l;
+        }
+        else if (t == "item") {
+            auto item = get_ptr<xitem>(c->v);
+            auto i = items.find(item->key);
+            if (i != items.end()) IT_PANIC("<item> \"" << item->value << "\" with key " << 
+                item->key << " already defined");
+            items[item->key] = type::item_data { item->value, parent.end(), item->href };
+        }
+        else if (t == "range") {
+            auto r = get_ptr<range>(c->v);
+            if (r->start > r->end) IT_PANIC("invalid <range>");
+            auto key = std::make_pair(r->start, r->end);
+            auto i = ranges.find(key);
+            if (i != ranges.end()) IT_PANIC("<range> already defined");
+            ranges[key] = type::item_data { r->value, parent.end(), r->href };
+        }
+    }
+    IT_WARN("items: " << items.size());
+    return self.emplace(type(url, l, items, ranges), "type", "anon");
+}
+#endif
 std::shared_ptr<element::var_type> build_type_struct_x(ict::url url, spec::cursor parent) {
     auto type_ptr = std::make_shared<type>(url);
     for (auto c = parent.begin(); c!= parent.end(); ++c) {
@@ -203,7 +266,11 @@ void field::vend_handler(spec::cursor self, spec &parser) {
         self.clear();
 
         href= "anon";
-        auto e = self.emplace(build_type_struct_x("anon", mv.root()), "type", "anon");
+#if 1
+        auto e = self.emplace(create_type_struct("anon", mv.root()), "type", "anon");
+#else
+        auto e = create_type_struct(self, "anon", mv.root());
+#endif
         e->parser = &parser;
         e->line = self->line;
     }

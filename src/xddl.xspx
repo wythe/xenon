@@ -349,6 +349,19 @@
         <code href="vend_handler"/>
         <code href="vto_html"/>
         <public>
+        template &lt;typename Items, typename Ranges, typename LuaState&gt;
+        type(ict::url id, LuaState l, Items &amp; items, Ranges &amp; ranges) : id(id), l(l), items(items), ranges(ranges) {
+            IT_WARN("items: " &lt;&lt; items.size()); 
+            IT_WARN("ranges: " &lt;&lt; ranges.size()); }
+        #if 1
+        type(type &amp;&amp; x) noexcept {
+            id = std::move(x.id);
+            l = x.l;
+            x.l = 0;
+            items = std::move(x.items);
+            ranges = std::move(x.ranges);
+        }
+        #endif
         struct item_data {
             std::string value;
             mutable spec_cursor ref;
@@ -356,11 +369,11 @@
         };
         item_data const &amp; item_info(int64_t key) const;
         bool empty() const { return ranges.empty() &amp;&amp; items.empty() &amp;&amp; (l == 0); }
-        ict::lua::lua_State * l = 0;
         std::string value(spec_cursor referer, msg_const_cursor c) const;
         virtual ~type() final;
-        std::map&lt;std::pair&lt;int, int&gt;, item_data&gt; ranges;
+        ict::lua::lua_State * l = 0;
         std::map&lt;int, item_data&gt; items;
+        std::map&lt;std::pair&lt;int, int&gt;, item_data&gt; ranges;
         </public>
     </element>
 
