@@ -191,33 +191,6 @@ type create_type_struct(ict::url url, spec::cursor parent) {
     }
     return type(url, l, items, ranges);
 }
-std::shared_ptr<element::var_type> build_type_struct_x(ict::url url, spec::cursor parent) {
-    auto type_ptr = std::make_shared<type>(url);
-    for (auto c = parent.begin(); c!= parent.end(); ++c) {
-        auto t = c->tag();
-        if (t == "script") {
-            if (type_ptr->l) IT_PANIC("multiple scripts in type definition");
-            type_ptr->l = get_ptr<script>(c->v)->l;
-        }
-        else if (t == "item") {
-            auto item = get_ptr<xitem>(c->v);
-            auto i = type_ptr->items.find(item->key);
-            if (i != type_ptr->items.end()) IT_PANIC("<item> \"" << item->value << "\" with key " << 
-                item->key << " already defined");
-            type_ptr->items[item->key] = type::item_data { item->value, parent.end(), item->href };
-        }
-        else if (t == "range") {
-            auto r = get_ptr<range>(c->v);
-            if (r->start > r->end) IT_PANIC("invalid <range>");
-            auto key = std::make_pair(r->start, r->end);
-            auto i = type_ptr->ranges.find(key);
-            if (i != type_ptr->ranges.end()) IT_PANIC("<range> already defined");
-            type_ptr->ranges[key] = type::item_data { r->value, parent.end(), r->href };
-        }
-    }
-    return type_ptr;
-}
-
 inline bool has_anon_type(spec::cursor self) {
     if (self.empty()) return false;
     for (auto first = self.begin(); first != self.end(); ++first) {
@@ -232,11 +205,7 @@ void field::vend_handler(spec::cursor self, spec &parser) {
         self.clear();
 
         href= "anon";
-#if 1
         auto e = self.emplace(create_type_struct("anon", mv.root()), "type", "anon");
-#else
-        auto e = create_type_struct(self, "anon", mv.root());
-#endif
         e->parser = &parser;
         e->line = self->line;
     }
@@ -275,13 +244,19 @@ void script::vend_handler(spec::cursor, spec & dom) {
     ict::lua::lua_setglobal(l, "f");
 }
 
-void type::vend_handler(spec::cursor self, spec &) {
+void type::vend_handler(spec::cursor self, spec &parser) {
     auto mv = multivector<element>(self); // copy into temp multivector
     self.clear();
-#if 1
-    self->v = std::make_shared<type>(std::move(create_type_struct(id, mv.root()));
+#if 0
+    auto name = self->name();
+    auto line = self->line;
+    auto parent = self.parent();
+    parent.pop_back();
+    auto e = parent.emplace(create_type_struct(id, mv.root()), "type", name);
+    e->parser = &parser;
+    e->line = line;
 #else
-    self->v = build_type_struct_x(id, mv.root());
+    self->v = std::make_shared<type>(std::move(create_type_struct(id, mv.root())));
 #endif
 }
 

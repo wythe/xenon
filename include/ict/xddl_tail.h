@@ -67,4 +67,13 @@ inline std::string create_jump_name(Cursor start, const std::string & value) {
     return value;
 }
 
+template <typename Cursor, typename T>
+void draw(Cursor self, const T& x, std::ostream& out, size_t position) {
+    out << std::string(position, ' ') << x << std::endl; 
+}
+
+template <typename Cursor>
+inline void draw(Cursor self, const element& x, std::ostream & out, size_t position) {
+    x.v->draw_(self, out, position); }
+
 } // namespace

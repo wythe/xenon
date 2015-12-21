@@ -109,9 +109,29 @@
         virtual std::pair&lt;bool, spec_cursor&gt; vget_ref() { return std::make_pair(false, spec_cursor()); };
         virtual ict::url vhref() const { return ict::url(); }
         virtual bool is_visible() const { return true; }
-        virtual ~var_type() {};
+
+        virtual void draw_(spec_const_cursor, std::ostream&amp;, size_t) {} // TODO: implement
+        virtual ~var_type() = default;
     </code>
 
+    <code id="model">
+        model(T x) : data_(move(x)) {}
+        void vto_string_(std::ostream &amp; os) const { vto_string(os); }; 
+        void vto_html_(spec_const_cursor c, std::ostream &amp; os) const { vto_html(c, os); }
+        void vparse_(spec_cursor c, msg_cursor m, ibitstream &amp; bs) const { vparse(c, m, bs); }
+        void vend_handler_(spec_cursor c, spec &amp; s) { vend_handler(c, s); };
+        std::string vdescription_(spec_cursor c, msg_const_cursor m) const { return vdescription(c, m); };
+        std::string venum_string_(spec_cursor c, msg_const_cursor m) const { return venum_string(c, m); };
+        void vset_ref_(spec_cursor c) { vset_ref(c); };
+        std::pair&lt;bool, spec_cursor&gt; vget_ref_() { return vget_ref(); };
+        ict::url vhref_() const { return vhref(); }
+        bool is_visible_() const { return is_visible(); }
+
+        void draw_(spec_const_cursor self, std::ostream&amp; out, size_t position) const {
+            draw(self, data_, out, position); }
+        T data_;
+
+    </code>
     <code id="mutable_ref">
         virtual void vset_ref(spec_cursor c) final { ref = c; };
         virtual std::pair&lt;bool, spec_cursor&gt; vget_ref() final { return std::make_pair(true, ref); };
@@ -121,6 +141,9 @@
     <element tag="element"> <!-- base -->
         <public>
         void to_string(std::ostream &amp; os) const; 
+
+        template &lt;typename Cursor&gt;
+        friend void draw(Cursor self, const var_type&amp; x, std::ostream &amp; out, size_t position);
 
         enum flag_bits_type {
             dependent_flag,
