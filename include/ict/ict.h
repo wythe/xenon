@@ -25,6 +25,7 @@
 
 #ifdef _MSC_VER
 
+#pragma warning(push)
 // This warning appears with std::copy and other std functions called with pointers
 #pragma warning(disable : 4996) // unsafe call
 
@@ -831,6 +832,10 @@ inline std::string to_json(const std::vector<T> & v) {
     to_json(os, v);
     return os;
 }
+
+#ifdef _MSC_VER
+#pragma warning(pop)
+#endif // _MSC_VER
 
 } // namespace
 

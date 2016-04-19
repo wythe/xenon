@@ -507,7 +507,7 @@ string DefinedType::instance(Name * name) const
 
 string DefinedType::instance() const {
     ostringstream os;
-    os << "<!-- DefinedType::instance() -->";
+    // os << "<!-- DefinedType::instance() -->";
 
     map<string, Type *>::iterator it  = defined_types.find(type_name->str());
     if (it == defined_types.end()) {
@@ -557,7 +557,7 @@ string Subtype::instance() const {
 
 string Subtype::instance(Name * id) const {
     ostringstream os;
-    os << "<!-- Subtype::instance " << id->str() << " -->";
+    // os << "<!-- Subtype::instance " << id->str() << " -->";
     type->def_value = def_value;
     os << type->instance(id, spec);
     type->def_value = 0;
