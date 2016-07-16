@@ -1,5 +1,5 @@
 #pragma once
-//-- Copyright 2015 Intrig
+//-- Copyright 2016 Intrig
 //-- see https://github.com/intrig/xenon for license
 
 #include <ict/ict.h>
@@ -108,7 +108,7 @@ struct cursor_base : public std::iterator<std::bidirectional_iterator_tag, Value
         return *this;
     }
 
-    cursor_base operator[](difference_type i) const { return begin() + i; }
+    reference operator[](difference_type i) const { return *(begin() + i); }
     friend cursor_base operator-(cursor_base x, difference_type i) { return x + (-i); }
     friend difference_type operator-(cursor_base& x, cursor_base& y) { return x.it_ - y.it_; }
 
@@ -346,7 +346,7 @@ struct item {
     friend bool operator==(const item & a, const item & b) {
         return (a.value == b.value) && (a.nodes_ == b.nodes_);
     }
-       
+
     // not equality
     friend bool operator!=(const item & a, const item & b) {
         return !(a == b);
@@ -417,6 +417,16 @@ struct item {
 
         nodes_[0].parent = this; // in case nodes_ was reallocated
 
+    }
+
+    void insert_parent() {
+        // detach all the children;
+        auto t = nodes_;
+        nodes_.clear();
+        nodes_.emplace_back();
+        nodes_[0].parent = this;
+        nodes_[0].nodes_ = t;
+        nodes_[0].nodes_[0].parent = &nodes_[0];
     }
 
     const_vector_pointer vec_pointer() const { return &nodes_; }
@@ -645,10 +655,10 @@ void verify(T parent) {
         size_t count = 0;
         if (self.empty() && self.size() != 0) std::runtime_error("empty cursor has non-zero size");
         if (!self.empty()) {
-            if (self[0].it_->parent == 0) std::runtime_error("parent set to 0");
-            if (self[0].it_->parent != &(self.item_ref())) {
+            if (self.begin().it_->parent == 0) std::runtime_error("parent set to 0");
+            if (self.begin().it_->parent != &(self.item_ref())) {
                 std::ostringstream os;
-                os << "incorrect first child " << self[0].it_->parent << ", " << &(*self);
+                os << "incorrect first child " << self.begin().it_->parent << ", " << &(*self);
                 std::runtime_error(os.str());
             }
 
@@ -674,17 +684,17 @@ inline void verify(const multivector<T> & tree) {
 }
 
 // convert to a compact string 
-template <typename T> 
-inline std::string compact_string(T parent) {
+template <typename Cursor> 
+inline std::string compact_string(Cursor parent) {
     std::ostringstream ss;
     recurse(parent, 
-        [&](T self, T parent, int) {
+        [&](Cursor self, Cursor parent, int) {
             ss << *self;
             if (!self.empty()) ss << " {";
             else if (self != --parent.end()) ss << ' ';
         }, 
 
-        [&](T self, T, int) {
+        [&](Cursor self, Cursor, int) {
             if (!self.empty()) ss << "} ";
     });
 
@@ -701,26 +711,26 @@ inline std::string compact_string(const multivector<T> & tree) {
 }
 
 // convert to a table string
-template <typename T>
-inline std::string cursor_to_text(T parent) {
+template <typename Cursor>
+inline std::string to_text(Cursor parent) {
     std::ostringstream ss;
     recurse(parent, 
-        [&](T self, T, int level) {
+        [&](Cursor self, Cursor, int level) {
             ss << ict::spaces(level * 2) << *self << '\n';
         },
 
-        [&](T, T, int) { } // nothing to do on the way up
+        [&](Cursor, Cursor, int) { } // nothing to do on the way up
     );
     return ss.str();
 }
 
 template <typename T>
-std::string to_text(const multivector<T> & tree) {
-    return ict::cursor_to_text(tree.root());
+inline std::string to_text(const multivector<T> & tree) {
+    return ict::to_text(tree.root());
 }
 
 template <typename T>
-std::string to_debug_text(const multivector<T> & tree) {
+inline std::string to_debug_text(const multivector<T> & tree) {
     typedef typename multivector<T>::const_cursor cursor_type;
     std::ostringstream ss;
     auto r = tree.root();
@@ -737,209 +747,6 @@ std::string to_debug_text(const multivector<T> & tree) {
     return ss.str();
 }
 
-
-// find and rfind algorithms
-struct path {
-    typedef std::vector<std::string>::iterator iterator;
-    typedef std::vector<std::string>::const_iterator const_iterator;
-
-    path() : abs(true) {}
-    path(const std::vector<std::string> & path, bool abs = true) : p(path), abs(abs) { }
-
-    path(const std::string & path_string) {
-        auto ps = path_string;
-        if (ps.size() == 0) std::runtime_error("invalid empty path");
-        abs = true;
-        if (ps[0] == '/') { 
-            abs = true;
-            ps.erase(0, 1);
-            if (ps.size() == 0) std::runtime_error("a lone '/' is an invalid path");
-            if (ps[0] == '/') { 
-                abs = false;
-                ps.erase(0, 1);
-                if (ps.size() == 0) std::runtime_error("a lone '//' is an invalid path");
-            }
-        }
-        p = ict::escape_split(ps, '/');
-    }
-
-    path(const char * path_string) : path(std::string(path_string)) {}
-
-    iterator begin() { return p.begin(); }
-    const_iterator begin() const { return p.begin(); }
-    const_iterator cbegin() const { return p.begin(); }
-    iterator end() { return p.end(); }
-    const_iterator end() const { return p.end(); }
-    const_iterator cend() const { return p.end(); }
-    bool absolute() const { return abs; }
-    void absolute(bool abs) { this->abs = abs; }
-    bool empty() const { return p.empty(); }
-    size_t size() const { return p.size(); }
-    private:
-    std::vector<std::string> p;
-    bool abs = false;
-};
-
-inline std::ostream & operator<<(std::ostream & os, const path & p) {
-    if (p.absolute()) os << "/";
-    ict::join(os, p.cbegin(), p.cend(), "/");
-    return os;
-}
-
-template <typename T>  
-inline bool leaf_test(const T &) { return 1; }
-
-template <typename T> 
-inline std::string name_of(const T & a) { return a.name; }
-
-template <>
-inline std::string name_of(const std::string & value) { return value; }
-
-template <>
-inline std::string name_of(const int & value) { return ict::to_string(value); }
-
-namespace util {
-    template <typename Cursor, typename Op, typename Test>
-    inline Cursor rfind_x(Cursor first, const std::string & name, Op op, Test test) {
-        typedef typename Cursor::ascending_cursor_type ascending_cursor;
-        auto c = ascending_cursor(first);
-        while (!c.is_root()) {
-            if (op(*c) == name && test(*c)) return c;
-            ++c;
-        }
-        return c;
-    }
-    template <typename Cursor, typename PathIter, typename Op, typename Test>
-    inline Cursor find_x(Cursor parent, PathIter first, PathIter last, Op op, Test test) {
-        if (parent.empty()) return parent.end();
-        for (auto i = parent.begin(); i!=parent.end(); ++i) {
-            if (op(*i) == *first) {
-                if (first + 1 == last) {
-                    if (test(*i)) return i;
-                } else {
-                    auto n = find_x(i, first + 1, last, op, test);
-                    if (n != i.end()) return n;
-                }
-            }
-        }
-        return parent.end();
-    }
-}
-
-// find given a path
-template <typename Cursor, typename Op, typename Test>
-inline Cursor find(Cursor parent, const path & path, Op op, Test test) {
-    typedef typename Cursor::linear_type iterator;
-    if (path.absolute()) return util::find_x(parent, path.begin(), path.end(), op, test);
-    else {
-        for (iterator i = parent.begin(); i!= parent.end(); ++i) {
-            if (op(*i) == *path.begin()) {
-                if (path.begin() + 1 == path.end()) {
-                    if (test(*i)) return i;
-                } else {
-                    auto c = Cursor(i);
-                    auto x = util::find_x(c, path.begin() + 1, path.end(), op, test);
-                    if (x != c.end()) return x;
-                }
-            }
-        }
-        return parent.end();
-    }
-}
-
-#if 0
-void match_path(Cursor parent, path & curr_path, const path & path) {
-    for (iterator i = parent.begin(); i!= parent.end(); ++i) {
-        curr_path += name_of(i);
-        if (curr_path.has_tail(path)) f(
-    }
-}
-
-template <typename Cursor, const path & path, typename Function>
-inline Function for_each_path(cursor parent, const path & path, Op f) {
-    typedef typename Cursor::linear_type iterator;
-    path curr;
-    for (iterator i = parent.begin(); i!= parent.end(); ++i) {
-        curr = name_of(i);
-    }
-
-    if (path.absolute()) return util::find_x(parent, path.begin(), path.end(), op, test);
-    else {
-        for (iterator i = parent.begin(); i!= parent.end(); ++i) {
-            if (op(*i) == *path.begin()) {
-                if (path.begin() + 1 == path.end()) {
-                    if (test(*i)) return i;
-                } else {
-                    auto c = Cursor(i);
-                    auto x = util::find_x(c, path.begin() + 1, path.end(), op, test);
-                    if (x != c.end()) return x;
-                }
-            }
-        }
-        return parent.end();
-    }
-}
-#endif
-
-template <typename Cursor, typename Op>
-inline Cursor find(Cursor parent, const path & path, Op op) {
-    typedef typename Cursor::value_type value_type;
-    return find(parent, path, op, [](const value_type &){ return true; });
-}
-
-template <typename Cursor>
-inline Cursor find(Cursor parent, const path & path) {
-    return find(parent, path, name_of<typename Cursor::value_type>);
-}
-
-template <typename Cursor, typename Op, typename Test>
-inline Cursor rfind(Cursor first, const path & path, Op op, Test test) {
-    typedef typename Cursor::ascending_cursor_type ascending_cursor;
-    if (!path.absolute()) std::runtime_error("path must be absolute for rfind()");
-    if (path.size() == 1) return util::rfind_x(first, *path.begin(), op, test);
-    
-    auto rfirst = ascending_cursor(first);
-
-    while (!rfirst.is_root()) {
-        if (op(*rfirst) == *path.begin()) {
-            auto parent = Cursor(rfirst);
-            auto x = util::find_x(parent, path.begin() + 1, path.end(), op, test);
-            if (x != parent.end()) return x;
-        }
-        ++rfirst;
-    }
-    return rfirst;
-}
-
-// rfind given a path
-template <typename Cursor, typename Op>
-inline Cursor rfind(Cursor first, const path & path, Op op) {
-    typedef typename Cursor::value_type value_type;
-    return rfind(first, path, op, [](const value_type &){ return true; });
-}
-
-template <typename Cursor>
-inline Cursor rfind(Cursor first, const path & path) {
-    return rfind(first, path, name_of<typename Cursor::value_type>);
-}
-
-template <typename S, typename C> 
-inline void path_string(S & ss, C c) {
-    if (!c.is_root()) {
-        path_string(ss, c.parent());
-        ss << '/';
-        ss << name_of(*c);
-    }
-}
-
-// return the path of a cursor
-template <typename T, typename C = typename T::is_cursor> 
-inline std::string path_string(T c) {
-    std::ostringstream ss;
-    path_string(ss, c);
-    return ss.str();
-}
-
 template <typename Cursor>
 inline Cursor leaf(Cursor c) {
     if (c.empty()) return c;
@@ -951,19 +758,29 @@ inline void promote_last(Cursor parent) {
     parent.promote_last();
 }
 
-template <typename Cursor> 
-inline typename Cursor::ascending_cursor_type ascending_begin(Cursor parent) {
-    return --parent.end();
+template <typename Cursor>
+inline typename Cursor::ascending_cursor_type to_ascending(Cursor c) {
+    return c;
 }
 
 template <typename Cursor> 
-inline typename Cursor::linear_type linear_begin(Cursor parent) {
-    return parent.begin();
+inline typename Cursor::linear_type to_linear(Cursor c) {
+    return c;
 }
 
-template <typename Cursor> 
-inline typename Cursor::linear_type linear_end(Cursor parent) {
-    return parent.end();
+// recursive copy all children
+template <typename Cursor, typename ConstCursor>
+void append(Cursor parent, ConstCursor first, ConstCursor last) {
+    while (first != last) {
+        auto c = parent.emplace(*first);
+        append(c, first.begin(), first.end());
+        ++first;
+    }
+}
+
+template <typename Cursor, typename ConstCursor>
+void append(Cursor parent, ConstCursor from_parent) {
+    append(parent, from_parent.begin(), from_parent.end());
 }
 
 #if 0 // this may not be a good idea

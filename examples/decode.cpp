@@ -1,4 +1,4 @@
-//-- Copyright 2015 Intrig
+//-- Copyright 2016 Intrig
 //-- See https://github.com/intrig/xenon for license.
 #include <iostream>
 #include <vector>
@@ -26,14 +26,27 @@ int main(int, char**) {
               "3001903001603000F03000703000403000C03000503000D1A03C9E16C18070DE"
               "2C7CFF3C7CC1001E00E01C000389");
 
+        cout << "iterating over top level nodes only\n";
+        for (auto c = msg.begin(); c != msg.end(); ++c) {
+            // and now we can process each node
+            cout << c->name() << '\n';
+        }
+
+        // using a linear cursor, we can iterate through the entire message in a depth first way
         cout << "putting fields and their values into a vector: " << ict::to_text(msg);
-        for (auto c = ict::linear_begin(msg.root()); c != msg.end(); ++c) {
+        for (auto c = ict::to_linear(msg.root()); c != msg.end(); ++c) {
+            // consumes() means it consumes bits from the message, usually a field 
             if (c->consumes()) fields.emplace_back(c->name(), c->value());
         }
         cout << "done, processed " << fields.size() << " fields\n\n";
-
         fields.clear();
+
+        // We an also do the same thing using the ict::recurse() algorithm that takes a root node and
+        // a lambda expression.  This is currently more efficient and recommended over the linear_cursor 
+        // method above.
         cout << "again, using recurse algorithm\n";
+        // The first cursor parameter in the lambda expression is a cursor to the current node, the second
+        // cursor parameter is its parent, which is unused in this case.
         ict::recurse(msg.root(), [&](message::cursor c, message::cursor) {
             if (c->consumes()) fields.emplace_back(c->name(), c->value());
         });
@@ -46,7 +59,10 @@ int main(int, char**) {
 
         cout << "now find using a non-anchored path: //RLP_CAP_INFO_BLOCK/MAX_MS_NAK_ROUNDS_FWD\n";
         c = ict::find(msg.root(), "//RLP_CAP_INFO_BLOCK/MAX_MS_NAK_ROUNDS_FWD");
-        if (c != msg.end()) cout << "found it! " << c->value() << "\n\n";
+        if (c != msg.end()) {
+            cout << "found it! " << c->value() << "\n";
+            cout << "full path is: " << ict::path_string(c) << "\n\n";
+        }
         
 
     } catch (ict::exception & e) { cerr << e.what() << '\n';
