@@ -14,7 +14,7 @@
 #include <ict/find_functions.h>
 #include <ict/lua.hpp>
 
-namespace ict {
+namespace xenon {
 
 const int DateTime::daysmonth[13] = { 0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
 const int DateTime::daysmonthleap[13] = { 0, 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };

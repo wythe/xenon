@@ -20,7 +20,7 @@ std::ostream& operator<<(std::ostream & strm, const attr & att) {
     return strm;
 }
 
-namespace ict {
+namespace xenon {
 
 const node_info_list node_info = {
     { "nil", node_info_type::is_nil },

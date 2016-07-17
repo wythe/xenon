@@ -5,7 +5,7 @@
 
 #include <ict/ict.h>
 
-namespace ict {
+namespace xenon {
 // order matters here, index is state()
 const char * state_names[] = {
         "First",
