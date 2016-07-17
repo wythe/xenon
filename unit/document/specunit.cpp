@@ -6,6 +6,7 @@
 
 #include <vector>
 #include <string>
+using namespace xenon;
 
 doc_unit::doc_unit()
 {
@@ -13,7 +14,7 @@ doc_unit::doc_unit()
 
 void doc_unit::sanity()
 {
-    ict::spec_server doc;
+    spec_server doc;
     IT_ASSERT(doc.empty());
 }
 
@@ -21,7 +22,7 @@ void doc_unit::constructor_file()
 {
     {
         try {
-            ict::spec_server doc("xddl/index.xddl");
+            spec_server doc("xddl/index.xddl");
             IT_ASSERT(!doc.empty());
         }
         catch (ict::exception & e) {
@@ -33,7 +34,7 @@ void doc_unit::constructor_file()
     {
         std::string error;
         try {
-            ict::spec_server doc("empty");
+            spec_server doc("empty");
         }
         catch (ict::exception & e) {
             error = e.what();
@@ -47,7 +48,7 @@ void doc_unit::constructor_file()
     {
         std::string error;
         try {
-            ict::spec_server doc("foo");
+            spec_server doc("foo");
         } catch (ict::exception & e) {
             error = e.what();
         }
@@ -59,7 +60,7 @@ void doc_unit::constructor_file()
     {
         std::string error;
         try {
-            ict::spec_server doc("goo.xddl");
+            spec_server doc("goo.xddl");
         } catch (ict::exception & e) {
             error = e.what();
         }
@@ -73,14 +74,14 @@ void doc_unit::constructor_file()
     { 
         std::string error;
         try {
-            ict::spec_server doc("garbage.xddl");
+            spec_server doc("garbage.xddl");
         } catch (ict::exception & e) {
             error = e.what();
         }
         IT_ASSERT(!error.empty());
     }
     {
-        ict::spec_server doc;
+        spec_server doc;
         std::string error;
         try {
             IT_ASSERT(doc.empty());
@@ -97,7 +98,7 @@ void doc_unit::constructor_file()
         std::string error;
         try {
         // The dos way */
-            ict::spec_server doc(".\\xddl\\index.xddl");
+            spec_server doc(".\\xddl\\index.xddl");
         } catch (ict::exception & e) {
             error = e.what();
         }
@@ -109,7 +110,7 @@ void doc_unit::constructor_file()
 
 void doc_unit::parse_file()
 {
-    ict::spec_server doc;
+    spec_server doc;
     std::string error;
     try {
         IT_ASSERT(doc.empty() == true);
@@ -125,17 +126,17 @@ void doc_unit::absolute()
     std::ostringstream abspath;
     abspath << ict::get_env_var("XDDLABS") << "/icd.xddl";
 
-    ict::spec_server doc(abspath.str().c_str());
+    spec_server doc(abspath.str().c_str());
     IT_ASSERT(!doc.empty());
 }
 
 void doc_unit::index2() {
-    ict::spec_server doc("xddl/index2.xddl");
+    spec_server doc("xddl/index2.xddl");
     IT_ASSERT(!doc.empty());
 }
 
 void doc_unit::index3() {
-    ict::spec_server doc("xddl/index3.xddl");
+    spec_server doc("xddl/index3.xddl");
     IT_ASSERT(!doc.empty());
 }
 
@@ -144,16 +145,16 @@ void doc_unit::ip_protocol() {
     if (xddlroot.empty()) return;
     std::string ip = xddlroot;
     ip += "/IP/index.xddl";
-    ict::spec_server doc(ip.c_str());
+    spec_server doc(ip.c_str());
     IT_ASSERT(!doc.empty());
 }
 
 void doc_unit::icd() {
 #if 0 //
-    ict::spec doc("icd.xddl");
+    xenon::spec doc("icd.xddl");
     IT_ASSERT(!doc.empty());
 
-    std::vector<ict::spec> specs;
+    std::vector<xenon::spec> specs;
     
     for (int i=0; i<100; ++i) specs.push_back(doc);
 
@@ -163,9 +164,9 @@ void doc_unit::icd() {
 
 void doc_unit::fail1() {
     std::string error;
-    ict::spec_server doc;
+    spec_server doc;
     try {
-        ict::spec_server doc3("exprfail.xddl");
+        spec_server doc3("exprfail.xddl");
     } catch (ict::exception & e)
     {
         error = e.what();
@@ -174,7 +175,7 @@ void doc_unit::fail1() {
 }
 
 void doc_unit::fail2() {
-    ict::spec_server doc3("exprpass.xddl");
+    spec_server doc3("exprpass.xddl");
     IT_ASSERT(!doc3.empty());
 }
 
@@ -192,7 +193,7 @@ void doc_unit::fail3() {
               "</start>"
             "</xddl>";
 
-        ict::spec_server doc(xddl.begin(), xddl.end());
+        spec_server doc(xddl.begin(), xddl.end());
 
         IT_FORCE_ASSERT("Shouldn't be here");
     } catch (ict::exception &) {
@@ -203,7 +204,7 @@ void doc_unit::fail3() {
 // path should override environment
 void doc_unit::search_paths() {
     std::string xddlroot = ict::get_env_var("XDDLROOT");
-    ict::spec_server d;
+    spec_server d;
 
     auto paths = d.xddl_path;
     

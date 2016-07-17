@@ -9,7 +9,6 @@
 #include <cstring>
 #include <cstdint>
 
-namespace ict {
 struct store_init {
     size_t bit_size;
     size_t byte_size;
@@ -619,9 +618,8 @@ void bitstring_unit::modern_sms_difficult()
     IT_ASSERT(ict::gsm7(sm) == result.c_str());
 }
 
-}
 int main (int, char **) {
-    ict::bitstring_unit test;
-    ict::unit_test<ict::bitstring_unit> ut(&test);
+    bitstring_unit test;
+    ict::unit_test<bitstring_unit> ut(&test);
     return ut.run();
 }

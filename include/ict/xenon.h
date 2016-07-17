@@ -5,6 +5,7 @@
 #include <functional>
 #include <ict/message.h>
 #include <ict/spec_server.h>
+namespace xenon = ict;
 namespace ict {
 inline bitstring serialize(const message & m) {
     obitstream bs;

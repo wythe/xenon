@@ -11,7 +11,7 @@ using std::cout;
 void load_unit::sanity() {
 }
 
-void load_all_xddl(const bf::path & dir, ict::spec_server & specs) {
+void load_all_xddl(const bf::path & dir, xenon::spec_server & specs) {
     if (!exists(dir)) return;
     bf::directory_iterator end_itr;
     for (auto i = bf::directory_iterator(dir); i != end_itr; ++i) {

@@ -64,7 +64,7 @@ int main(int argc, char **argv) {
 
 void processXddlFile(ict::command const & line, command_flags const & flags) {
     auto i = line.targets.begin();
-    ict::spec_server d;
+    xenon::spec_server d;
     try { 
         d.clear();
         auto u = ict::url(*i);
@@ -74,13 +74,13 @@ void processXddlFile(ict::command const & line, command_flags const & flags) {
         ict::bitstring bs; // the message to parse
         std::ostringstream inst_dump;
 
-        auto filter = [&](ict::message::const_cursor c) { 
+        auto filter = [&](xenon::message::const_cursor c) { 
             if (!flags.encoding   && c->is_encoding()  ) return false;
             if (!flags.properties && c->is_prop() && !c->is_visible()) return false;
             if (!flags.show_extra && c->is_extra()) return false;
             return true; };
         for (; i != line.targets.end(); ++i) {
-            ict::message inst;
+            xenon::message inst;
             bs = ict::bitstring(i->c_str());
 
             if (bs.empty()) {
@@ -89,28 +89,28 @@ void processXddlFile(ict::command const & line, command_flags const & flags) {
                 line.help();
                 exit(0);
             } 
-            ict::spec::cursor start;
+            xenon::spec::cursor start;
             if (!u.anchor.empty()) {
-                start = ict::get_record(d, u);
+                start = xenon::get_record(d, u);
             }
             else start = d.start();
-            inst = ict::parse(start, bs);
-            if (flags.flat_xml) inst_dump << ict::to_xml(inst, filter) << '\n';
+            inst = xenon::parse(start, bs);
+            if (flags.flat_xml) inst_dump << xenon::to_xml(inst, filter) << '\n';
             else if (flags.pretty_xml) {
                 ict::Xml pretty;
-                pretty << ict::to_xml(inst, filter) << "\n";
+                pretty << xenon::to_xml(inst, filter) << "\n";
                 inst_dump << pretty;
             }
             else if (flags.debug_print) {
                 inst_dump << ict::to_debug_text(inst, filter) << '\n';
             }
-            else inst_dump << ict::to_text(inst, flags.format, filter);
+            else inst_dump << xenon::to_text(inst, flags.format, filter);
 
             cout << inst_dump.str(); 
             inst_dump.str("");
         }
         if (flags.output_dom) {
-            if (flags.output_html) cout << ict::to_html(d.base());
+            if (flags.output_html) cout << xenon::to_html(d.base());
             else cout << d;
         }
     } catch (ict::exception &) {

@@ -9,7 +9,7 @@
 #include <cstdint>
 
 
-void ict::bitstring_unit::toUint32()
+void bitstring_unit::toUint32()
 {
     {
         ict::bitstring bs1(16, "FFFFFFFF");
@@ -129,7 +129,7 @@ void test_endian(ict::bitstring bs, T value, bool big = true) {
     IT_ASSERT(n == value);
 }
 
-void ict::bitstring_unit::endian() {
+void bitstring_unit::endian() {
     test_endian<uint8_t> ("01", 1);
     test_endian<uint16_t>("0001", 1);
     test_endian<uint32_t>("00000001", 1);
@@ -188,14 +188,14 @@ void ict::bitstring_unit::endian() {
     test_endian<int16_t>("FF", 0xFF);
 }
 
-void ict::bitstring_unit::expand_endian() {
+void bitstring_unit::expand_endian() {
     // convert 16 bit to 32 bit, with endian swap
     auto n = ict::to_integer<uint32_t>("0100", false);
     IT_ASSERT_MSG(n, n == 1);
     test_endian<uint32_t>("0100", 1, false);
 }
 
-void ict::bitstring_unit::toUint64()
+void bitstring_unit::toUint64()
 {
     {
         ict::bitstring bs1(16, "0000000000000001");
@@ -232,7 +232,7 @@ bool approx(T v, U f, double delta = 0.001) {
     return (f > (v - delta)) && (f < (v + delta));
 }
 
-void ict::bitstring_unit::fromNumber() {
+void bitstring_unit::fromNumber() {
     {
         ict::netvar<unsigned short> t(25);
         unsigned short u = t;
@@ -268,7 +268,7 @@ void ict::bitstring_unit::fromNumber() {
     }
 }
 
-void ict::bitstring_unit::toInteger()
+void bitstring_unit::toInteger()
 {
     IT_ASSERT(ict::to_integer<int>(ict::from_integer(8)) == 8);
 

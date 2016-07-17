@@ -3,11 +3,10 @@
 //-- see https://github.com/intrig/xenon for license
 #include <ict/unit.h>
 
-namespace ict {
 class bitstring_unit 
 {
     public:
-    void register_tests(unit_test<bitstring_unit> & ut) 
+    void register_tests(ict::unit_test<bitstring_unit> & ut) 
     {
         ut.skip();
         ut.cont();
@@ -54,4 +53,3 @@ class bitstring_unit
     void modern_gsm7();
     void modern_sms_difficult();
 };
-}
