@@ -4,7 +4,7 @@
 #include <ict/xddl.h>
 #include <list>
 #include <vector>
-namespace ict {
+namespace xenon {
 
 class spec_server {
 public:

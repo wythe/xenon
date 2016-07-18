@@ -8,7 +8,7 @@
 #include <functional>
 #include <iostream>
 
-namespace ict {
+namespace xenon {
 struct node_info_type;
 typedef std::vector<node_info_type> node_info_list;
 
@@ -38,10 +38,10 @@ struct node {
 
     inline const node_info_type & info() const;
     node() = default;
-    node(node_type type, spec_cursor elem, bitstring bs = bitstring()) : type(type), elem(elem), bits(bs) { };
+    node(node_type type, spec_cursor elem, ict::bitstring bs = ict::bitstring()) : type(type), elem(elem), bits(bs) { };
 
     bool empty() { return bits.empty(); }
-    string64 tag() const;
+    ict::string64 tag() const;
     std::string name() const;
     size_t line() const;
     std::string file() const;
@@ -92,13 +92,13 @@ struct node {
     std::bitset<flag_count> flags;
     node_type type = nil_node;
     spec_cursor elem;
-    bitstring bits;
+    ict::bitstring bits;
     std::string desc;
     size_t dom_length = 0; 
 };
 
-typedef multivector<node>::cursor msg_cursor;
-typedef multivector<node>::const_cursor msg_const_cursor;
+typedef ict::multivector<node>::cursor msg_cursor;
+typedef ict::multivector<node>::const_cursor msg_const_cursor;
 
 struct node_info_type {
     enum flag_type {
@@ -141,11 +141,6 @@ inline S& end_tag(S& os, C) {
     return os;
 }
 
-template <>
-inline std::string name_of(const node & n) {
-    return n.name();
-}
-
 template <typename Stream>
 Stream & to_debug(Stream & os, const node & n) {
     os << n.tag() << " " << n.mnemonic() << " " << n.name() << " (" <<
@@ -161,3 +156,11 @@ Stream & to_debug(Stream & os, const node & n) {
 }
 } // namespace
 
+// TODO name_of should all be in xenon
+namespace ict {
+template <>
+inline std::string name_of(const xenon::node & n) {
+    return n.name();
+}
+
+}

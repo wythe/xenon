@@ -269,9 +269,9 @@ std::ostream& xsp_parser::to_decl(std::ostream& os, const elem_type & elem, cons
         os << "struct var_type;";
         // os << "template <typename T> struct model;";
         os << "inline " << elem.name << "();";
-        os << "inline " << elem.name << "(std::shared_ptr<var_type> v, string64 tag, const std::string & name = \"\"" << ");";
+        os << "inline " << elem.name << "(std::shared_ptr<var_type> v, ict::string64 tag, const std::string & name = \"\"" << ");";
         os << "template <typename T> \n";
-        os << "inline " << elem.name << "(T x, string64 tag, const std::string & name = \"\"" << ");";
+        os << "inline " << elem.name << "(T x, ict::string64 tag, const std::string & name = \"\"" << ");";
     } else {
         auto plist = to_param_list(elem.attributes, custom_types);
         if (!plist.empty()) {
@@ -282,13 +282,13 @@ std::ostream& xsp_parser::to_decl(std::ostream& os, const elem_type & elem, cons
     //if (elem.end_handler) os << "void end_handler(" << root << "_cursor self, " << root << " & parser);";
 
     if (elem.is_base) {
-        os << "string64 tag() const { return tag_;}";
+        os << "ict::string64 tag() const { return tag_;}";
         os << "std::string name() const { return name_.empty() ? tag_.c_str() : name_;}";
         os << "std::shared_ptr<var_type> v;";
         // os << "std::shared_ptr<model<var_type>> v2;";
         os << "size_t line = 0;" <<
         class_name << " * parser = 0;" << 
-        "string64 tag_;" << 
+        "ict::string64 tag_;" << 
         "std::string name_;";
     }
     for (const auto & a : elem.attributes) to_code(os, a, custom_types);
@@ -297,21 +297,21 @@ std::ostream& xsp_parser::to_decl(std::ostream& os, const elem_type & elem, cons
     os << "};"; // end of class
 
     if (elem.is_base) {
-        os << "typedef multivector<element>::cursor spec_cursor;";
-        os << "typedef multivector<element>::const_cursor spec_const_cursor;";
-        os << "typedef multivector<element>::ascending_cursor spec_ascending_cursor;";
+        os << "typedef ict::multivector<element>::cursor spec_cursor;";
+        os << "typedef ict::multivector<element>::const_cursor spec_const_cursor;";
+        os << "typedef ict::multivector<element>::ascending_cursor spec_ascending_cursor;";
         os << "}";
         os << "#include <ict/node.h>";
-        os << "namespace ict {";
+        os << "namespace xenon {";
         os << "struct element::var_type {" << code_seg(code_refs, "var_type") << "};";
         // os << "template <typename T> struct element::model : element::var_type {" << code_seg(code_refs, "model") << "};";
 
         os << R"(
         inline element::element() : v(std::make_shared<var_type>()) {};
-        inline element::element(std::shared_ptr<var_type> v, string64 tag, const std::string & name) : 
+        inline element::element(std::shared_ptr<var_type> v, ict::string64 tag, const std::string & name) : 
             v(v), tag_(tag), name_(name) {};
         template <typename T> 
-        inline element::element(T x, string64 tag, const std::string & name) : 
+        inline element::element(T x, ict::string64 tag, const std::string & name) : 
             v(std::make_shared<T>(x)), 
             tag_(tag), name_(name) { };
         )";
@@ -473,7 +473,7 @@ std::string xsp_parser::parser_impl() const {
     os << "xml_parser p;";
     os << "std::string cdata;";
     os << "std::string file;";
-    os << "typedef multivector<" << base << "> multivector_type;";
+    os << "typedef ict::multivector<" << base << "> multivector_type;";
     os << "typedef multivector_type::cursor cursor;";
     os << "typedef multivector_type::const_cursor const_cursor;";
     os << "typedef multivector_type::ascending_cursor ascending_cursor;";
