@@ -7,7 +7,7 @@
 #include <vector>
 #include <iostream>
 
-namespace ict {
+namespace xenon {
     class cpp_code {
         public:
             cpp_code(int starting_indent = 0) : _indent(starting_indent) { }

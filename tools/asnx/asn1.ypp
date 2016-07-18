@@ -985,7 +985,7 @@ int main(int argc, char **argv)
         {
             modlist->comments = comments;
             TR("writing xddl");
-            ict::Xml xml;
+            xenon::Xml xml;
             xml << modlist->str();
             TR("formatting xddl");
             cout << xml;

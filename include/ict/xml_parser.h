@@ -15,7 +15,7 @@
 // 
 // with T as the xml_parser class (renamed) below, and no virtual functions.
 
-namespace ict {
+namespace xenon {
 
 template <typename Op>
 struct named_handler {

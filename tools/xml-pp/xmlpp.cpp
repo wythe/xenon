@@ -24,7 +24,7 @@ int main(int argc, char **argv)
         for (auto const & f : line.targets)
         {
             filename = f;
-            ict::Xml xml(filename, decl);
+            xenon::Xml xml(filename, decl);
 
             if (replace)
             {

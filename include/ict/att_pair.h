@@ -4,6 +4,7 @@
 #include <vector>
 #include <ict/string64.h>
 
+namespace xenon {
 struct att_pair {
     operator ict::string64() const { return name; }
     att_pair(ict::string64 name, std::string value) : name(name), value(value) {}
@@ -71,4 +72,5 @@ inline void validate_att_list(const att_list & atts, std::vector<ict::string64> 
     for (auto & i : names) {
         if (std::find(valid.begin(), valid.end(), i) == valid.end()) IT_THROW(i << " is an invalid attribute name");
     }
+}
 }

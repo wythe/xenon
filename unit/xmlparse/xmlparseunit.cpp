@@ -12,7 +12,7 @@
 #include <typeinfo>
 #include <fstream>
 
-class Scanner : public ict::xml_parser_base
+class Scanner : public xenon::xml_parser_base
 {
     public:
     void startElement(const char * s, const char ** atts) 

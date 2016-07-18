@@ -7,7 +7,7 @@
 #include <map>
 #include <memory>
 
-namespace ict {
+namespace xenon {
 
     class XmlText
     {

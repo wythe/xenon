@@ -29,7 +29,7 @@ do { \
     throw e; \
 } while (0);
 
-namespace ict {
+namespace xenon {
 
 /* http://www.w3.org/TR/2006/REC-xml-20060816/ */
 class xml_parser_base

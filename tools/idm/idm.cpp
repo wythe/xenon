@@ -97,7 +97,7 @@ void processXddlFile(ict::command const & line, command_flags const & flags) {
             inst = xenon::parse(start, bs);
             if (flags.flat_xml) inst_dump << xenon::to_xml(inst, filter) << '\n';
             else if (flags.pretty_xml) {
-                ict::Xml pretty;
+                xenon::Xml pretty;
                 pretty << xenon::to_xml(inst, filter) << "\n";
                 inst_dump << pretty;
             }

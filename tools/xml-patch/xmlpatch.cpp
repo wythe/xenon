@@ -106,7 +106,7 @@ class XmlSource
                 }
             } while (!done);
         }
-        ict::Xml xml;
+        xenon::Xml xml;
         xml << ict::join(lines);
         std::ostringstream ss;
         xml.str(ss);

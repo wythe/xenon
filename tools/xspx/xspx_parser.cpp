@@ -44,15 +44,15 @@ xsp_parser::xsp_parser() {
         base = ict::normalize(cdata); 
         cdata.clear(); });
 
-    p.start_handler("att", [&](const att_list & atts) { 
+    p.start_handler("att", [&](const xenon::att_list & atts) { 
         auto a = atts_.emplace(atts_.end());
         a->type_name = find_required_att(atts, "type");
         a->fixed = find_att(atts, "fixed");
         a->member_name = find_att(atts, "member");
-        a->local = to_boolean(find_att(atts, "local", "true"));
-        a->required = to_boolean(find_att(atts, "req", "false")); 
+        a->local = xenon::to_boolean(find_att(atts, "local", "true"));
+        a->required = xenon::to_boolean(find_att(atts, "req", "false")); 
         a->def = find_att(atts, "def");
-        auto & ct = ict::find_by_name(custom_types, a->type_name);
+        auto & ct = xenon::find_by_name(custom_types, a->type_name);
         if (a->def.empty()) a->def = ct.def;
     });
 
@@ -62,7 +62,7 @@ xsp_parser::xsp_parser() {
         if (a.member_name.empty()) a.member_name = a.name.c_str();
         cdata.clear(); });
 
-    p.start_handler("type", [&](const att_list & atts) { 
+    p.start_handler("type", [&](const xenon::att_list & atts) { 
         auto i = custom_types.emplace(custom_types.end());
         i->def = find_att(atts, "def");
         i->cpp_name = find_required_att(atts, "cpp"); 
@@ -75,7 +75,7 @@ xsp_parser::xsp_parser() {
         if (a.cpp_func.empty()) a.cpp_func = "create_" + a.name;
         cdata.clear(); });
 
-    p.start_handler("choice", [&](const att_list & atts) { 
+    p.start_handler("choice", [&](const xenon::att_list & atts) { 
         choices.emplace_back();
         choices.back().tag = find_required_att(atts, "tag");
         choices.back().name = find_required_att(atts, "tag");
@@ -101,8 +101,8 @@ xsp_parser::xsp_parser() {
         cdata.clear();
         });
 
-    p.start_handler("code", [&](const att_list & atts){
-        curr_code_atts = find_exclusive_att<std::string>(atts, "id", "href");
+    p.start_handler("code", [&](const xenon::att_list & atts){
+        curr_code_atts = xenon::find_exclusive_att<std::string>(atts, "id", "href");
         });
 
 
@@ -116,15 +116,15 @@ xsp_parser::xsp_parser() {
         cdata.clear();
         });
 
-    p.start_handler("element", [&](const att_list & atts) { 
+    p.start_handler("element", [&](const xenon::att_list & atts) { 
         elems.back().emplace_back();
         auto & e = elems.back().back();
         e.tag = find_att(atts, "tag"); 
         e.name = find_att(atts, "name", e.tag.c_str()); 
-        e.end_handler = to_boolean(find_att(atts, "end_handler", "false"));
-        e.has_stack = to_boolean(find_att(atts, "stack", "false"));
-        e.has_cdata = to_boolean(find_att(atts, "has_cdata", "false"));
-        e.is_mod = to_boolean(find_att(atts, "is_mod", "false"));
+        e.end_handler = xenon::to_boolean(find_att(atts, "end_handler", "false"));
+        e.has_stack = xenon::to_boolean(find_att(atts, "stack", "false"));
+        e.has_cdata = xenon::to_boolean(find_att(atts, "has_cdata", "false"));
+        e.is_mod = xenon::to_boolean(find_att(atts, "is_mod", "false"));
         e.isa = find_att(atts, "isa");
         });
 
@@ -176,8 +176,8 @@ xsp_parser::xsp_parser() {
         e.end_code += cdata;
         cdata.clear(); });
 
-    p.start_handler("group", [&](const att_list & atts) { 
-        auto p = find_exclusive_att<std::string>(atts, "name", "href");
+    p.start_handler("group", [&](const xenon::att_list & atts) { 
+        auto p = xenon::find_exclusive_att<std::string>(atts, "name", "href");
 
         if (!p.first.empty()) { // "name"
             in_group_def = true;
@@ -187,7 +187,7 @@ xsp_parser::xsp_parser() {
             in_group_def = false;
             ict::url url(p.second.c_str());
             if (url.anchor.empty()) IT_THROW("invalid href: " << p.second);
-            auto i = ict::find_by_name(groups.begin(), groups.end(), std::string(url.anchor.begin() + 1, 
+            auto i = xenon::find_by_name(groups.begin(), groups.end(), std::string(url.anchor.begin() + 1, 
                 url.anchor.end()));
             if (i == groups.end()) IT_THROW("cannot find group with name " << p.second);
             children.insert(children.end(), i->children.begin(), i->children.end());
@@ -253,7 +253,7 @@ std::string xsp_parser::header() const  {
 
     os << code_seg(code_refs, "tail");
 
-    ict::cpp_code code;
+    xenon::cpp_code code;
     code.add(os.str());
     return code.str();
 }
@@ -325,7 +325,7 @@ void xsp_parser::parser_destructor(std::ostream &) const {
 }
 
 void xsp_parser::att_param(std::ostream& os, const std::string & start, const xml_att_type & att) const {
-    auto & ct = ict::find_by_name(custom_types, att.type_name);
+    auto & ct = xenon::find_by_name(custom_types, att.type_name);
     os << ct.cpp_func;
     if (att.required) {
          os << "(" << start << ", find_required_att(atts, " << qt(att.name) << "))";
@@ -386,7 +386,7 @@ std::ostream& xsp_parser::start_handler_contents(std::ostream& os, const elem_ty
 
 std::ostream& xsp_parser::to_init(std::ostream& os, const elem_type & elem) const {
     if (elem.is_base) return os;
-    os << "p.start_handler(" << qt(elem.tag) << ", [&](const att_list &atts) {";
+    os << "p.start_handler(" << qt(elem.tag) << ", [&](const xenon::att_list &atts) {";
 
     start_handler_contents(os, elem);
 
@@ -405,7 +405,7 @@ std::ostream& xsp_parser::to_init(std::ostream& os, const elem_type & elem) cons
 }
 
 std::ostream& xsp_parser::to_choice_init(std::ostream& os, const choice_type & choice) const {
-    os << "p.start_handler(" << qt(choice.name) << ", [&](const att_list & atts) {";
+    os << "p.start_handler(" << qt(choice.name) << ", [&](const xenon::att_list & atts) {";
     os << "switch (" << choice.name << "_test(atts)) {";
     for (size_t i = 0; i < choice.elems.size(); ++i) {
         os << "case " << i << " : {";
@@ -470,7 +470,7 @@ std::string xsp_parser::parser_impl() const {
 
     )";
 
-    os << "ict::xml_parser p;";
+    os << "xml_parser p;";
     os << "std::string cdata;";
     os << "std::string file;";
     os << "typedef ict::multivector<" << base << "> multivector_type;";
@@ -487,7 +487,7 @@ std::string xsp_parser::parser_impl() const {
     
     os << "}; }";
 
-    ict::cpp_code code;
+    xenon::cpp_code code;
     code << os.str();
     return code.str();
 }
