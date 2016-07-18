@@ -33,7 +33,7 @@ int main(int, char**) {
 
         // using a linear cursor, we can iterate through the entire message in a depth first way
         cout << "putting fields and their values into a vector: " << xenon::to_text(msg);
-        for (auto c = xenon::to_linear(msg.root()); c != msg.end(); ++c) {
+        for (auto c = ict::to_linear(msg.root()); c != msg.end(); ++c) {
             // consumes() means it consumes bits from the message, usually a field 
             if (c->consumes()) fields.emplace_back(c->name(), c->value());
         }
@@ -46,7 +46,7 @@ int main(int, char**) {
         cout << "again, using recurse algorithm\n";
         // The first cursor parameter in the lambda expression is a cursor to the current node, the second
         // cursor parameter is its parent, which is unused in this case.
-        xenon::recurse(msg.root(), [&](xenon::message::cursor c, xenon::message::cursor) {
+        ict::recurse(msg.root(), [&](xenon::message::cursor c, xenon::message::cursor) {
             if (c->consumes()) fields.emplace_back(c->name(), c->value());
         });
         cout << "done, processed " << fields.size() << " fields\n\n";

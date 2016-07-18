@@ -4,8 +4,12 @@
 
 //#include <ict/find_functions.h>
 
-namespace ict { 
+namespace xenon { 
 
+template <>
+inline std::string name_of(const xenon::element & e) {
+    return e.name();
+}
 template <typename T, typename U>
 inline T * get_ptr(const U & v) {
     return std::dynamic_pointer_cast<T>(v).get();
@@ -18,11 +22,6 @@ struct cmp_name {
     }
     std::string name;
 };
-
-template <>
-inline std::string name_of(const element & e) {
-    return e.name();
-}
 
 inline std::string tag_of(const element & e) {
     return e.tag().c_str();
@@ -38,7 +37,7 @@ inline element& elem_of(spec::cursor c) {
     return *c;
 }
 
-inline void parse(spec::cursor self, msg_cursor parent, ibitstream & bs) {
+inline void parse(spec::cursor self, msg_cursor parent, ict::ibitstream & bs) {
     //IT_WARN("parsing: " << *self << " " << self->parser->file << ":" << self->line);
     self->v->vparse(self, parent, bs);
 }
@@ -59,7 +58,7 @@ inline std::string enum_string(spec::cursor self, msg_const_cursor c) {
 template <typename Cursor>
 inline std::string create_jump_name(Cursor start, const std::string & value) {
     static auto prop_path = path("xddl/export/prop");
-    auto c = ict::rfind(start, value);
+    auto c = rfind(start, value);
     if (c.is_root()) {
         auto root = spec::cursor(c);
         auto x = find(root, prop_path, tag_of, cmp_name(value));

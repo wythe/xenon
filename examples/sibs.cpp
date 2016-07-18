@@ -37,7 +37,7 @@ int main(int argc, char ** argv) {
         auto inner = xenon::parse(start, c->bits);
 
         // display inner sib
-        cout << ict::to_text(inner, "nlvsFL");
+        cout << xenon::to_text(inner, "nlvsFL");
     }
 
     catch (std::exception & e) {

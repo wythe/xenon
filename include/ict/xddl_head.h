@@ -9,13 +9,17 @@
 #include <ict/att_pair.h>
 #include <ict/find_functions.h>
 
-namespace ict {
+namespace xenon {
     namespace lua {
         struct lua_State;
-    }
-}
+        // using this wrapper instead of just lua_State is required since lua_State is opaque.
+        struct state_wrapper {
+            state_wrapper(lua_State * p) : p(p) {}
+            lua::lua_State * p;
+        };
 
-namespace ict {
+        inline lua::lua_State * get(std::shared_ptr<state_wrapper> const & l) { return l.get()->p; }
+    }
 
 
 // convert attribute strings to custom types
@@ -45,10 +49,10 @@ inline bool create_bool(Cursor, const std::string & b) {
 
 
 template <typename Cursor>
-inline expression create_expression(Cursor start, const std::string & value) {
-    expression exp;
-    if (value.empty()) exp = expression();
-    else exp = expression(value, start);
+inline ict::expression create_expression(Cursor start, const std::string & value) {
+    ict::expression exp;
+    if (value.empty()) exp = ict::expression();
+    else exp = ict::expression(value, start);
     return exp;
 }
 
@@ -134,13 +138,4 @@ inline void end_handler(Cursor self, Parser & parser) {
 struct element;
 inline std::ostream& operator<<(std::ostream & os, const element &);
 
-    namespace lua {
-        // using this wrapper instead of just lua_State is required since lua_State is opaque.
-        struct state_wrapper {
-            state_wrapper(lua_State * p) : p(p) {}
-            lua_State * p;
-        };
-
-        inline lua_State * get(std::shared_ptr<state_wrapper> const & l) { return l.get()->p; }
-    }
 } // namespace

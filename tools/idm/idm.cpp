@@ -1,4 +1,4 @@
-//-- Copyright 2015 Intrig
+//-- Copyright 2016 Intrig
 //-- See https://github.com/intrig/xenon for license.
 #include <ict/xenon.h>
 #include <ict/command.h>
@@ -102,7 +102,7 @@ void processXddlFile(ict::command const & line, command_flags const & flags) {
                 inst_dump << pretty;
             }
             else if (flags.debug_print) {
-                inst_dump << ict::to_debug_text(inst, filter) << '\n';
+                inst_dump << xenon::to_debug_text(inst, filter) << '\n';
             }
             else inst_dump << xenon::to_text(inst, flags.format, filter);
 

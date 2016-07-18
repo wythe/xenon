@@ -43,7 +43,7 @@ inline std::string filter_path(const std::string & p) {
 class XvField {
     public:
     XvField(xenon::message::cursor c) {
-        path = ict::path_string(c);
+        path = xenon::path_string(c);
         //path = filter_path(path);
         if (c->length() <= 32) value = c->value();
         else value = 0;

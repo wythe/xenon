@@ -5,10 +5,9 @@
 #include <functional>
 #include <ict/message.h>
 #include <ict/spec_server.h>
-namespace xenon = ict;
-namespace ict {
-inline bitstring serialize(const message & m) {
-    obitstream bs;
+namespace xenon {
+inline ict::bitstring serialize(const message & m) {
+    ict::obitstream bs;
     recurse(m.root(), [&](message::const_cursor & self, message::const_cursor &) {
         if (self->consumes()) bs << self->bits;
     });
@@ -25,7 +24,7 @@ inline ict::bitstring random_bitstring(size_t bit_len) {
 
 template <typename Message>
 inline void recombobulate(Message & a) {
-    ict::recurse(a.root(), [&](ict::message::cursor c, ict::message::cursor) {
+    ict::recurse(a.root(), [&](message::cursor c, message::cursor) {
         if (c->is_pof()) c->bits = random_bitstring(c->bits.bit_size());
     });
 }
@@ -58,30 +57,30 @@ inline std::string to_debug_text(const message & m, Filter filter) {
     return ss.str();
 }
 
-inline message parse(spec::cursor start, ibitstream & bs) {
+inline message parse(spec::cursor start, ict::ibitstream & bs) {
     message m;
     m.root().emplace_back(node::prop_node, start);
     parse(start, m.root(), bs);
     return m;
 }
 
-inline message parse(spec::cursor start, const bitstring & bits) {
-    ibitstream bs(bits);
+inline message parse(spec::cursor start, const ict::bitstring & bits) {
+    ict::ibitstream bs(bits);
     return parse(start, bs);
 }
 
-inline message parse(spec_server & spec, const bitstring & bits) {
+inline message parse(spec_server & spec, const ict::bitstring & bits) {
     if (spec.empty()) IT_THROW("empty spec");
     auto start = find(spec.base().ast.root(), "xddl", tag_of);
     return parse(start, bits);
 }
 
-spec::cursor get_record(spec_server &, const url & href);
+spec::cursor get_record(spec_server &, const ict::url & href);
 
-spec::cursor get_type(spec_server &, const url & href);
+spec::cursor get_type(spec_server &, const ict::url & href);
 
-inline std::string to_hex_string(const bitstring & bits) {
-    return to_hex_string(bits.begin(), bits.end());
+inline std::string to_hex_string(const ict::bitstring & bits) {
+    return ict::to_hex_string(bits.begin(), bits.end());
 }
 
 std::string to_html(const spec & s);

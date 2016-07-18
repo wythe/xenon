@@ -3,7 +3,7 @@
 #include <vector>
 #include <string>
 
-namespace ict {
+namespace xenon {
 // find and rfind algorithms
 struct path {
     typedef std::vector<std::string>::iterator iterator;

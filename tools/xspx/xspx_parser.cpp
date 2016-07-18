@@ -470,7 +470,7 @@ std::string xsp_parser::parser_impl() const {
 
     )";
 
-    os << "xml_parser p;";
+    os << "ict::xml_parser p;";
     os << "std::string cdata;";
     os << "std::string file;";
     os << "typedef ict::multivector<" << base << "> multivector_type;";

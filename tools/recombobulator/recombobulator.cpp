@@ -41,7 +41,7 @@ int main(int argc, char **argv) {
             cout << xenon::to_text(m) << "\n\n";
             xenon::recombobulate(m);
             cout << xenon::to_text(m) << '\n';
-            cout << ict::to_hex_string(xenon::serialize(m)) << '\n';
+            cout << xenon::to_hex_string(xenon::serialize(m)) << '\n';
         }
 
     } catch (ict::exception & e) {

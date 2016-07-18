@@ -6,9 +6,10 @@
 #include <ict/node.h>
 #include <ict/bitstring.h>
 
-namespace ict {
+namespace xenon {
 
-using message = multivector<node>;
+using ict::bitstring;
+using message = ict::multivector<node>;
 
 // node info type
 
@@ -30,10 +31,10 @@ inline message::cursor create_global(spec::cursor xddl_root, message::cursor glo
     bitstring bits = bitstring()) {
     static auto prop_path = path("export/prop");
     auto root = xddl_root;
-    auto c = ict::find(root, prop_path, tag_of, cmp_name(name));
+    auto c = find(root, prop_path, tag_of, cmp_name(name));
 
     if (c == root.end()) { // must be an extern
-        c = ict::find(root, "extern", tag_of, cmp_name(name));
+        c = find(root, "extern", tag_of, cmp_name(name));
         if (c == root.end()) IT_PANIC("internal panic looking for " << name  << " in " << xddl_root->parser->file); 
     }
 
@@ -50,7 +51,7 @@ inline message::cursor create_global(spec::cursor xddl_root, message::cursor glo
 
 inline message::cursor set_global(spec::cursor self, message::cursor value) {
     auto globs = ict::get_root(value).begin(); 
-    auto g = ict::find(globs, value->name());
+    auto g = find(globs, value->name());
     if (g == globs.end()) g = create_global(get_root(self).begin(), globs, value->name(), value->bits);
     else g->bits = value->bits;
     return g;
@@ -87,7 +88,7 @@ inline spec::cursor get_variable(const std::string & name, spec::cursor context)
 
 // parse time
 inline message::cursor get_variable(const std::string & name, message::cursor context) {
-    auto first = ict::rfind(context, name);
+    auto first = rfind(context, name);
     if (!first.is_root()) return first;
 
     // first is now pointing at message root

@@ -19,5 +19,5 @@ class load_unit {
     void sanity();
     void load_all_specs();
 
-    ict::spec_server specs;
+    xenon::spec_server specs;
 };

@@ -154,13 +154,10 @@ Stream & to_debug(Stream & os, const node & n) {
         (n.is_pof() ? "pof " : "") << ')';
     return os;
 }
-} // namespace
 
-// TODO name_of should all be in xenon
-namespace ict {
 template <>
 inline std::string name_of(const xenon::node & n) {
     return n.name();
 }
 
-}
+} // namespace

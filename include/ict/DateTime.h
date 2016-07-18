@@ -45,7 +45,7 @@
 #include <Windows.h>
 #endif
 
-namespace ict {
+namespace xenon {
 class DateTime
 {
     enum DT

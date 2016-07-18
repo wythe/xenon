@@ -6,7 +6,7 @@
 
 #define luaall_c
 
-namespace ict {
+namespace xenon {
     namespace lua {
 // all those deprecated but awesome C functions
 #ifdef _MSC_VER
