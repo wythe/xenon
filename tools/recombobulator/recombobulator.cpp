@@ -1,7 +1,7 @@
 //-- Copyright 2015 Intrig
 //-- See https://github.com/intrig/xenon for license.
-#include <ict/xenon.h>
 #include <ict/command.h>
+#include <xenon/xenon.h>
 
 using std::cout;
 using std::cerr;

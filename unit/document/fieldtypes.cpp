@@ -2,7 +2,7 @@
 //-- See https://github.com/intrig/xenon for license.
 #include "specunit.h"
 
-#include <ict/xenon.h>
+#include <xenon/xenon.h>
 
 #include <vector>
 #include <string>

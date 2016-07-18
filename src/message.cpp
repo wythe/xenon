@@ -1,8 +1,8 @@
 //-- Copyright 2015 Intrig
 //-- See https://github.com/intrig/xenon for license.
-#include <ict/message.h>
-#include <ict/xddl.h>
-#include <ict/spec_server.h>
+#include <xenon/message.h>
+#include <xenon/xddl.h>
+#include <xenon/spec_server.h>
 
 struct attr {
     attr(const char * key, const char * value) : key(key), value(std::string(value)) {}

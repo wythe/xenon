@@ -2,12 +2,12 @@
 //-- Copyright 2015 Intrig
 //-- see https://github.com/intrig/xenon for license
 #include <ict/string64.h>
-#include <ict/expr.h>
 #include <ict/ict.h>
 #include <ict/multivector.h>
 #include <string>
-#include <ict/att_pair.h>
-#include <ict/find_functions.h>
+#include <ict/expr.h>
+#include <xenon/att_pair.h>
+#include <xenon/find_functions.h>
 
 namespace xenon {
     namespace lua {

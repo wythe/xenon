@@ -301,7 +301,7 @@ std::ostream& xsp_parser::to_decl(std::ostream& os, const elem_type & elem, cons
         os << "typedef ict::multivector<element>::const_cursor spec_const_cursor;";
         os << "typedef ict::multivector<element>::ascending_cursor spec_ascending_cursor;";
         os << "}";
-        os << "#include <ict/node.h>";
+        os << "#include <xenon/node.h>";
         os << "namespace xenon {";
         os << "struct element::var_type {" << code_seg(code_refs, "var_type") << "};";
         // os << "template <typename T> struct element::model : element::var_type {" << code_seg(code_refs, "model") << "};";
@@ -431,7 +431,7 @@ std::string xsp_parser::parser_header() const {
 std::string xsp_parser::parser_impl() const {
     std::ostringstream os;
     os << 
-    "#include <ict/xml_parser.h>\n" <<
+    "#include <xenon/xml_parser.h>\n" <<
     head <<
     "namespace " << name_space << " {"
     "struct " << class_name  << " {"

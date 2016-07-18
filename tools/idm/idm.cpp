@@ -1,8 +1,8 @@
 //-- Copyright 2016 Intrig
 //-- See https://github.com/intrig/xenon for license.
-#include <ict/xenon.h>
 #include <ict/command.h>
-#include <ict/xddl_code.h>
+#include <xenon/xddl_code.h>
+#include <xenon/xenon.h>
 
 using std::cout;
 using std::cerr;

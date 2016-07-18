@@ -1,7 +1,7 @@
 #pragma once
 //-- Copyright 2015 Intrig
 //-- see https://github.com/intrig/xenon for license
-#include <ict/xddl.h>
+#include <xenon/xddl.h>
 #include <list>
 #include <vector>
 namespace xenon {

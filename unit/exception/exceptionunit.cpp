@@ -2,7 +2,7 @@
 //-- See https://github.com/intrig/xenon for license.
 #include "exceptionunit.h"
 
-#include <ict/xenon.h>
+#include <xenon/xenon.h>
 
 void exception_unit::invalidExpression() {
     std::string error;

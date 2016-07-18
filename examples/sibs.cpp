@@ -1,6 +1,6 @@
 #include <iostream>
-#include <ict/xenon.h>
 #include <ict/command.h>
+#include <xenon/xenon.h>
 
 using std::cout;
 using std::cerr;

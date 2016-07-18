@@ -2,13 +2,13 @@
 //-- Copyright 2015 Intrig
 //-- see https://github.com/intrig/xenon for license
 
-#include <ict/cpp_code.h>
+#include <xenon/cpp_code.h>
 
 #include <vector>
 #include <algorithm>
 #include <sstream>
 
-#include <ict/xml_parser.h>
+#include <xenon/xml_parser.h>
 #include <ict/string64.h>
 
 #define qt(x) "\"" << x << "\""

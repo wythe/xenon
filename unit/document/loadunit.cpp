@@ -2,8 +2,8 @@
 //-- See https://github.com/intrig/xenon for license.
 #include "loadunit.h"
 
-#include <ict/xenon.h>
 #include <boost/filesystem.hpp>
+#include <xenon/xenon.h>
 
 namespace bf = boost::filesystem;
 using std::cout;

@@ -2,7 +2,7 @@
 //-- See https://github.com/intrig/xenon for license.
 #include <iostream>
 #include <vector>
-#include <ict/xenon.h>
+#include <xenon/xenon.h>
 
 using std::cout;
 using std::cerr;

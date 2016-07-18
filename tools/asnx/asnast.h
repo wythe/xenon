@@ -4,10 +4,9 @@
 #include <string>
 #include <iostream>
 #include <exception>
-
-#include <ict/xddl_code.h>
 #include <typeinfo>
 #include <cctype>
+#include <xenon/xddl_code.h>
 
 class SizeConstraint;
 class SubtypeSpec;

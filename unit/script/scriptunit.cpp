@@ -2,7 +2,7 @@
 //-- See https://github.com/intrig/xenon for license.
 #include "scriptunit.h"
 
-#include <ict/xenon.h>
+#include <xenon/xenon.h>
 
 void script_unit::sanity() {
     IT_ASSERT(1);

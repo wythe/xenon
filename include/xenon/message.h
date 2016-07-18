@@ -1,10 +1,10 @@
 #pragma once
 //-- Copyright 2015 Intrig
 //-- see https://github.com/intrig/xenon for license
-#include <ict/xddl.h>
-#include <ict/multivector.h>
-#include <ict/node.h>
+// #include <ict/multivector.h>
 #include <ict/bitstring.h>
+#include <xenon/xddl.h>
+#include <xenon/node.h>
 
 namespace xenon {
 

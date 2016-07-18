@@ -20,7 +20,7 @@
 
     <!-- code segment at the top of header file. -->
     <code id="head"> 
-        #include &lt;ict/xddl_head.h&gt;
+        #include &lt;xenon/xddl_head.h&gt;
         #include &lt;memory&gt;
         #include &lt;bitset&gt;
         #include &lt;ict/multivector.h&gt;
@@ -29,7 +29,7 @@
 
     <!-- code segment at the bottom of header file. -->
     <code id="tail">
-        #include &lt;ict/xddl_tail.h&gt;
+        #include &lt;xenon/xddl_tail.h&gt;
     </code>
 
     <!-- commonly used group of child elements -->

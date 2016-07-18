@@ -3,7 +3,7 @@
 //-- see https://github.com/intrig/xenon for license
 
 #include <ict/unit.h>
-#include <ict/xenon.h>
+#include <xenon/xenon.h>
 
 class load_unit {
     public:

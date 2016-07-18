@@ -4,8 +4,8 @@
 #include <fstream>
 #include <algorithm>
 #include <vector>
-#include <ict/xddl_code.h>
 #include <ict/command.h>
+#include <xenon/xddl_code.h>
 
 int main(int argc, char **argv)
 {

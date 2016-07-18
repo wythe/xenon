@@ -1,18 +1,17 @@
 //-- Copyright 2015 Intrig
 //-- See https://github.com/intrig/xenon for license.
 #include <algorithm>
-#include <ict/xenon.h>
-#include <ict/node.h>
-#include <ict/xddl.h>
 #include <ict/bitstring.h>
-#include <ict/ximsi.h>
-#include <ict/DateTime.h>
+#include <xenon/xenon.h>
+#include <xenon/node.h>
+#include <xenon/xddl.h>
+#include <xenon/ximsi.h>
+#include <xenon/DateTime.h>
 #include <set>
 
 // xddl script
-#include <ict/xddl.h>
-#include <ict/find_functions.h>
-#include <ict/lua.hpp>
+#include <xenon/find_functions.h>
+#include <xenon/lua.hpp>
 
 namespace xenon {
 

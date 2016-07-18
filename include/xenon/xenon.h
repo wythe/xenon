@@ -3,8 +3,8 @@
 //-- see https://github.com/intrig/xenon for license
 #include <random>
 #include <functional>
-#include <ict/message.h>
-#include <ict/spec_server.h>
+#include <xenon/message.h>
+#include <xenon/spec_server.h>
 namespace xenon {
 inline ict::bitstring serialize(const message & m) {
     ict::obitstream bs;
