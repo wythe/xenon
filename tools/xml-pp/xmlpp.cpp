@@ -19,7 +19,7 @@ int main(int argc, char **argv)
         line.add(ict::Option("replace", 'r', "replace file instead", [&]{ replace = true; }));
         line.parse(argc, argv);
 
-        if (line.targets.empty()) IT_THROW("no xml files specified");
+        if (line.targets.empty()) IT_FATAL("no xml files specified");
 
         for (auto const & f : line.targets)
         {
@@ -38,7 +38,7 @@ int main(int argc, char **argv)
             }
         }
 
-    } catch (ict::exception & e)
+    } catch (std::exception & e)
     {
         if (!filename.empty()) std::cerr << "file: " << filename << " ";
         std::cerr << e.what() << std::endl;

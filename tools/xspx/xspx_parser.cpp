@@ -186,10 +186,10 @@ xsp_parser::xsp_parser() {
         } else { // href
             in_group_def = false;
             ict::url url(p.second.c_str());
-            if (url.anchor.empty()) IT_THROW("invalid href: " << p.second);
+            if (url.anchor.empty()) IT_PANIC("invalid href: " << p.second);
             auto i = xenon::find_by_name(groups.begin(), groups.end(), std::string(url.anchor.begin() + 1, 
                 url.anchor.end()));
-            if (i == groups.end()) IT_THROW("cannot find group with name " << p.second);
+            if (i == groups.end()) IT_PANIC("cannot find group with name " << p.second);
             children.insert(children.end(), i->children.begin(), i->children.end());
             //children = i->children;
         } 

@@ -407,7 +407,7 @@ void parse_ref(spec::cursor self, message::cursor parent, ict::ibitstream &bs, s
             ref = get_record(*parser->owner, url);
         }
         parse_children(ref, parent, bs);
-    } catch (ict::exception & e) {
+    } catch (std::exception & e) {
         auto n = parent.emplace(node::error_node, self);
         std::ostringstream os;
         os << e.what() << " [" << n->file() << ":" << n->line() << "]";
@@ -443,7 +443,7 @@ void jump::vparse(spec::cursor self, message::cursor parent, ict::ibitstream &bs
 
         if (!info.href.empty()) parse_ref(f->ref, parent, bs, info.ref, info.href, self->parser);
 
-    } catch (ict::exception & e) {
+    } catch (std::exception & e) {
         IT_WARN(e.what());
     }
 }
@@ -676,7 +676,7 @@ std::string get_description(const T * self_ptr, spec::cursor self, message::cons
         try { 
             auto url = ict::relative_url(self->parser->file, self_ptr->href); // create an abs file path.
             self_ptr->ref = get_type(*self->parser->owner, url);
-        } catch (ict::exception & e) {
+        } catch (std::exception & e) {
             return e.what();
         }
     }
@@ -744,7 +744,7 @@ spec::cursor get_record(spec_server & spec, const ict::url & href) {
     auto p = root.begin()->parser;
     auto j = p->recdef_map.find(href.anchor);
     if (j != p->recdef_map.end()) return j->second;
-    IT_THROW("cannot locate anchor: " << href);
+    IT_PANIC("cannot locate anchor: " << href);
 }
 
 spec::cursor get_type(spec_server & spec, const ict::url & href) {
@@ -754,7 +754,7 @@ spec::cursor get_type(spec_server & spec, const ict::url & href) {
     auto p = root.begin()->parser;
     auto j = p->type_map.find(href.anchor);
     if (j != p->type_map.end()) return j->second;
-    IT_THROW("cannot locate anchor: " << href);
+    IT_PANIC("cannot locate anchor: " << href);
 }
 
 // algos

@@ -484,14 +484,14 @@ void xml_parser_base::parse(const char * s, int len, bool final)
                 switch (*_ch) {
                     case ' ': case '\n': case '\r': case '\t': break;
                     case '<' : set(Epilog1); break;
-                    default : IT_PANIC("junk after doc element", "", line(), column());
+                    default : IT_THROW_XML("junk after doc element", line(), column());
                 }
                 break;
             case Epilog1:
                 switch (*_ch) {
                     case '!' : set(CommentStart1); break;
                     case '?' : set(PI); break;
-                    default : IT_PANIC("junk after doc element", "", line(), column());
+                    default : IT_THROW_XML("junk after doc element", line(), column());
                 }
                 break;
         }

@@ -60,7 +60,7 @@ namespace util {
             case '8' : return bitstring("@1000");
             case '9' : return bitstring("@1001");
             case '0' : return bitstring("@1010");
-            default: IT_THROW("encoding invalid bcd character : " << ch);
+            default: IT_PANIC("encoding invalid bcd character : " << ch);
         }
     }
 
@@ -76,7 +76,7 @@ namespace util {
             case 8 : return '8';
             case 9 : return '9';
             case 10 : return '0';
-            default: IT_THROW("decoding invalid bcd character : " << to_string(bs));
+            default: IT_PANIC("decoding invalid bcd character : " << to_string(bs));
         }
     }
 

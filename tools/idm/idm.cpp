@@ -46,14 +46,14 @@ int main(int argc, char **argv) {
 
         line.parse(argc, argv);
 
-        if (line.targets.empty()) IT_THROW("no file given");
+        if (line.targets.empty()) IT_FATAL("no file given");
         auto filename = ict::url(line.targets[0]);
 
         if (!filename.file.empty()) {
             processXddlFile(line, flags);
         }
 
-        else IT_PANIC("unrecognized file: " << filename);
+        else IT_FATAL("unrecognized file: " << filename);
         
 
     } catch (ict::exception & e) {

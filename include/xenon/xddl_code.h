@@ -215,7 +215,7 @@ namespace xenon {
             std::ifstream is(filename.c_str());
             std::string line;
 
-            if (!is.good()) IT_THROW("bad xml filename: \"" << filename << "\"");
+            if (!is.good()) IT_PANIC("bad xml filename: \"" << filename << "\"");
 
             while (!is.eof())
             {

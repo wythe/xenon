@@ -70,7 +70,7 @@ inline message parse(spec::cursor start, const ict::bitstring & bits) {
 }
 
 inline message parse(spec_server & spec, const ict::bitstring & bits) {
-    if (spec.empty()) IT_THROW("empty spec");
+    if (spec.empty()) IT_PANIC("empty spec");
     auto start = find(spec.base().ast.root(), "xddl", tag_of);
     return parse(start, bits);
 }

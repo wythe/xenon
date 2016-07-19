@@ -12,9 +12,7 @@
 do { \
     std::ostringstream os; \
     os << "expected '" << (X) << "' before '" << (Y) << "' token"; \
-    ict::xml_exception e(os.str().c_str()); \
-    e.xml_line = line(); \
-    e.xml_column = column(); \
+    ict::xml_exception e(os.str(), "", 0, "", line(), column()); \
     throw e; \
 } while (0);
 
@@ -23,11 +21,18 @@ do { \
 do { \
     std::ostringstream os; \
     os << "unexpected '" << (X) << "' token"; \
-    ict::xml_exception e(os.str().c_str()); \
-    e.xml_line = line(); \
-    e.xml_column = column(); \
+    ict::xml_exception e(os.str(), "", 0, "", line(), column()); \
     throw e; \
 } while (0);
+
+// macro to throw an xml_exception with passed in arguments to constructor
+// source file and line are automatically added.
+#define IT_THROW_XML(desc, ...) \
+do { \
+    std::ostringstream os; \
+    os << desc; \
+    throw ict::xml_exception(os.str(), __FILE__, __LINE__, "", ##__VA_ARGS__ ); \
+} while (0)
 
 namespace xenon {
 

@@ -36,14 +36,16 @@ inline std::string var_length()
 }
 
 #define PANIC() do { \
-    throw ict::exception("internal error", __FILE__, __LINE__); \
+    throw ict::create_exception("internal error", __FILE__, __LINE__); \
 } while (0)
 
+#if 0
 #define PARSE(m) do { \
     std::ostringstream os; \
     os << m; \
     throw ict::exception::create(os.str().c_str(), __FILE__, __LINE__); \
 } while (0)
+#endif
 
 #define WARN(m) do { \
     std::ostringstream os; \
@@ -139,42 +141,42 @@ class Type : public ast
     { 
         std::ostringstream os;
         os << "line " << line << ": undefined instance for type " << typeid(*this).name();
-        IT_THROW(os.str());
+        IT_PANIC(os.str());
     }
 
     virtual std::string instance(Name *) const 
     { 
         std::ostringstream os;
         os << "line " << line << ": undefined name instance for type " << typeid(*this).name();
-        IT_THROW(os.str());
+        IT_PANIC(os.str());
     }
 
     virtual std::string instance(Name *, SubtypeSpec *) const 
     { 
         std::ostringstream os;
         os << "line " << line << ": undefined subtype instance for type " << typeid(*this).name();
-        IT_THROW(os.str());
+        IT_PANIC(os.str());
     }
 
     virtual std::string declaration(Name *) const 
     { 
         std::ostringstream os;
         os << "line " << line << ": undefined declaration for type " << typeid(*this).name();
-        IT_THROW(os.str());
+        IT_PANIC(os.str());
     }
 
     virtual std::string declaration(Name *, SubtypeSpec *) const 
     { 
         std::ostringstream os;
         os << "line " << line << ": undefined subtype declaration for type " << typeid(*this).name();
-        IT_THROW(os.str());
+        IT_PANIC(os.str());
     }
 
     virtual std::string value_assignment(Name *, Value *) const
     { 
         std::ostringstream os;
         os << "line " << line << ": undefined value assignment for type " << typeid(*this).name();
-        IT_THROW(os.str());
+        IT_PANIC(os.str());
     }
 
     virtual bool is_inline() const { return false; }

@@ -49,7 +49,7 @@ public:
         doms.back().owner = this;
         doms.back().open(first, last, name);
         auto root = doms.back().ast.root();
-        if (root.empty()) IT_THROW("invalid root node in " << name);
+        if (root.empty()) IT_PANIC("invalid root node in " << name);
         return root.begin();
     }
 
@@ -89,7 +89,7 @@ public:
      Return the default start record or throw exception.
      */
     spec::cursor start() const {
-        if (empty()) IT_THROW("empty spec list");
+        if (empty()) IT_PANIC("empty spec list");
         auto root = base().ast.root();
         auto st = find(root, "xddl/start", tag_of);
         if (st == root.end()) IT_PANIC("no <start> element in " << root->parser->file);

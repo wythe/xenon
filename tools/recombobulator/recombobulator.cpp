@@ -25,11 +25,11 @@ int main(int argc, char **argv) {
 
         line.parse(argc, argv);
 
-        if (line.targets.empty()) IT_PANIC("no arguments given");
+        if (line.targets.empty()) IT_FATAL("no arguments given");
 
         auto u = ict::url(line.targets[0]);
 
-        if (u.file.empty()) IT_THROW("invalid recref: " << line.targets[0]);
+        if (u.file.empty()) IT_FATAL("invalid recref: " << line.targets[0]);
         auto start = ss.add_spec(u.path + u.file);
         if (!u.anchor.empty()) {
             start = xenon::get_record(ss, u);
@@ -44,7 +44,7 @@ int main(int argc, char **argv) {
             cout << xenon::to_hex_string(xenon::serialize(m)) << '\n';
         }
 
-    } catch (ict::exception & e) {
+    } catch (std::exception & e) {
         cerr << e.what() << endl;
         return 1;
     }

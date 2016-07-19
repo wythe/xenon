@@ -21,7 +21,7 @@ class TextSource
         std::ifstream is(filename.c_str());
         std::string line;
 
-        if (!is.good()) IT_THROW("bad xml filename: \"" << filename << "\"");
+        if (!is.good()) IT_PANIC("bad xml filename: \"" << filename << "\"");
 
         while (!is.eof())
         {
@@ -131,7 +131,7 @@ int main(int argc, char **argv)
         if (line.targets.size() != 1) 
         {
             line.help();
-            IT_THROW("exactly one text file must be specified");
+            IT_PANIC("exactly one text file must be specified");
         }    
 
         TextSource source(line.targets[0]);

@@ -26,7 +26,7 @@ int main(int argc, char ** argv) {
 
         // grab the inner sib. The '//' means it doesn't have to be a direct child of msg.root()
         auto c = xenon::find(msg.root(), "//SIB-Data-variable");
-        if (c==msg.end()) IT_THROW("can't find SIB-Data-variable");
+        if (c==msg.end()) IT_PANIC("can't find SIB-Data-variable");
 
         // display the bits of the inner sib
         cout << c->name() << " " << c->bits << "\n";

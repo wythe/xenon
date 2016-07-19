@@ -34,7 +34,7 @@ int yylex();
 int yyerror(const char *p) 
 { 
         //TRACE("DefinedType");
-    IT_THROW("Error: " << p << " at line " << current_line);
+    IT_PANIC("Error: " << p << " at line " << current_line);
     return 0;
 }
 
@@ -969,7 +969,7 @@ int main(int argc, char **argv)
 
         line.parse(argc, argv);
 
-        if (line.targets.empty()) IT_THROW("no asn.1 files given");
+        if (line.targets.empty()) IT_PANIC("no asn.1 files given");
 
         for (auto const & i : line.targets)
         {

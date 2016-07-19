@@ -98,11 +98,10 @@ inline message::cursor get_variable(const std::string & name, message::cursor co
         auto xddl_root = ict::get_root(context->elem).begin();
         try {
             g = create_global(xddl_root, globs, name);
-        } catch (ict::exception & e) {
+        } catch (std::exception & e) {
             std::ostringstream os;
             os << e.what() << " [" << context->file() << ":" << context->line() << "]";
-            ict::exception e2(os.str());
-            throw e2;
+            IT_FATAL(os.str());
         }
     }
     return g;

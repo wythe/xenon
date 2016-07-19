@@ -143,7 +143,7 @@ private:
     virtual void startElement(const char *n, const char **att_array) {
         ict::string64 name(n);
         if (parents.empty()) {
-            if (root != name) IT_THROW(name << " is an invalid root node, expecting " << root);
+            if (root != name) IT_PANIC(name << " is an invalid root node, expecting " << root);
             parents.push_back(root);
         } else {
             // verify this is a valid child of parent
