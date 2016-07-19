@@ -25,7 +25,7 @@ void doc_unit::constructor_file()
             spec_server doc("xddl/index.xddl");
             IT_ASSERT(!doc.empty());
         }
-        catch (ict::exception & e) {
+        catch (std::exception & e) {
             IT_FORCE_ASSERT(e.what());
         }
     }
@@ -36,7 +36,7 @@ void doc_unit::constructor_file()
         try {
             spec_server doc("empty");
         }
-        catch (ict::exception & e) {
+        catch (std::exception & e) {
             error = e.what();
         }
 
@@ -49,7 +49,7 @@ void doc_unit::constructor_file()
         std::string error;
         try {
             spec_server doc("foo");
-        } catch (ict::exception & e) {
+        } catch (std::exception & e) {
             error = e.what();
         }
         IT_ASSERT_MSG("[" << error << "]", 
@@ -61,7 +61,7 @@ void doc_unit::constructor_file()
         std::string error;
         try {
             spec_server doc("goo.xddl");
-        } catch (ict::exception & e) {
+        } catch (std::exception & e) {
             error = e.what();
         }
 
@@ -75,7 +75,7 @@ void doc_unit::constructor_file()
         std::string error;
         try {
             spec_server doc("garbage.xddl");
-        } catch (ict::exception & e) {
+        } catch (std::exception & e) {
             error = e.what();
         }
         IT_ASSERT(!error.empty());
@@ -87,7 +87,7 @@ void doc_unit::constructor_file()
             IT_ASSERT(doc.empty());
 
             doc.add_spec("garbage.xddl");
-        } catch (ict::exception & e) {
+        } catch (std::exception & e) {
             error = e.what();
         }
         IT_ASSERT(!error.empty());
@@ -99,7 +99,7 @@ void doc_unit::constructor_file()
         try {
         // The dos way */
             spec_server doc(".\\xddl\\index.xddl");
-        } catch (ict::exception & e) {
+        } catch (std::exception & e) {
             error = e.what();
         }
         IT_ASSERT(error.empty());
@@ -115,7 +115,7 @@ void doc_unit::parse_file()
     try {
         IT_ASSERT(doc.empty() == true);
         doc.add_spec("nonexexistentfile.xddl");
-    } catch (ict::exception & e) {
+    } catch (std::exception & e) {
         error = e.what();
     }
     IT_ASSERT(!error.empty());
@@ -167,7 +167,7 @@ void doc_unit::fail1() {
     spec_server doc;
     try {
         spec_server doc3("exprfail.xddl");
-    } catch (ict::exception & e)
+    } catch (std::exception & e)
     {
         error = e.what();
     }
@@ -196,7 +196,7 @@ void doc_unit::fail3() {
         spec_server doc(xddl.begin(), xddl.end());
 
         IT_FORCE_ASSERT("Shouldn't be here");
-    } catch (ict::exception &) {
+    } catch (std::exception &) {
     }
 }
 

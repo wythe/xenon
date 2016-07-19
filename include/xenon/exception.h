@@ -1,4 +1,5 @@
 #pragma once
+#if 0
 //-- Copyright 2015 Intrig
 //-- see https://github.com/intrig/xenon for license
 #include <sstream>
@@ -82,5 +83,6 @@ class exception : public std::exception {
     mutable std::string what_;
 };
 }
+#endif
 
 

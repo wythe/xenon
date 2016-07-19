@@ -12,7 +12,7 @@
 do { \
     std::ostringstream os; \
     os << "expected '" << (X) << "' before '" << (Y) << "' token"; \
-    ict::exception e(os.str().c_str()); \
+    ict::xml_exception e(os.str().c_str()); \
     e.xml_line = line(); \
     e.xml_column = column(); \
     throw e; \
@@ -23,7 +23,7 @@ do { \
 do { \
     std::ostringstream os; \
     os << "unexpected '" << (X) << "' token"; \
-    ict::exception e(os.str().c_str()); \
+    ict::xml_exception e(os.str().c_str()); \
     e.xml_line = line(); \
     e.xml_column = column(); \
     throw e; \

@@ -31,7 +31,7 @@ void load_unit::load_all_specs() {
         load_all_xddl(p, specs);
     } catch (const bf::filesystem_error& ex) {
       IT_FORCE_ASSERT("filesystem error: " << ex.what());
-    } catch (const ict::exception & ex) {
+    } catch (const std::exception & ex) {
       IT_FORCE_ASSERT(ex.what());
     }
 }
