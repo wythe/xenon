@@ -8,42 +8,11 @@
 #include <sstream>
 
 namespace xenon {
-struct xml_error {
-    std::string description;
-    int xml_line;
-    int xml_column;
-};
-
-class xml_exception : public std::exception {
-    public:
-    xml_exception(const std::string & desc, const char *src_file = "", int src_line = 0, 
-        const char * xml_file = "", int xml_line = 0, int xml_column = -1) :
-        desc(desc), src_file(src_file), src_line(src_line), xml_file(xml_file), xml_line(xml_line), 
-        xml_column(xml_column) {}
-
-    const char * what() const noexcept {
-        std::ostringstream s;
-        if (!src_file.empty()) s << "[" << src_file << ":" << src_line << "] ";
-        s << desc;
-        if (!xml_file.empty()) {
-            s << " in [" << xml_file << ":" << xml_line;
-            if (xml_column != -1) s << ":" << xml_column;
-            s << "]";
-        }
-        what_ = s.str().c_str();
-        return what_.c_str();
-    }
-
-
-    std::string desc;
-    std::string src_file;
-    int src_line;
-    std::string xml_file;
-    int xml_line;
-    int xml_column;
-
-    mutable std::string what_;
-};
+    struct xml_error {
+        std::string description;
+        int xml_line;
+        int xml_column;
+    };
 }
 // macro to throw error with "expected X before Y token" description 
 #define THROW_EXPECTED(X, Y) \
@@ -61,8 +30,7 @@ do { \
     throw xenon::xml_error{os.str(), line(), column()}; \
 } while (0);
 
-// macro to throw an xml_exception with passed in arguments to constructor
-// source file and line are automatically added.
+// macro to throw an xml_exception with description
 #define IT_THROW_XML(desc) \
 do { \
     std::ostringstream os; \
@@ -94,7 +62,7 @@ class xml_parser_base
     */
     void reset();
 
-    /* Parses some input. Throws ParseException.h if a fatal error is
+    /* Parses some input. Throws std::runtime_error if a fatal error is
        detected.  The last call to parse() must have final true; len may be
        zero for this call.
     */
