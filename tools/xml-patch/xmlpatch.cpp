@@ -136,7 +136,7 @@ int main(int argc, char **argv) {
 
         cout << source.patch(patch);
 
-    } catch (ict::exception & e)
+    } catch (std::exception & e)
     {
         cerr << e.what() << endl;
         return 1;

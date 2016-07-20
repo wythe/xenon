@@ -7,12 +7,44 @@
 #include <iostream>
 #include <sstream>
 
+namespace xenon {
+class xml_exception : public std::exception {
+    public:
+    xml_exception(const std::string & desc, const char *src_file = "", int src_line = 0, 
+        const char * xml_file = "", int xml_line = 0, int xml_column = -1) :
+        desc(desc), src_file(src_file), src_line(src_line), xml_file(xml_file), xml_line(xml_line), 
+        xml_column(xml_column) {}
+
+    const char * what() const noexcept {
+        std::ostringstream s;
+        if (!src_file.empty()) s << "[" << src_file << ":" << src_line << "] ";
+        s << desc;
+        if (!xml_file.empty()) {
+            s << " in [" << xml_file << ":" << xml_line;
+            if (xml_column != -1) s << ":" << xml_column;
+            s << "]";
+        }
+        what_ = s.str().c_str();
+        return what_.c_str();
+    }
+
+
+    std::string desc;
+    std::string src_file;
+    int src_line;
+    std::string xml_file;
+    int xml_line;
+    int xml_column;
+
+    mutable std::string what_;
+};
+}
 // macro to throw error with "expected X before Y token" description 
 #define THROW_EXPECTED(X, Y) \
 do { \
     std::ostringstream os; \
     os << "expected '" << (X) << "' before '" << (Y) << "' token"; \
-    ict::xml_exception e(os.str(), "", 0, "", line(), column()); \
+    xenon::xml_exception e(os.str(), "", 0, "", line(), column()); \
     throw e; \
 } while (0);
 
@@ -21,7 +53,7 @@ do { \
 do { \
     std::ostringstream os; \
     os << "unexpected '" << (X) << "' token"; \
-    ict::xml_exception e(os.str(), "", 0, "", line(), column()); \
+    xenon::xml_exception e(os.str(), "", 0, "", line(), column()); \
     throw e; \
 } while (0);
 
@@ -31,7 +63,7 @@ do { \
 do { \
     std::ostringstream os; \
     os << desc; \
-    throw ict::xml_exception(os.str(), __FILE__, __LINE__, "", ##__VA_ARGS__ ); \
+    throw xenon::xml_exception(os.str(), __FILE__, __LINE__, "", ##__VA_ARGS__ ); \
 } while (0)
 
 namespace xenon {

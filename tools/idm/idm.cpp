@@ -56,7 +56,7 @@ int main(int argc, char **argv) {
         else IT_FATAL("unrecognized file: " << filename);
         
 
-    } catch (ict::exception & e) {
+    } catch (std::exception & e) {
         cout << e.what() << endl;
         return 1;
     }
@@ -113,7 +113,7 @@ void processXddlFile(ict::command const & line, command_flags const & flags) {
             if (flags.output_html) cout << xenon::to_html(d.base());
             else cout << d;
         }
-    } catch (ict::exception &) {
+    } catch (std::exception &) {
         if (flags.output_dom) cout << d;
         throw;
     }

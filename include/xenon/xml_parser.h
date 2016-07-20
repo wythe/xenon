@@ -98,7 +98,7 @@ public:
     void open(T first, T last, const std::string & filename) {
         try {
             parse(&(*first), last - first, true);
-        } catch (ict::xml_exception & e) {
+        } catch (xenon::xml_exception & e) {
             if (e.xml_file.empty()) {
                 e.xml_file = filename;
                 e.xml_line = line();

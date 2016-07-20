@@ -138,7 +138,7 @@ int main(int argc, char **argv)
 
         cout << (markers ? source.asn_m() : source.asn()) << endl;
 
-    } catch (ict::exception & e)
+    } catch (std::exception & e)
     {
         cerr << e.what() << endl;
         return 1;

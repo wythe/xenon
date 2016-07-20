@@ -329,7 +329,7 @@ int main(int argc, char **argv) {
         timer.stop();
         if (show_time) std::cout << "total time: " << ict::to_string(timer) << "\n";
 
-    } catch (ict::exception & e) {
+    } catch (std::exception & e) {
         cerr << e.what() << endl;
         return 1;
     }
