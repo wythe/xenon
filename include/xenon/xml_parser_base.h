@@ -8,6 +8,12 @@
 #include <sstream>
 
 namespace xenon {
+struct xml_error {
+    std::string description;
+    int xml_line;
+    int xml_column;
+};
+
 class xml_exception : public std::exception {
     public:
     xml_exception(const std::string & desc, const char *src_file = "", int src_line = 0, 
@@ -44,26 +50,24 @@ class xml_exception : public std::exception {
 do { \
     std::ostringstream os; \
     os << "expected '" << (X) << "' before '" << (Y) << "' token"; \
-    xenon::xml_exception e(os.str(), "", 0, "", line(), column()); \
-    throw e; \
+    throw xenon::xml_error{os.str(), line(), column()}; \
 } while (0);
 
 // macro to throw error with "unexpected X token" description 
 #define THROW_UNEXPECTED(X) \
 do { \
     std::ostringstream os; \
-    os << "unexpected '" << (X) << "' token"; \
-    xenon::xml_exception e(os.str(), "", 0, "", line(), column()); \
-    throw e; \
+    os << "unexpected '" << X << "' token"; \
+    throw xenon::xml_error{os.str(), line(), column()}; \
 } while (0);
 
 // macro to throw an xml_exception with passed in arguments to constructor
 // source file and line are automatically added.
-#define IT_THROW_XML(desc, ...) \
+#define IT_THROW_XML(desc) \
 do { \
     std::ostringstream os; \
     os << desc; \
-    throw xenon::xml_exception(os.str(), __FILE__, __LINE__, "", ##__VA_ARGS__ ); \
+    throw xenon::xml_error{os.str(), line(), column() }; \
 } while (0)
 
 namespace xenon {
@@ -94,7 +98,7 @@ class xml_parser_base
        detected.  The last call to parse() must have final true; len may be
        zero for this call.
     */
-    void parse(const char * s, int len, bool final);
+    void parse(const char * s, int len, bool final);  
 
     /* These functions return information about the current parse
        location.  This location refers to the last character parsed.  For
@@ -188,6 +192,9 @@ class xml_parser_base
         Epilog, // finished reading end root element tag
         Epilog1
     };
+
+    protected:
+    void xparse(const char * s, int len, bool final);
 
     private:
 

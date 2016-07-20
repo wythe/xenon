@@ -51,7 +51,7 @@ void xml_parse_unit::sanity()
         } catch (std::exception & e)
         {
             IT_FORCE_ASSERT(e.what());
-        }
+        } 
 
         try {
             p.reset();
