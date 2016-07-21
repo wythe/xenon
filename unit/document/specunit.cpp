@@ -149,19 +149,6 @@ void doc_unit::ip_protocol() {
     IT_ASSERT(!doc.empty());
 }
 
-void doc_unit::icd() {
-#if 0 //
-    xenon::spec doc("icd.xddl");
-    IT_ASSERT(!doc.empty());
-
-    std::vector<xenon::spec> specs;
-    
-    for (int i=0; i<100; ++i) specs.push_back(doc);
-
-    for (auto & s : specs) IT_ASSERT(!s.empty());
-#endif
-}
-
 void doc_unit::fail1() {
     std::string error;
     spec_server doc;
