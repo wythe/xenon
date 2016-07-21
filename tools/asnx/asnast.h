@@ -39,14 +39,6 @@ inline std::string var_length()
     throw ict::create_exception("internal error", __FILE__, __LINE__); \
 } while (0)
 
-#if 0
-#define PARSE(m) do { \
-    std::ostringstream os; \
-    os << m; \
-    throw ict::exception::create(os.str().c_str(), __FILE__, __LINE__); \
-} while (0)
-#endif
-
 #define WARN(m) do { \
     std::ostringstream os; \
     os << "warning: " m << " [" << __FILE__ << ":" << __LINE__ <<"]"; \
