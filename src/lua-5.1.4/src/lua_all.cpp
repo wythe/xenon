@@ -1,4 +1,4 @@
-//-- Copyright 2015 Intrig
+//-- Copyright 2016 Intrig
 //-- See https://github.com/intrig/xenon for license.
 /*
 * all.c -- Lua core, libraries and interpreter in a single file

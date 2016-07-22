@@ -1,3 +1,5 @@
+//-- Copyright 2016 Intrig
+//-- See https://github.com/intrig/xenon for license.
 #include <iostream>
 #include <ict/command.h>
 #include <xenon/xenon.h>

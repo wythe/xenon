@@ -1,6 +1,6 @@
 #pragma once
-//-- Copyright 2015 Intrig
-//-- see https://github.com/intrig/xenon for license
+//-- Copyright 2016 Intrig
+//-- See https://github.com/intrig/xenon for license.
 #include <xenon/xml_parser_base.h>
 
 #include <stack>
