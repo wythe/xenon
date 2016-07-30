@@ -15,19 +15,11 @@ struct attr {
 
 };
 
-std::ostream& operator<<(std::ostream & strm, const attr & att) {
-    if (!att.value.empty()) strm << " " << att.key << "=\"" << att.value << "\"";
-    return strm;
-}
-
-<<<<<<< HEAD
-=======
 ict::osstream& operator<<(ict::osstream & strm, const attr & att) {
     if (!att.value.empty()) strm << " " << att.key << "=\"" << att.value << "\"";
     return strm;
 }
 
->>>>>>> 13ff860d7d091c32c04ce2be7735458ab3d3e202
 namespace xenon {
 
 const node_info_list node_info = {
