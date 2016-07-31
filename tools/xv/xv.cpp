@@ -14,7 +14,7 @@ template <typename T>
 std::string location(T t) {
     ict::osstream os;
     os << " [" << t.xv_file << ":" << t.xv_line << "]";
-    return os.str();
+    return os.take();
 }
 
 class Mask {
@@ -186,7 +186,7 @@ class XvFile {
                     auto l = ict::split(line, ':');
 
                     msg.xddl_file = ict::normalize(l[1]);
-                    msg.bs = ict::bitstring(ict::normalize(l[2]).c_str());
+                    msg.bs = ict::bitstring(ict::normalize(l[2]));
                     msg.xv_line = line_no;
                     msg.xv_file = filename;
                 }
@@ -249,8 +249,7 @@ class XvFile {
             xvm.to_stream(os);
             os << '\n';
         }
-        std::string s = os.str();
-        return s;
+        return os.take();
     }
 
     std::vector<XvMessage> data;
@@ -259,7 +258,7 @@ class XvFile {
 };
 
 void validate_xv_file(const std::string & name, bool name_only, bool force_print) {
-    XvFile file(name.c_str());
+    XvFile file(name);
     file.name_only = name_only;
 
     if (force_print) cout << file.reprint() << '\n';
@@ -272,7 +271,7 @@ void validate_xv_file(const std::string & name, bool name_only, bool force_print
 }
 
 void print_xv_message(xenon::spec_server & spec, const std::string xddl_file, const std::string ascii_msg) {
-    auto m = xenon::parse(spec, xenon::bitstring(ascii_msg.c_str()));
+    auto m = xenon::parse(spec, xenon::bitstring(ascii_msg));
     XvMessage xm(xddl_file, m);
     xm.to_stream(cout);
     cout << '\n';
@@ -314,7 +313,7 @@ int main(int argc, char **argv) {
             if (verbose) std::cout << "processing target " << arg << "\n";
             if (ict::ends_with(arg, ".xddl")) {
                 // load xddl file, set as spec for future operations
-                xddl_file = arg.c_str();
+                xddl_file = arg;
                 spec2.clear();
                 spec2.add_spec(xddl_file);
             }

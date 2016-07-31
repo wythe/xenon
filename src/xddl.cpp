@@ -409,9 +409,9 @@ void parse_ref(spec::cursor self, message::cursor parent, ict::ibitstream &bs, s
         parse_children(ref, parent, bs);
     } catch (std::exception & e) {
         auto n = parent.emplace(node::error_node, self);
-        std::ostringstream os;
+        ict::osstream os;
         os << e.what() << " [" << n->file() << ":" << n->line() << "]";
-        n->desc = os.str();
+        n->desc = os.take();
         IT_WARN("caught exception: " << n->desc);
     }
 }

@@ -111,7 +111,7 @@ namespace util {
         os << "<message>";
         if (!c.empty()) for (auto n = c.begin(); n!= c.end(); ++n) util::to_xml(os, n, filter);
         os << "</message>";
-        return os.str();
+        return os.take();
     }
 }
 
@@ -222,7 +222,7 @@ std::string to_text(const message & m, const std::string & format,
         os << "\n";
     }
 
-    return os.str();
+    return os.take();
 }
 
 } // namespace

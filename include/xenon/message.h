@@ -99,7 +99,7 @@ inline message::cursor get_variable(const std::string & name, message::cursor co
         try {
             g = create_global(xddl_root, globs, name);
         } catch (std::exception & e) {
-            std::ostringstream os;
+            ict::osstream os;
             os << e.what() << " [" << context->file() << ":" << context->line() << "]";
             IT_FATAL(os.str());
         }

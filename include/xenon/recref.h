@@ -31,7 +31,7 @@ struct recref {
     std::string str() const { 
         ict::osstream os;
         str(os);
-        return os.str();
+        return os.take();
     }
 
     bool empty() const { return path.empty() && file.empty() && anchor.empty(); };
@@ -61,7 +61,7 @@ inline recref relative_url(recref const & base, recref const & x) {
     ict::osstream os;
     os << base.path << x.path;
     recref result;
-    result.path = os.str();
+    result.path = os.take();
     result.file = x.file.empty() ? base.file : x.file;
     result.anchor = x.anchor;
     return result;

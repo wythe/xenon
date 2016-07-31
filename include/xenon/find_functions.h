@@ -203,6 +203,6 @@ template <typename T, typename C = typename T::is_cursor>
 inline std::string path_string(T c) {
     ict::osstream ss;
     path_string(ss, c);
-    return ss.str();
+    return ss.take();
 }
 }
