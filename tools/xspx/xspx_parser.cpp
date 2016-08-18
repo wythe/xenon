@@ -229,6 +229,12 @@ void generate_uid_constants(S & os, T first, T last) {
     });
 }
 
+#if 0
+std::string xsp_parser::source() const {
+    return "";
+}
+#endif
+
 std::string xsp_parser::header() const  {
     std::ostringstream os;
     os << "#pragma once //\n";
@@ -428,6 +434,11 @@ std::string xsp_parser::parser_header() const {
     "#include \"xddl.h\"";
     return os.str();
 }
+
+#if 0
+std::string xsp_parser::constuctor() const {
+}
+#endif
 
 std::string xsp_parser::parser_impl() const {
     std::ostringstream os;

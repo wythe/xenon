@@ -6,7 +6,7 @@ set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/o)
 
 add_custom_command(
     OUTPUT ${CMAKE_SOURCE_DIR}/include/xenon/xddl.h
-    COMMAND xspx ${CMAKE_CURRENT_SOURCE_DIR}/xddl.xspx > t
+    COMMAND xspx -H t ${CMAKE_CURRENT_SOURCE_DIR}/xddl.xspx
     COMMAND ${CMAKE_COMMAND} -E copy_if_different t ${CMAKE_SOURCE_DIR}/include/xenon/xddl.h
     DEPENDS xspx
     MAIN_DEPENDENCY ${CMAKE_CURRENT_SOURCE_DIR}/xddl.xspx
