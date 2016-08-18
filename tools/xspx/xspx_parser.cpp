@@ -268,8 +268,10 @@ void xsp_parser::to_stream(std::ostream & h, std::ostream & s) const {
 
     std::ostringstream os;
     xenon::cpp_code code;
-    os << "#include <xenon/xddl.h>";
+    os << "#include <xenon/xenon.h>";
+    os << "namespace xenon {";
     parser_const(os, st::source_impl);
+    os << "}";
     code.add(os.str());
     s << code.str();
 }
@@ -464,7 +466,7 @@ void xsp_parser::const_content(std::ostream & os) const {
 void xsp_parser::parser_const(std::ostream & os, st::type t) const {
     switch (t) {
         case st::header_decl :
-            os << class_name << "()";
+            os << class_name << "();";
             break;
         case st::header_impl : 
             os << class_name << "()";
