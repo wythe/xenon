@@ -29,6 +29,7 @@ int main(int argc, char **argv) {
         line.parse(argc, argv);
 
         if (line.targets.size() != 1) IT_FATAL("exactly one xspec-file must be specified");
+        if (hfile.empty() && !sfile.empty()) IT_FATAL("header file must also be specified");
 
         p.open(line.targets[0]);
 
