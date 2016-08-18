@@ -33,13 +33,16 @@ int main(int argc, char **argv) {
         p.open(line.targets[0]);
 
         if (dispatch) xspx::to_dispatch(std::cout, p, dispatch_name);
-        else {
-            if (!hfile.empty()) {
-                std::ofstream s(hfile, std::ios::out | std::ios::binary);
-                s << p.header();
-            } else {
-                std::cout << p.header();
-            }
+        else if (!hfile.empty() && !sfile.empty()) {
+                std::ofstream h(hfile, std::ios::out | std::ios::binary);
+                std::ofstream s(sfile, std::ios::out | std::ios::binary);
+                p.to_stream(h, s);
+
+        } else if (!hfile.empty()) {
+            std::ofstream h(hfile, std::ios::out | std::ios::binary);
+            p.to_stream(h);
+        } else {
+            p.to_stream(std::cout);
         }
 
     } catch (std::exception & e) {
