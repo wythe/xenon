@@ -18,7 +18,7 @@ has evolved into a general purpose open source tool with an ever expanding proto
 
 And, using XDDL, you can support your own proprietary message formats.
 
-See xenon in action for yourself using the Intrig online decoder: [http://intrig.com/x82da86](intrig.com).
+See xenon in action for yourself using the Intrig online decoder: <http://intrig.com/x82da86>.
 
 ##<a name="2"/>2 Installing 
 
@@ -54,7 +54,7 @@ From now on, you can use the github shell to issue git commands.
 ###<a name="2.3"/>2.3 Optional Dependencies 
 
 
-Boost dependencies are not required for xenon, but some tests tests will be skipped if boost cannot be found.
+Boost dependencies are not required for xenon, but some tests will be skipped if boost cannot be found.
 
 * ubuntu: sudo apt-get install libboost-all-dev
 * mac: brew install boost
