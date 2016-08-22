@@ -4,8 +4,28 @@
 #include <xenon/xddl.h>
 #include <list>
 #include <vector>
-namespace xenon {
 
+namespace ict {
+#include <sys/types.h>
+#include <sys/stat.h>
+
+// http://stackoverflow.com/a/18101042
+inline bool is_directory(std::string const & path) {
+    struct stat info;
+    if( stat( path.c_str(), &info ) != 0 ) {
+        // printf( "cannot access %s\n", pathname );
+    } else if( info.st_mode & S_IFDIR ) { // S_ISDIR() doesn't exist on my windows 
+        // printf( "%s is a directory\n", pathname );
+        return true;
+    } else {
+        // printf( "%s is no directory\n", pathname );
+        return false;
+    }
+    return false;
+}
+}
+
+namespace xenon {
 class spec_server {
 public:
     /*!!!
@@ -28,9 +48,13 @@ public:
     /*!
      Create a spec from a xddl file.  
      */
-    spec_server(const std::string & filename) 
-        : spec_server() {
-        add_spec(filename);
+    spec_server(const std::string & path) : spec_server() {
+        if (ict::is_directory(path)) {
+            // if it's a path, then make it first.
+            xddl_path.insert(xddl_path.begin(), path);
+        } else {
+            add_spec(path);
+        }
     }
 
     template <typename InputIterator>

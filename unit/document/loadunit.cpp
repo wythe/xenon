@@ -9,6 +9,12 @@ namespace bf = boost::filesystem;
 using std::cout;
 
 void load_unit::sanity() {
+    try {
+        xenon::spec_server s("../../xddl");
+        auto rec = xenon::get_record(s, "3GPP/TS-36.331/DL-DCCH-Message");
+    } catch (const std::exception & e) {
+        IT_FORCE_ASSERT(e.what());
+    }
 }
 
 void load_all_xddl(const bf::path & dir, xenon::spec_server & specs) {
@@ -23,10 +29,8 @@ void load_all_xddl(const bf::path & dir, xenon::spec_server & specs) {
 }
 
 void load_unit::load_all_specs() {
-    auto root = ict::get_env_var("XDDLPATH");
-    if (root.empty()) return;
-
-    auto p = bf::path(root);
+    xenon::spec_server specs;
+    auto p = bf::path("../../xddl");
     try {
         load_all_xddl(p, specs);
     } catch (const bf::filesystem_error& ex) {

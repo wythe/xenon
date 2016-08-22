@@ -19,5 +19,4 @@ class load_unit {
     void sanity();
     void load_all_specs();
 
-    xenon::spec_server specs;
 };

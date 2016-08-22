@@ -18,8 +18,7 @@ void doc_unit::sanity()
     IT_ASSERT(doc.empty());
 }
 
-void doc_unit::constructor_file()
-{
+void doc_unit::constructor_file() {
     {
         try {
             spec_server doc("xddl/index.xddl");
