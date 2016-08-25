@@ -23,6 +23,12 @@ inline bool is_directory(std::string const & path) {
     }
     return false;
 }
+// either a file or directory
+inline bool exists(std::string const& name) {
+    std::ifstream f(name.c_str());
+    IT_WARN(name << " is " << (f.good() ? "good" : "bad"));
+    return f.good();
+}
 }
 
 namespace xenon {
@@ -49,12 +55,8 @@ public:
      Create a spec from a xddl file.  
      */
     spec_server(const std::string & path) : spec_server() {
-        if (ict::is_directory(path)) {
-            // if it's a path, then make it first.
-            xddl_path.insert(xddl_path.begin(), path);
-        } else {
-            add_spec(path);
-        }
+        if (ict::is_directory(path)) xddl_path.insert(xddl_path.begin(), path);
+        else add_spec(path);
     }
 
     template <typename InputIterator>
@@ -82,7 +84,7 @@ public:
      */
     spec::cursor add_spec(const std::string & filename) {
         auto x = filename;
-        if (!locate(x)) IT_PANIC("cannot open \"" << filename << "\"");
+        if (!locate(x)) IT_PANIC("cannot access \"" << filename << "\"");
         auto i = std::find_if(doms.begin(), doms.end(), [&](const spec & dom){ 
             // IT_WARN(dom.file << " == " << x);
             return dom.file == x;} );
@@ -126,14 +128,17 @@ public:
     mutable std::list<spec> doms;
 private:
 
+    // given a file name, locate it relative to the xddl_path.  The filename is then mutated to reflect the 
+    // true path.
     inline bool locate(std::string & fname) {
         auto ext = ict::extension(fname);
-        if (ext != ".xddl") IT_PANIC("File extension must be .xddl: " << fname);
-        if (ict::file_exists(fname)) return true;
+        if (ext != ".xddl") IT_PANIC("file extension must be .xddl: " << fname);
+        if (ict::exists(fname)) return true;
         if (!ict::is_absolute_path(fname)) {
             for (auto const & path : xddl_path) {
                 std::string new_path = path + "/" + fname;
-                if (ict::file_exists(new_path)) {
+                IT_WARN("checking " << new_path);
+                if (ict::exists(new_path)) {
                     fname = new_path;
                     return true;
                 }

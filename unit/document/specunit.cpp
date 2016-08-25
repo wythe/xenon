@@ -21,6 +21,8 @@ void doc_unit::sanity()
 void doc_unit::constructor_file() {
     {
         try {
+            spec_server e("field01.xddl");
+            IT_ASSERT(!e.empty());
             spec_server doc("xddl/index.xddl");
             IT_ASSERT(!doc.empty());
         }
@@ -36,11 +38,8 @@ void doc_unit::constructor_file() {
             spec_server doc("empty");
         }
         catch (std::exception & e) {
-            error = e.what();
+            IT_FORCE_ASSERT(e.what());
         }
-
-        IT_ASSERT_MSG("[" << error << "]", 
-            error.find("File extension must be") != std::string::npos);
     } 
 
     // let's try a non-existent directory
@@ -52,7 +51,7 @@ void doc_unit::constructor_file() {
             error = e.what();
         }
         IT_ASSERT_MSG("[" << error << "]", 
-            error.find("File extension must be") != std::string::npos);
+            error.find("file extension") != std::string::npos);
     }
 
     // let's try a non-existent file
@@ -65,7 +64,7 @@ void doc_unit::constructor_file() {
         }
 
         IT_ASSERT_MSG("[" << error << "]", 
-            error.find("cannot open \"goo.xddl\"") != std::string::npos);
+            error.find("cannot access") != std::string::npos);
     }
 
     
@@ -221,6 +220,72 @@ void doc_unit::search_paths() {
 
     d.add_spec("other/index.xddl");
     IT_ASSERT(!d.empty());
+}
+
+template <typename Rec>
+void parse_recref(std::string const & ref, Rec & rec) {
+    size_t i = ref.find_last_of('/');
+    if (i != std::string::npos) {
+        ++i;
+        rec.path = ref.substr(0, i);
+    } else i = 0;
+
+    // the rest is filename and anchor
+    size_t j = ref.find('#', i);
+
+    if (j != std::string::npos) rec.file = ref.substr(i, j - i);
+    else rec.file = ref.substr(i);
+
+    if (j != std::string::npos) rec.anchor = ref.substr(j);
+}
+
+struct ref_type {
+    std::string path;
+    std::string file;
+    std::string anchor;
+};
+
+inline bool operator==(const ref_type & x, const ref_type & y) {
+    return (x.path == y.path) && (x.file == y.file) && (x.anchor == y.anchor);
+}
+
+template <typename Stream>
+inline Stream & operator<<(Stream &os, const ref_type & x) {
+    os << x.path << x.file << x.anchor;
+    return os;
+}
+
+
+void doc_unit::recref_regex() {
+    auto v = std::vector<std::pair<std::string, ref_type>>{ 
+    { "3GPP/TS-36.331.xddl#DL-DCCH-Message", { "3GPP/", "TS-36.331.xddl", "#DL-DCCH-Message"}},
+    { "icd.xddl", { "", "icd.xddl", ""}}, 
+    { "xddl/index.xddl", { "xddl/", "index.xddl", ""}},
+    // { "empty", { "empty", "", "" }}
+    };
+
+    for (auto & x : v) {
+        ref_type y;
+        parse_recref(x.first, y);
+        IT_ASSERT_MSG("'" << x.second << "' == '" << y << "'", x.second == y);
+    }
+
+}
+
+void doc_unit::get_record() {
+    try {
+        xenon::spec_server s1;
+        auto a1 = xenon::get_record(s1, "field01.xddl");
+        auto a2 = xenon::get_record(s1, "xddl/field01.xddl");
+
+        xenon::spec_server s2("../../xddl");
+        auto r1 = xenon::get_record(s2, "icd.xddl");
+        auto r2 = xenon::get_record(s2, "3GPP/TS-36.331.xddl#DL-DCCH-Message");
+        // auto rec = xenon::get_record(s2, "3GPP/TS-36.331/DL-DCCH-Message");
+    } catch (const std::exception & e) {
+        IT_FORCE_ASSERT(e.what());
+    }
+
 }
 
 int main (int, char **) {

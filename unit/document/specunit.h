@@ -29,6 +29,8 @@ class doc_unit
 
         ut.add(&doc_unit::fieldtypes);
         ut.add(&doc_unit::allTypes);
+        ut.add(&doc_unit::recref_regex);
+        ut.add(&doc_unit::get_record);
         ut.skip();
         ut.cont();
 
@@ -49,4 +51,6 @@ class doc_unit
 
     void fieldtypes();
     void allTypes();
+    void recref_regex();
+    void get_record();
 };
