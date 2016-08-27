@@ -222,22 +222,6 @@ void doc_unit::search_paths() {
     IT_ASSERT(!d.empty());
 }
 
-template <typename Rec>
-void parse_recref(std::string const & ref, Rec & rec) {
-    size_t i = ref.find_last_of('/');
-    if (i != std::string::npos) {
-        ++i;
-        rec.path = ref.substr(0, i);
-    } else i = 0;
-
-    // the rest is filename and anchor
-    size_t j = ref.find('#', i);
-
-    if (j != std::string::npos) rec.file = ref.substr(i, j - i);
-    else rec.file = ref.substr(i);
-
-    if (j != std::string::npos) rec.anchor = ref.substr(j);
-}
 
 struct ref_type {
     std::string path;
@@ -261,12 +245,18 @@ void doc_unit::recref_regex() {
     { "3GPP/TS-36.331.xddl#DL-DCCH-Message", { "3GPP/", "TS-36.331.xddl", "#DL-DCCH-Message"}},
     { "icd.xddl", { "", "icd.xddl", ""}}, 
     { "xddl/index.xddl", { "xddl/", "index.xddl", ""}},
-    // { "empty", { "empty", "", "" }}
+    { "empty", { "empty/", "", "" }},
+    { "#anchor", { "", "", "#anchor" }},
+    { "file/anchor", { "", "file.xddl", "#anchor" }},
+    { "path/file/anchor", { "path/", "file.xddl", "#anchor" }},
+    { "path/to/file/file/anchor", { "path/to/file/", "file.xddl", "#anchor" }},
+    { "3GPP/TS-36.331/DL-DCCH-Message", { "3GPP/", "TS-36.331.xddl", "#DL-DCCH-Message"}},
     };
 
+    IT_ASSERT(ict::is_directory("/"));
     for (auto & x : v) {
         ref_type y;
-        parse_recref(x.first, y);
+        xenon::parse_recref(x.first, y);
         IT_ASSERT_MSG("'" << x.second << "' == '" << y << "'", x.second == y);
     }
 

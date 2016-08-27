@@ -150,7 +150,6 @@ void itu_unit::create_url()
 {
     std::vector< std::pair<xenon::recref, url_unit_type> > url_tests = 
         { 
-            { { "just_a_file" }, {"", "just_a_file", ""} },
             { { "#4d" }, {"", "", "#4d"} },
             { { "TS-23.038.xddl#4d" }, {"", "TS-23.038.xddl", "#4d"} },
             { { "3GPP2/TS-23.038.xddl#4d" }, {"3GPP2/", "TS-23.038.xddl", "#4d"} },

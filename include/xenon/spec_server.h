@@ -2,34 +2,9 @@
 //-- Copyright 2016 Intrig
 //-- See https://github.com/intrig/xenon for license.
 #include <xenon/xddl.h>
+#include <xenon/recref.h>
 #include <list>
 #include <vector>
-
-namespace ict {
-#include <sys/types.h>
-#include <sys/stat.h>
-
-// http://stackoverflow.com/a/18101042
-inline bool is_directory(std::string const & path) {
-    struct stat info;
-    if( stat( path.c_str(), &info ) != 0 ) {
-        // printf( "cannot access %s\n", pathname );
-    } else if( info.st_mode & S_IFDIR ) { // S_ISDIR() doesn't exist on my windows 
-        // printf( "%s is a directory\n", pathname );
-        return true;
-    } else {
-        // printf( "%s is no directory\n", pathname );
-        return false;
-    }
-    return false;
-}
-// either a file or directory
-inline bool exists(std::string const& name) {
-    std::ifstream f(name.c_str());
-    IT_WARN(name << " is " << (f.good() ? "good" : "bad"));
-    return f.good();
-}
-}
 
 namespace xenon {
 class spec_server {
@@ -137,7 +112,7 @@ private:
         if (!ict::is_absolute_path(fname)) {
             for (auto const & path : xddl_path) {
                 std::string new_path = path + "/" + fname;
-                IT_WARN("checking " << new_path);
+                // IT_WARN("checking " << new_path);
                 if (ict::exists(new_path)) {
                     fname = new_path;
                     return true;

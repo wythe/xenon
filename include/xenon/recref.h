@@ -3,11 +3,96 @@
 #include <ict/ict.h>
 #include <string>
 
+namespace ict {
+
+template <typename Stream, typename I, typename Del>
+inline void join(Stream & os, I first, I last, const Del & del) {
+    if (first == last) return;
+    os << *first;
+    ++first;
+    while (first != last) {
+        os << del << *first;
+        ++first;
+    }
+}
+
+#include <sys/types.h>
+#include <sys/stat.h>
+
+// http://stackoverflow.com/a/18101042
+inline bool is_directory(std::string const & path) {
+    struct stat info;
+    if( stat( path.c_str(), &info ) != 0 ) {
+        // printf( "cannot access %s\n", pathname );
+    } else if( info.st_mode & S_IFDIR ) { // S_ISDIR() doesn't exist on my windows 
+        // printf( "%s is a directory\n", pathname );
+        return true;
+    } else {
+        // printf( "%s is no directory\n", pathname );
+        return false;
+    }
+    return false;
+}
+// either a file or directory
+inline bool exists(std::string const& name) {
+    std::ifstream f(name.c_str());
+    // IT_WARN(name << " is " << (f.good() ? "good" : "bad"));
+    return f.good();
+}
+}
 namespace xenon {
+template <typename Rec>
+void parse_recref(std::string const & ref, Rec & rec) {
+    if (ref[0] == '#') {
+        rec.anchor = ref;
+    } else if (ref.find(".xddl") != std::string::npos) { // old style
+        // path/to/file/file.xddl#anchor
+        size_t i = ref.find_last_of('/');
+        if (i != std::string::npos) {
+            ++i;
+            rec.path = ref.substr(0, i);
+        } else i = 0;
+
+        // the rest is filename and anchor
+        size_t j = ref.find('#', i);
+
+        if (j != std::string::npos) rec.file = ref.substr(i, j - i);
+        else rec.file = ref.substr(i);
+
+        if (j != std::string::npos) rec.anchor = ref.substr(j);
+    } else { // new style
+        // path/to/file/file/anchor
+        auto v = ict::split(ref, '/');
+        switch (v.size()) {
+            case 0 :
+                break;
+            case 1 : 
+                rec.path = ref + '/';
+                break;
+            default :
+                rec.anchor += '#';
+                rec.anchor += v.back();
+                v.pop_back();
+                rec.file = v.back() + ".xddl";
+                v.pop_back();
+                if (v.size()) {
+                    ict::osstream os;
+                    ict::join(os, v.begin(), v.end(), '/');
+                    os << '/';
+                    rec.path = os.take();
+                }
+                break;
+        }
+    }
+}
+
 struct recref {
     recref() {};
 
     recref(const std::string & x) {
+#if 1
+        parse_recref(x, *this);
+#else
         size_t i = x.find_last_of('/');
         if (i != std::string::npos) {
             ++i;
@@ -21,6 +106,7 @@ struct recref {
         else file = x.substr(i);
 
         if (j != std::string::npos) anchor = x.substr(j);
+#endif
     }
 
     recref(const char * x) : recref(std::string(x)) {}
