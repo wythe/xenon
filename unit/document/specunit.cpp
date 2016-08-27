@@ -222,46 +222,6 @@ void doc_unit::search_paths() {
     IT_ASSERT(!d.empty());
 }
 
-
-struct ref_type {
-    std::string path;
-    std::string file;
-    std::string anchor;
-};
-
-inline bool operator==(const ref_type & x, const ref_type & y) {
-    return (x.path == y.path) && (x.file == y.file) && (x.anchor == y.anchor);
-}
-
-template <typename Stream>
-inline Stream & operator<<(Stream &os, const ref_type & x) {
-    os << x.path << x.file << x.anchor;
-    return os;
-}
-
-
-void doc_unit::recref_regex() {
-    auto v = std::vector<std::pair<std::string, ref_type>>{ 
-    { "3GPP/TS-36.331.xddl#DL-DCCH-Message", { "3GPP/", "TS-36.331.xddl", "#DL-DCCH-Message"}},
-    { "icd.xddl", { "", "icd.xddl", ""}}, 
-    { "xddl/index.xddl", { "xddl/", "index.xddl", ""}},
-    { "empty", { "empty/", "", "" }},
-    { "#anchor", { "", "", "#anchor" }},
-    { "file/anchor", { "", "file.xddl", "#anchor" }},
-    { "path/file/anchor", { "path/", "file.xddl", "#anchor" }},
-    { "path/to/file/file/anchor", { "path/to/file/", "file.xddl", "#anchor" }},
-    { "3GPP/TS-36.331/DL-DCCH-Message", { "3GPP/", "TS-36.331.xddl", "#DL-DCCH-Message"}},
-    };
-
-    IT_ASSERT(ict::is_directory("/"));
-    for (auto & x : v) {
-        ref_type y;
-        xenon::parse_recref(x.first, y);
-        IT_ASSERT_MSG("'" << x.second << "' == '" << y << "'", x.second == y);
-    }
-
-}
-
 void doc_unit::get_record() {
     try {
         xenon::spec_server s1;
@@ -271,11 +231,10 @@ void doc_unit::get_record() {
         xenon::spec_server s2("../../xddl");
         auto r1 = xenon::get_record(s2, "icd.xddl");
         auto r2 = xenon::get_record(s2, "3GPP/TS-36.331.xddl#DL-DCCH-Message");
-        // auto rec = xenon::get_record(s2, "3GPP/TS-36.331/DL-DCCH-Message");
+        auto rec = xenon::get_record(s2, "3GPP/TS-36.331/DL-DCCH-Message");
     } catch (const std::exception & e) {
         IT_FORCE_ASSERT(e.what());
     }
-
 }
 
 int main (int, char **) {

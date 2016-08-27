@@ -108,12 +108,12 @@ private:
     inline bool locate(std::string & fname) {
         auto ext = ict::extension(fname);
         if (ext != ".xddl") IT_PANIC("file extension must be .xddl: " << fname);
-        if (ict::exists(fname)) return true;
+        if (ict::file_exists(fname)) return true;
         if (!ict::is_absolute_path(fname)) {
             for (auto const & path : xddl_path) {
                 std::string new_path = path + "/" + fname;
                 // IT_WARN("checking " << new_path);
-                if (ict::exists(new_path)) {
+                if (ict::file_exists(new_path)) {
                     fname = new_path;
                     return true;
                 }

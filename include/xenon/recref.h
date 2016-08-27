@@ -33,12 +33,6 @@ inline bool is_directory(std::string const & path) {
     }
     return false;
 }
-// either a file or directory
-inline bool exists(std::string const& name) {
-    std::ifstream f(name.c_str());
-    // IT_WARN(name << " is " << (f.good() ? "good" : "bad"));
-    return f.good();
-}
 }
 namespace xenon {
 template <typename Rec>
@@ -90,23 +84,7 @@ struct recref {
     recref() {};
 
     recref(const std::string & x) {
-#if 1
         parse_recref(x, *this);
-#else
-        size_t i = x.find_last_of('/');
-        if (i != std::string::npos) {
-            ++i;
-            path = x.substr(0, i);
-        } else i = 0;
-
-        // the rest is filename and anchor
-        size_t j = x.find('#', i);
-
-        if (j != std::string::npos) file = x.substr(i, j - i);
-        else file = x.substr(i);
-
-        if (j != std::string::npos) anchor = x.substr(j);
-#endif
     }
 
     recref(const char * x) : recref(std::string(x)) {}
