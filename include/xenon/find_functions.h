@@ -206,3 +206,4 @@ inline std::string path_string(T c) {
     return ss.take();
 }
 }
+#include <xenon/find_first.h>

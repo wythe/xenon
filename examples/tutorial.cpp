@@ -8,7 +8,7 @@ int main () {
         
         // TODO make this "SM" and not "//SM" (change defaults)
         // TODO make this find_first()
-        auto c = xenon::find(m.root(), "//SM"); // now find the SM field
+        auto c = xenon::find_first(m.root(), "SM"); // now find the SM field
         if (c == m.end()) throw std::runtime_error("Cannot find message!\n");
 
         std::cout << "Message is " << description(c) << '\n';
