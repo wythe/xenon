@@ -18,6 +18,11 @@ inline void join(Stream & os, I first, I last, const Del & del) {
 
 #include <sys/types.h>
 #include <sys/stat.h>
+#if defined(WIN32) || defined(WIN64)
+    // Copied from  libc sys/stat.h:
+    #define S_ISREG(m) (((m) & S_IFMT) == S_IFREG)
+    #define S_ISDIR(m) (((m) & S_IFMT) == S_IFDIR)
+#endif
 inline bool exists(std::string const & path) {
     struct stat file_state;
     return (!stat(path.c_str(), &file_state));
@@ -40,8 +45,10 @@ inline bool tilde_expand(std::string & path) {
         if (path[0] == '~') {
             auto home = ict::get_env_var("HOME");
             path.replace(0, 1, home);
+            return true;
         }
     }
+    return false;
 }
 
 }
