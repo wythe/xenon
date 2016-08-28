@@ -16,6 +16,25 @@ void doc_unit::sanity()
 {
     spec_server doc;
     IT_ASSERT(doc.empty());
+
+    IT_ASSERT(!ict::exists("not_exists"));
+    IT_ASSERT(!ict::exists("xddl/not_exists"));
+
+    IT_ASSERT(ict::exists("field01.xddl"));
+    IT_ASSERT(ict::is_file("field01.xddl"));
+    IT_ASSERT(!ict::is_directory("field01.xddl"));
+
+    IT_ASSERT(ict::exists("empty/README"));
+    IT_ASSERT(ict::is_file("empty/README"));
+    IT_ASSERT(!ict::is_directory("empty/README"));
+
+    IT_ASSERT(ict::exists("empty"));
+    IT_ASSERT(ict::is_directory("empty"));
+    IT_ASSERT(!ict::is_file("empty"));
+
+    IT_ASSERT(ict::exists("xddl/a"));
+    IT_ASSERT(ict::is_directory("xddl/a"));
+    IT_ASSERT(!ict::is_file("xddl/a"));
 }
 
 void doc_unit::constructor_file() {
@@ -51,7 +70,7 @@ void doc_unit::constructor_file() {
             error = e.what();
         }
         IT_ASSERT_MSG("[" << error << "]", 
-            error.find("file extension") != std::string::npos);
+            error.find("cannot access") != std::string::npos);
     }
 
     // let's try a non-existent file

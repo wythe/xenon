@@ -18,21 +18,32 @@ inline void join(Stream & os, I first, I last, const Del & del) {
 
 #include <sys/types.h>
 #include <sys/stat.h>
-
-// http://stackoverflow.com/a/18101042
-inline bool is_directory(std::string const & path) {
-    struct stat info;
-    if( stat( path.c_str(), &info ) != 0 ) {
-        // printf( "cannot access %s\n", pathname );
-    } else if( info.st_mode & S_IFDIR ) { // S_ISDIR() doesn't exist on my windows 
-        // printf( "%s is a directory\n", pathname );
-        return true;
-    } else {
-        // printf( "%s is no directory\n", pathname );
-        return false;
-    }
-    return false;
+inline bool exists(std::string const & path) {
+    struct stat file_state;
+    return (!stat(path.c_str(), &file_state));
 }
+
+inline bool is_file(std::string const & path) {
+    struct stat file_state; 
+    if (stat(path.c_str(), &file_state)) return false;
+    return (S_ISREG(file_state.st_mode));
+}
+
+inline bool is_directory(std::string const & path) {
+    struct stat file_state;
+    if (stat(path.c_str(), &file_state)) return false;
+    return S_ISDIR(file_state.st_mode);
+}
+
+inline bool tilde_expand(std::string & path) {
+    if (!path.empty()) {
+        if (path[0] == '~') {
+            auto home = ict::get_env_var("HOME");
+            path.replace(0, 1, home);
+        }
+    }
+}
+
 }
 namespace xenon {
 template <typename Rec>
@@ -54,7 +65,7 @@ void parse_recref(std::string const & ref, Rec & rec) {
         else rec.file = ref.substr(i);
 
         if (j != std::string::npos) rec.anchor = ref.substr(j);
-    } else { // new style
+    } else { // new style, convert it to old style for now
         // path/to/file/file/anchor
         auto v = ict::split(ref, '/');
         switch (v.size()) {

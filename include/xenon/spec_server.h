@@ -7,6 +7,7 @@
 #include <vector>
 
 namespace xenon {
+
 class spec_server {
 public:
     /*!!!
@@ -30,8 +31,10 @@ public:
      Create a spec from a xddl file.  
      */
     spec_server(const std::string & path) : spec_server() {
-        if (ict::is_directory(path)) xddl_path.insert(xddl_path.begin(), path);
-        else add_spec(path);
+		auto p = path;
+		ict::tilde_expand(p);
+        if (ict::is_directory(p)) xddl_path.insert(xddl_path.begin(), p);
+        else add_spec(p);
     }
 
     template <typename InputIterator>
@@ -45,7 +48,6 @@ public:
 
     template <typename InputIterator>
     spec::cursor add_spec(InputIterator first, InputIterator last, const std::string & name) {
-        // IT_WARN("adding spec: " << name);
         doms.emplace_back();
         doms.back().owner = this;
         doms.back().open(first, last, name);
@@ -61,7 +63,6 @@ public:
         auto x = filename;
         if (!locate(x)) IT_PANIC("cannot access \"" << filename << "\"");
         auto i = std::find_if(doms.begin(), doms.end(), [&](const spec & dom){ 
-            // IT_WARN(dom.file << " == " << x);
             return dom.file == x;} );
         if (i !=doms.end()) return i->ast.root();
         auto contents = ict::read_file(x);
@@ -107,13 +108,11 @@ private:
     // true path.
     inline bool locate(std::string & fname) {
         auto ext = ict::extension(fname);
-        if (ext != ".xddl") IT_PANIC("file extension must be .xddl: " << fname);
-        if (ict::file_exists(fname)) return true;
+        if (ict::is_file(fname)) return true;
         if (!ict::is_absolute_path(fname)) {
             for (auto const & path : xddl_path) {
                 std::string new_path = path + "/" + fname;
-                // IT_WARN("checking " << new_path);
-                if (ict::file_exists(new_path)) {
+                if (ict::is_file(new_path)) {
                     fname = new_path;
                     return true;
                 }
