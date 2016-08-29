@@ -52,7 +52,7 @@ int main(int, char**) {
         cout << "done, processed " << fields.size() << " fields\n\n";
 
         cout << "now find a field: DATA/MSG_TYPE\n";
-        auto c = xenon::find(msg.root(), "DATA/MSG_TYPE");
+        auto c = xenon::find_first(msg, "DATA/MSG_TYPE");
 
         if (c != msg.end()) cout << "found it! " << xenon::description(c) << "\n\n";
 

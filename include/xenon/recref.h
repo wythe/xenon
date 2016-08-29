@@ -16,28 +16,26 @@ inline void join(Stream & os, I first, I last, const Del & del) {
     }
 }
 
-#include <sys/types.h>
 #include <sys/stat.h>
 #if defined(WIN32) || defined(WIN64)
-    // Copied from  libc sys/stat.h:
     #define S_ISREG(m) (((m) & S_IFMT) == S_IFREG)
     #define S_ISDIR(m) (((m) & S_IFMT) == S_IFDIR)
 #endif
 inline bool exists(std::string const & path) {
-    struct stat file_state;
-    return (!stat(path.c_str(), &file_state));
+    struct stat state;
+    return (!stat(path.c_str(), &state));
 }
 
 inline bool is_file(std::string const & path) {
-    struct stat file_state; 
-    if (stat(path.c_str(), &file_state)) return false;
-    return (S_ISREG(file_state.st_mode));
+    struct stat state; 
+    if (stat(path.c_str(), &state)) return false;
+    return (S_ISREG(state.st_mode));
 }
 
 inline bool is_directory(std::string const & path) {
-    struct stat file_state;
-    if (stat(path.c_str(), &file_state)) return false;
-    return S_ISDIR(file_state.st_mode);
+    struct stat state;
+    if (stat(path.c_str(), &state)) return false;
+    return S_ISDIR(state.st_mode);
 }
 
 inline bool tilde_expand(std::string & path) {

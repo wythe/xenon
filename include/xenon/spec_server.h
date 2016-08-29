@@ -10,13 +10,6 @@ namespace xenon {
 
 class spec_server {
 public:
-    /*!!!
-     Constructors
-     */
-
-    /*!
-     Create an empty document.  
-     */
     spec_server() {
         std::string xddlroot = ict::get_env_var("XDDLPATH");
         xddl_path = ict::split(xddlroot, ';');
@@ -28,13 +21,10 @@ public:
     spec_server& operator=(const spec_server & b) = delete;
 
     /*!
-     Create a spec from a xddl file.  
+	 Create a spec and call add_spec() with path parameter.  
      */
     spec_server(const std::string & path) : spec_server() {
-		auto p = path;
-		ict::tilde_expand(p);
-        if (ict::is_directory(p)) xddl_path.insert(xddl_path.begin(), p);
-        else add_spec(p);
+        add_spec(path);
     }
 
     template <typename InputIterator>
@@ -57,16 +47,21 @@ public:
     }
 
     /*!
-     Add another spec.
+	 Add another spec.  If it is a directory, then add it to the xddl_path list of directories to search.  If it is a
+	 file, then load it.  It may be relative to the xddl_path.  Otherwise, throw exception.
      */
-    spec::cursor add_spec(const std::string & filename) {
-        auto x = filename;
-        if (!locate(x)) IT_PANIC("cannot access \"" << filename << "\"");
-        auto i = std::find_if(doms.begin(), doms.end(), [&](const spec & dom){ 
-            return dom.file == x;} );
-        if (i !=doms.end()) return i->ast.root();
-        auto contents = ict::read_file(x);
-        return add_spec(contents.begin(), contents.end(), x);
+    spec::cursor add_spec(const std::string & path) {
+        auto p = path;
+		ict::tilde_expand(p);
+        if (ict::is_directory(p)) xddl_path.insert(xddl_path.begin(), p);
+		else {
+			if (!locate(p)) IT_PANIC("cannot access \"" << path << "\"");
+			auto i = std::find_if(doms.begin(), doms.end(), [&](const spec & dom){ 
+				return dom.file == p;} );
+			if (i !=doms.end()) return i->ast.root();
+			auto contents = ict::read_file(p);
+			return add_spec(contents.begin(), contents.end(), p);
+		}
     }
 
     /*!

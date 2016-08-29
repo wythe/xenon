@@ -15,6 +15,10 @@ using message = ict::multivector<node>;
 
 // message algorithms
 
+inline message::cursor find_first(const message & m, const xpath & path) {
+    return find_first(m.croot(), path);
+}
+
 std::string to_xml(message::cursor c);
 
 inline int64_t bit_size(message::cursor parent) {
