@@ -102,6 +102,26 @@ inline Cursor find_first(Cursor parent, const xpath & path) {
     return find_first(parent, path, name_of<typename Cursor::value_type>);
 }
 
+template <typename Cursor, typename ForIter, typename Action>
+void for_each_path(Cursor parent, const xpath & path, ForIter curr, Action action) {
+    auto last = --path.end();
+    for (auto i = parent.begin(); i != parent.end(); ++i) {
+        if (i->name() == *curr) {
+            if (curr == last) { 
+                action(i);
+            } 
+            for_each_path(i, path, curr, action);
+        } else {
+            for_each_path(i, path, path.begin(), action);
+        }
+    }
+}
+
+template <typename Cursor, typename Action>
+void for_each_path(Cursor parent, const xpath & path, Action action) {
+    for_each_path(parent, path, path.begin(), action);
+}
+
 #if 0
 void match_path(Cursor parent, path & curr_path, const path & path) {
     for (iterator i = parent.begin(); i!= parent.end(); ++i) {

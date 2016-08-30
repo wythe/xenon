@@ -363,6 +363,12 @@ void xddl::vend_handler(spec::cursor self, spec & parser) {
     create_url_map<recdef>(self, parser.recdef_map, "record");
     create_url_map<type>(self, parser.type_map, "type");
 
+    // If there is a start, then it gets its own record reference.
+    auto st = find(self, "start", tag_of);
+    if (st != self.end()) {
+        parser.recdef_map["#start"] = st;
+    }
+
     link_local_refs(self, parser.recdef_map, parser.type_map);
 
     link_anon_types(self);
