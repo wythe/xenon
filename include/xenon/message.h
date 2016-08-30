@@ -15,8 +15,8 @@ using message = ict::multivector<node>;
 
 // message algorithms
 
-inline message::cursor find_first(const message & m, const xpath & path) {
-    return find_first(m.croot(), path);
+inline message::const_cursor find_first(const message & m, const xpath & path) {
+    return find_first(m.root(), path);
 }
 
 std::string to_xml(message::cursor c);

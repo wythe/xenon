@@ -62,6 +62,7 @@ public:
 			auto contents = ict::read_file(p);
 			return add_spec(contents.begin(), contents.end(), p);
 		}
+        return spec::cursor();
     }
 
     /*!
