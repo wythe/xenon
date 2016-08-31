@@ -38,11 +38,8 @@ void unit::for_each_path_test() {
         IT_ASSERT(count_test(m, "b/c/d") == 0);
     }
     {
-        IT_WARN("find/B");
-        auto m = xn::parse(s, "find/B", "@1");
-        IT_WARN('\n' << ict::to_text(m));
+        auto m = xn::parse(s, "find/B", "@10");
         IT_ASSERT(count_test(m, "a") == 1);
-        IT_WARN("ok");
         IT_ASSERT(count_test(m, "b") == 1);
         IT_ASSERT(count_test(m, "c") == 2);
         IT_ASSERT(count_test(m, "d") == 0);
@@ -53,9 +50,17 @@ void unit::for_each_path_test() {
         IT_ASSERT(count_test(m, "a/b/c") == 2);
         IT_ASSERT(count_test(m, "a/b/c/d") == 0);
         IT_ASSERT(count_test(m, "b/c/d") == 0);
-#if 0
-#endif
-
+    }
+    {
+        auto m = xn::parse(s, "find/C", "@1");
+        IT_ASSERT(count_test(m, "a") == 2);
+        IT_ASSERT(count_test(m, "b") == 2);
+        IT_ASSERT(count_test(m, "c") == 2);
+        IT_ASSERT(count_test(m, "a/b") == 2);
+        IT_ASSERT(count_test(m, "b/c") == 2);
+        IT_ASSERT(count_test(m, "a/b/c") == 2);
+        IT_ASSERT(count_test(m, "a/b/c/a") == 1);
+        IT_ASSERT(count_test(m, "b/c/a/b/c") == 1);
     }
 }
 
