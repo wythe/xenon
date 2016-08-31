@@ -52,6 +52,12 @@ inline ict::osstream & operator<<(ict::osstream & os, const xpath & p) {
     return os;
 }
 
+inline std::ostream & operator<<(std::ostream & os, const xpath & p) {
+    if (p.absolute()) os << "/";
+    ict::join(os, p.cbegin(), p.cend(), "/");
+    return os;
+}
+
 namespace util {
     template <typename Cursor, typename PathIter, typename Op, typename Test>
     inline Cursor find_first_x(Cursor parent, PathIter first, PathIter last, Op op, Test test) {
@@ -105,12 +111,14 @@ inline Cursor find_first(Cursor parent, const xpath & path) {
 template <typename Cursor, typename ForIter, typename Action>
 void for_each_path(Cursor parent, const xpath & path, ForIter curr, Action action) {
     auto last = --path.end();
+    IT_WARN("last is " << *last);
     for (auto i = parent.begin(); i != parent.end(); ++i) {
-        if (i->name() == *curr) {
+        IT_WARN(path << " " << *curr << ": " << i->name());
+        if (*curr == i->name()) {
             if (curr == last) { 
                 action(i);
             } 
-            for_each_path(i, path, curr, action);
+            for_each_path(i, path, curr + 1, action);
         } else {
             for_each_path(i, path, path.begin(), action);
         }

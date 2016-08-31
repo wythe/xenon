@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="iso-8859-1" ?>
+<!-- - Copyright 2016 Intrig -->
+<!-- - See https://github.com/intrig/xenon for license. -->
+<xddl>
+  <record id="A">
+    <record name="a">
+      <record name="b">
+        <field name="c" length="1"/>
+      </record>
+    </record>
+  </record>
+</xddl>
