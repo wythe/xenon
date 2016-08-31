@@ -73,6 +73,11 @@ spec::cursor get_record(spec_server &, const recref & href);
 
 spec::cursor get_type(spec_server &, const recref & href);
 
+inline message parse(spec_server & spec, const recref & rec_id, const ict::bitstring & bits) {
+    auto rec = get_record(spec, rec_id);
+    return parse(rec, bits);
+}
+
 inline std::string to_hex_string(const ict::bitstring & bits) {
     return ict::to_hex_string(bits.begin(), bits.end());
 }

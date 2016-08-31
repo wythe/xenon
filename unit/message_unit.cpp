@@ -1,6 +1,7 @@
 #include <vector>
 #include <string>
 #include <xenon/xenon.h>
+#include <xenon/for_each_path.h>
 #include "message_unit.h"
 
 namespace xn = xenon;
@@ -26,7 +27,6 @@ void unit::for_each_path_test() {
     IT_ASSERT(count_test(m, "goo/foo") == 0);
 
     { 
-        xn::spec_server s("xddlunit");
         auto rec = xn::get_record(s, "find/A");
         auto m = xn::parse(rec, "@1");
 
@@ -36,6 +36,26 @@ void unit::for_each_path_test() {
         IT_ASSERT(count_test(m, "a/b/c") == 1);
         IT_ASSERT(count_test(m, "a/b/c/d") == 0);
         IT_ASSERT(count_test(m, "b/c/d") == 0);
+    }
+    {
+        IT_WARN("find/B");
+        auto m = xn::parse(s, "find/B", "@1");
+        IT_WARN('\n' << ict::to_text(m));
+        IT_ASSERT(count_test(m, "a") == 1);
+        IT_WARN("ok");
+        IT_ASSERT(count_test(m, "b") == 1);
+        IT_ASSERT(count_test(m, "c") == 2);
+        IT_ASSERT(count_test(m, "d") == 0);
+        IT_ASSERT(count_test(m, "a/c") == 0);
+        IT_ASSERT(count_test(m, "a/b") == 1);
+        IT_ASSERT(count_test(m, "b/c") == 2);
+        IT_ASSERT(count_test(m, "c/b") == 0);
+        IT_ASSERT(count_test(m, "a/b/c") == 2);
+        IT_ASSERT(count_test(m, "a/b/c/d") == 0);
+        IT_ASSERT(count_test(m, "b/c/d") == 0);
+#if 0
+#endif
+
     }
 }
 

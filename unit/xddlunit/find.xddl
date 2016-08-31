@@ -2,11 +2,36 @@
 <!-- - Copyright 2016 Intrig -->
 <!-- - See https://github.com/intrig/xenon for license. -->
 <xddl>
+  <!-- simple a/b/c -->
   <record id="A">
     <record name="a">
       <record name="b">
         <field name="c" length="1"/>
       </record>
+    </record>
+  </record>
+  <!-- simple a/b/c -->
+  <record id="B">
+    <record name="a">
+      <record name="b">
+        <field name="c" length="1"/>
+        <field name="c" length="1"/>
+      </record>
+    </record>
+  </record>
+  <!-- simple a/b/c/d -->
+  <record name="a/b/c/d" id="C">
+    <record name="a">
+      <record name="b">
+        <record name="c">
+          <field name="d" length="1"/>
+        </record>
+      </record>
+    </record>
+  </record>
+  <record name = "a/b" id="D">
+    <record name="a">
+      <field name="b" length="1"/>
     </record>
   </record>
 </xddl>
