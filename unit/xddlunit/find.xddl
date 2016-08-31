@@ -6,16 +6,16 @@
   <record id="A">
     <record name="a">
       <record name="b">
-        <field name="c" length="1"/>
+        <bit name="c"/>
       </record>
     </record>
   </record>
-  <!-- simple a/b/c -->
+  <!-- same with 2 c's -->
   <record id="B">
     <record name="a">
       <record name="b">
-        <field name="c" length="1"/>
-        <field name="c" length="1"/>
+        <bit name="c"/>
+        <bit name="c"/>
       </record>
     </record>
   </record>
@@ -23,6 +23,17 @@
     <record name="a">
       <record name="b">
         <record name="c" href="#A"/>
+      </record>
+    </record>
+  </record>
+  <record id="D">
+    <record name="A">
+      <record name="B">
+        <record name="C" href="#A"/>
+        <bit name="e"/>
+        <bit name="f"/>
+        <bit name="g"/>
+        <record name="D" href="#A"/>
       </record>
     </record>
   </record>

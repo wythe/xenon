@@ -6,13 +6,13 @@
 
 namespace xn = xenon;
 
+// Call for_each_path and return the number of matches.
 int count_test(xn::message const & m, std::string const & path) {
     int found = 0;
-    xn::for_each_path(m.root(), path, [&](xn::message::const_cursor c) {
+    xn::for_each_path(m, path, [&](xn::message::const_cursor c) {
         found++;
     });
     return found;
-
 }
 
 
@@ -61,6 +61,14 @@ void unit::for_each_path_test() {
         IT_ASSERT(count_test(m, "a/b/c") == 2);
         IT_ASSERT(count_test(m, "a/b/c/a") == 1);
         IT_ASSERT(count_test(m, "b/c/a/b/c") == 1);
+    }
+    {
+        // 2 patterns in different sections
+        auto m = xn::parse(s, "find/D", "@10001");
+        IT_ASSERT(count_test(m, "c") == 2);
+        IT_ASSERT(count_test(m, "b/c") == 2);
+        IT_ASSERT(count_test(m, "a/b/c") == 2);
+        IT_ASSERT(count_test(m, "C/a/b/c") == 1);
     }
 }
 
