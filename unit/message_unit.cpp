@@ -15,6 +15,56 @@ int count_test(xn::message const & m, std::string const & path) {
     return found;
 }
 
+struct first_type {
+    std::string bits;
+    std::string path;
+    int result; // -1 means not found
+};
+
+std::ostream & operator<<(std::ostream & os, const first_type & x) {
+    os << x.bits << ' ' << x.path << ' ' << x.result;
+    return os;
+}
+
+
+auto fv = std::vector<std::pair<std::string, std::vector<first_type>>>{
+    { "field01/start", {
+        { "@1", "foo", 1 },
+        { "@0", "foo", 0 },
+        { "@1", "boo", -1 },
+        { "@1", "boo/foo", -1 },
+    } }, 
+    { "find/A", {
+        { "@1", "a/b", 1 },
+        { "@0", "a/b", 0 },
+        { "@1", "b", 1 },
+        { "@0", "b", 0 },
+        { "@1", "boo", -1 },
+        { "@1", "boo/foo", -1 },
+    } },
+    { "find/B", {
+        { "@10", "c", 1 },
+        { "@01", "c", 0 },
+        { "@01", "a/b/c", 0 },
+        { "@10", "a/b/c", 1 },
+        { "@01", "b/c", 0 },
+        { "@10", "b/c", 1 },
+    } }
+};
+
+
+void unit::find_first_test() {
+    xn::spec_server s("xddlunit");
+    for (auto & x : fv) {
+        auto rec = xn::get_record(s, x.first);
+        for (auto & y : x.second) {
+            auto m = xn::parse(rec, y.bits);
+            auto c = xn::find_first(m, y.path);
+            if (c == m.end()) IT_ASSERT_MSG(x.first << ' ' << y, y.result == -1);
+        }
+    }
+}
+
 
 void unit::for_each_path_test() {
     xn::spec_server s("xddlunit");
