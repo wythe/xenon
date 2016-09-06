@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="iso-8859-1" ?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <!-- - Copyright 2016 Intrig -->
 <!-- - See https://github.com/intrig/xenon for license. -->
 <xddl>
@@ -10,7 +10,7 @@
       </record>
     </record>
   </record>
-  <!-- same with 2 c's -->
+  <!-- same but with 2 c's -->
   <record id="B">
     <record name="a">
       <record name="b">

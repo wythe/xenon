@@ -55,13 +55,27 @@ inline std::string enum_string(spec::cursor self, msg_const_cursor c) {
     return self->v->venum_string(self, c);
 }
 
+// start -- a cursor anywhere in the tree
+// returns start.end() upon failure
+template <typename SpecCursor>
+inline SpecCursor find_prop(SpecCursor start, const std::string & prop_name) {
+    auto xddl = get_root(start).begin();
+    auto exp = std::find_if(xddl.begin(), xddl.end(), [&](const element & c){ return c.tag() == "export"; });
+    if (exp != xddl.end()) {
+        auto prop = std::find_if(exp.begin(), exp.end(), [&](const element & c){ 
+            return c.tag() == "prop" && c.name() == prop_name; });
+        if (prop != exp.end()) return prop;
+    }
+    return start.end();
+}
+
 template <typename Cursor>
 inline std::string create_jump_name(Cursor start, const std::string & value) {
     static auto prop_path = path("xddl/export/prop");
     auto c = rfind(start, value);
     if (c.is_root()) {
         auto root = spec::cursor(c);
-        auto x = find(root, prop_path, tag_of, cmp_name(value));
+        auto x = find_prop(root, value);
         if (x == root.end()) IT_PANIC("cannot find " << value);
     }        
     c->flags.set(element::dependent_flag);

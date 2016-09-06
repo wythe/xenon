@@ -229,13 +229,8 @@ message::cursor create_global(spec::cursor xddl_root, message::cursor globs, con
     bitstring bits) {
     static auto prop_path = path("export/prop");
     auto root = xddl_root;
-    auto c = find(root, prop_path, tag_of, cmp_name(name));
-
-    if (c == root.end()) { // must be an extern
-        c = find(root, "extern", tag_of, cmp_name(name));
-        if (c == root.end()) IT_PANIC("internal panic looking for " << name  << " in " << xddl_root->parser->file); 
-    }
-
+    auto c = find_prop(root.parent(), name);
+    if (c == root.end()) IT_PANIC("internal panic looking for " << name  << " in " << xddl_root->parser->file); 
     if (bits.empty()) {
         if (auto prop_elem = get_ptr<prop>(c->v)) {
             if (!prop_elem) IT_PANIC("internal panic");
@@ -257,23 +252,14 @@ message::cursor set_global(spec::cursor self, message::cursor value) {
 
 spec::cursor get_variable(const std::string & name, spec::cursor context) {
     static auto prop_path = path("xddl/export/prop");
-    static auto extern_path = path("xddl/extern");
-    spec::ascending_cursor first(context);
-    while (!first.is_root()) {
-        if (name == first->name()) return first;
-        ++first;
-    }
-    auto root = spec::cursor(first);
-    auto x = find(root, prop_path, tag_of, cmp_name(name));
-    if (x != root.end()) return x;
+    // look for name previously defined in spec
+    auto first = rfind(context, name);
+    if (!first.is_root()) return first;
 
-    // not found, search for <extern>
-    // TODO: remove <extern> and just use global, if 2 globals have different defaults, then undefined
-    // or get rid of global and just use props
-    auto c = find(root, extern_path, tag_of, cmp_name(name));
-    if (c != root.end()) return c;
-    
-    // verify(root);
+    // not there, so look for a prop
+    auto x = find_prop(context, name);
+    if (x != context.end()) return x;
+
     IT_PANIC("cannot find " << name << " starting at " << context->name());
 }
 
@@ -284,7 +270,7 @@ message::cursor get_variable(const std::string & name, message::cursor context) 
 
     // first is now pointing at message root
     auto globs = first.begin();
-    auto g = find(globs, name);
+    auto g = std::find_if(globs.begin(), globs.end(), [&](const node & n) { return n.name() == name; });
     if (g == globs.end()) {
         auto xddl_root = ict::get_root(context->elem).begin();
         try {
@@ -292,7 +278,7 @@ message::cursor get_variable(const std::string & name, message::cursor context) 
         } catch (std::exception & e) {
             ict::osstream os;
             os << e.what() << " [" << context->file() << ":" << context->line() << "]";
-            IT_FATAL(os.str());
+            IT_PANIC(os.str());
         }
     }
     return g;
@@ -300,7 +286,7 @@ message::cursor get_variable(const std::string & name, message::cursor context) 
 
 int64_t eval_variable_list(const std::string &first, const std::string &second, spec::cursor context) {
     auto f = get_variable(first, context);
-    auto s = find(f, second);
+    auto s = find_first(f, second);
     if (s == f.end()) { // second not found, it may be in another spec though (f may be a reclink)
         // f is a reclink, so get the record it is pointing to.
         if (auto r = get_ptr<reclink>(f->v)) {

@@ -7,12 +7,16 @@
 #include <xenon/find_first.h>
 namespace xenon {
 
-template <typename Cursor, typename PathVec, typename ForIter, typename Action>
+template <typename Cursor, typename Path, typename ForwardIterator, typename Action>
+// Cursor - SequenceContainer and ForwardIterator
+// Path - Container with ForwardIterator
+// Action - Lambda Expression that takes a Cursor parameter
+//
 // parent - parent node in tree
 // path - a vector of strings made up from something like "a/b/c"
 // curr - current iterator into path
 // action - lambda function to be called upon match
-void for_each_path(Cursor parent, const PathVec & path, ForIter curr, Action action) {
+inline void for_each_path(Cursor parent, const Path & path, ForwardIterator curr, Action action) {
     for (auto child = parent.begin(); child != parent.end(); ++child) {
         if (*curr == child->name()) {
             if ((curr + 1) == path.end()) { 

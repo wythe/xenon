@@ -15,10 +15,18 @@ using message = ict::multivector<node>;
 
 // message algorithms
 
-#if 1
 // TODO How to get rid of these two?  We need a multivector::cursor_type that is a const_cursor if m
 // is passed in as const, otherwise just a cursor.  I don't know how to do this, but the stl apparently does
 // somehow for algorithms that take containers.
+#if 0
+inline message::const_cursor find_first(const message & m, const xpath & path) {
+    return find_first(m.root(), path);
+}
+
+inline message::cursor find_first(message & m, const xpath & path) {
+    return find_first(m.root(), path);
+}
+#else
 inline message::const_cursor find_first(const message & m, const xpath & path) {
     return find_first(m.root(), path);
 }
@@ -87,7 +95,7 @@ inline int64_t eval_variable(const std::string &name, message::cursor context) {
 
 inline int64_t eval_variable_list(const std::string &first, const std::string &second, message::cursor context) {
     auto f = get_variable(first, context);
-    auto s = find(f, second);
+    auto s = find_first(f, second);
     if (s == f.end()) IT_PANIC("unmatched second variable: " << second);
     return ict::to_integer<int64_t>(s->bits);
 }

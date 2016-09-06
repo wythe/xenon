@@ -93,6 +93,7 @@ namespace util {
     }
 }
 
+#if 1
 // find given a path
 template <typename Cursor, typename Op, typename Test>
 inline Cursor find(Cursor parent, const path & path, Op op, Test test) {
@@ -114,39 +115,6 @@ inline Cursor find(Cursor parent, const path & path, Op op, Test test) {
     }
 }
 
-#if 0
-void match_path(Cursor parent, path & curr_path, const path & path) {
-    for (iterator i = parent.begin(); i!= parent.end(); ++i) {
-        curr_path += name_of(i);
-        if (curr_path.has_tail(path)) f(
-    }
-}
-
-template <typename Cursor, const path & path, typename Function>
-inline Function for_each_path(cursor parent, const path & path, Op f) {
-    typedef typename Cursor::linear_type iterator;
-    path curr;
-    for (iterator i = parent.begin(); i!= parent.end(); ++i) {
-        curr = name_of(i);
-    }
-
-    if (path.absolute()) return util::find_x(parent, path.begin(), path.end(), op, test);
-    else {
-        for (iterator i = parent.begin(); i!= parent.end(); ++i) {
-            if (op(*i) == *path.begin()) {
-                if (path.begin() + 1 == path.end()) {
-                    if (test(*i)) return i;
-                } else {
-                    auto c = Cursor(i);
-                    auto x = util::find_x(c, path.begin() + 1, path.end(), op, test);
-                    if (x != c.end()) return x;
-                }
-            }
-        }
-        return parent.end();
-    }
-}
-#endif
 template <typename Cursor, typename Op>
 inline Cursor find(Cursor parent, const path & path, Op op) {
     typedef typename Cursor::value_type value_type;
@@ -157,6 +125,8 @@ template <typename Cursor>
 inline Cursor find(Cursor parent, const path & path) {
     return find(parent, path, name_of<typename Cursor::value_type>);
 }
+
+#endif
 
 template <typename Cursor, typename Op, typename Test>
 inline Cursor rfind(Cursor first, const path & path, Op op, Test test) {
@@ -207,3 +177,4 @@ inline std::string path_string(T c) {
 }
 }
 #include <xenon/find_first.h>
+#include <xenon/for_each_path.h>

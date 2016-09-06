@@ -392,7 +392,7 @@ inline void parse_children(spec::cursor self, message::cursor parent, ict::ibits
     }
 }
 
-// the default vparse is just to parse the children (<xddl> for example)
+// the default vparse is just to parse the children 
 void element::var_type::vparse(spec::cursor self, message::cursor parent, ict::ibitstream & bs) const {
     parse_children(self, parent, bs);
 }
@@ -401,6 +401,10 @@ void xddl::vparse(spec::cursor self, message::cursor parent, ict::ibitstream & b
     auto st = find(self, "start", tag_of);
     if (st == self.end()) IT_PANIC("no <start> element in " << self->parser->file);
     parse(st, parent, bs);
+}
+
+void start::vparse(spec::cursor self, message::cursor parent, ict::ibitstream & bs) const {
+    parse_children(self, parent, bs);
     add_extra(self, parent, bs);
 }
 
