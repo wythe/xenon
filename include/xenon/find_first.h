@@ -58,20 +58,36 @@ inline std::ostream & operator<<(std::ostream & os, const xpath & p) {
     return os;
 }
 
+// root a/b a
 // similar to for_each_path, but we return after the first time found
-template <typename Cursor, typename Path, typename ForwardIterator>
-inline Cursor find_first(Cursor parent, const Path & path, ForwardIterator curr) {
+template <typename Cursor, typename ForwardIterator>
+inline Cursor find_first(Cursor parent, ForwardIterator first, ForwardIterator last, ForwardIterator curr) {
     for (auto child = parent.begin(); child != parent.end(); ++child) {
         if (*curr == child->name()) {
-            if ((curr + 1) == path.end()) { 
+            if ((curr + 1) == last) { 
                 return child;
             } else {
-                auto c = find_first(child, path, curr + 1);
-                if (c != child.end()) return child;
+                auto c = find_first(child, first, last, curr + 1);
+                if (c != child.end()) return c;
             }
         } else {
-            auto c = find_first(child, path, path.begin());
-            if (c != child.end()) return child;
+            auto c = find_first(child, first, last, first);
+            if (c != child.end()) return c;
+        }
+    }
+    return parent.end();
+}
+
+template <typename Cursor, typename ForwardIterator>
+inline Cursor find_first_abs(Cursor parent, ForwardIterator first, ForwardIterator last, ForwardIterator curr) {
+    for (auto child = parent.begin(); child != parent.end(); ++child) {
+        if (*curr == child->name()) {
+            if ((curr + 1) == last) { 
+                return child;
+            } else {
+                auto c = find_first(child, first, last, curr + 1);
+                if (c != child.end()) return c;
+            }
         }
     }
     return parent.end();
@@ -79,6 +95,8 @@ inline Cursor find_first(Cursor parent, const Path & path, ForwardIterator curr)
 
 template <typename Cursor>
 inline Cursor find_first(Cursor parent, const xpath & path) {
-    return find_first(parent, path, path.begin());
+    return path.absolute() ? 
+        find_first_abs(parent, path.begin(), path.end(), path.begin()) :
+        find_first(parent, path.begin(), path.end(), path.begin());
 }
 }

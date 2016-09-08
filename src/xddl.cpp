@@ -121,11 +121,13 @@ static int script_find(lua::lua_State *L) {
     auto n = ict::get_root(get_cursor(L));
     const char * s = luaL_checkstring(L, 1);
 
-    auto c = find(n, s);
+    auto c = find_first(n, s);
     if (c == n.end()) {
+        IT_WARN(s << " not found");
         lua_pushstring(L, "");
         return 1;
     }
+    IT_WARN("found " << s << ": " << *c);
     lua_pushstring(L, description(c).c_str());
     return 1;
 }
@@ -323,12 +325,19 @@ void link_anon_types(spec::cursor parent) {
     });
 }
 
+// return a first level child with the specified tag. 
+template <typename Cursor>
+Cursor find_child_with_tag(const Cursor & parent, std::string const & tag) {
+    return std::find_if(parent.begin(), parent.end(), 
+        [&](const element & c){ return c.tag() == tag; });
+}
+
 void link_reflective_properties(spec::cursor doc_root) {
     // create a set of names for the globals
     auto globs = std::set<std::string>();
 
     // add exports
-    auto x = find(doc_root, "export", tag_of);
+    auto x = find_child_with_tag(doc_root, "export");
     if (x != doc_root.end()) for (auto & prop : x) globs.insert(prop.name());
     if (globs.empty()) return;
 
@@ -364,7 +373,7 @@ void xddl::vend_handler(spec::cursor self, spec & parser) {
     create_url_map<type>(self, parser.type_map, "type");
 
     // If there is a start, then it gets its own record reference.
-    auto st = find(self, "start", tag_of);
+    auto st = find_child_with_tag(self, "start");
     if (st != self.end()) {
         parser.recdef_map["#start"] = st;
     }
@@ -398,7 +407,7 @@ void element::var_type::vparse(spec::cursor self, message::cursor parent, ict::i
 }
 
 void xddl::vparse(spec::cursor self, message::cursor parent, ict::ibitstream & bs) const {
-    auto st = find(self, "start", tag_of);
+    auto st = find_child_with_tag(self, "start");
     if (st == self.end()) IT_PANIC("no <start> element in " << self->parser->file);
     parse(st, parent, bs);
 }
@@ -493,7 +502,7 @@ void prop::vparse(spec::cursor self, message::cursor parent, ict::ibitstream &) 
     c->set_visible(visible);
 }
 
-// same as get_variable but filtered on props only (lambda param?)
+// same as get_variable but filtered on props only
 message::cursor get_prop(message::cursor first, const std::string & name) {
     auto r = message::ascending_cursor(first);
     while (!r.is_root()) {
@@ -503,7 +512,7 @@ message::cursor get_prop(message::cursor first, const std::string & name) {
     if (!r.is_root()) return r;
 
     auto globs = message::cursor(r).begin();
-    auto g = find(globs, name);
+    auto g = find_first(globs, name);
     if (g != globs.end()) return g;
 
     return r; // just return root

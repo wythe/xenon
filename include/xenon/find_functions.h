@@ -93,7 +93,7 @@ namespace util {
     }
 }
 
-#if 1
+#if 0
 // find given a path
 template <typename Cursor, typename Op, typename Test>
 inline Cursor find(Cursor parent, const path & path, Op op, Test test) {

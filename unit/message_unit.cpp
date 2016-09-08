@@ -17,7 +17,7 @@ int count_test(xn::message const & m, std::string const & path) {
 
 struct first_type {
     std::string bits;
-    std::string path;
+    xenon::xpath path;
     int result; // -1 means not found
 };
 
@@ -60,7 +60,12 @@ void unit::find_first_test() {
         for (auto & y : x.second) {
             auto m = xn::parse(rec, y.bits);
             auto c = xn::find_first(m, y.path);
-            if (c == m.end()) IT_ASSERT_MSG(x.first << ' ' << y, y.result == -1);
+            if (c != m.end()) {
+                auto last = --y.path.end();
+                IT_ASSERT_MSG(c->name() << " != " << *last << " for path " << y.path, c->name() == *last);
+            } else {
+                IT_ASSERT_MSG(x.first << ' ' << y, y.result == -1);
+            }
         }
     }
 }

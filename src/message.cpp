@@ -244,7 +244,7 @@ message::cursor create_global(spec::cursor xddl_root, message::cursor globs, con
 
 message::cursor set_global(spec::cursor self, message::cursor value) {
     auto globs = ict::get_root(value).begin(); 
-    auto g = find(globs, value->name());
+    auto g = find_first(globs, value->name());
     if (g == globs.end()) g = create_global(get_root(self).begin(), globs, value->name(), value->bits);
     else g->bits = value->bits;
     return g;
@@ -290,15 +290,16 @@ int64_t eval_variable_list(const std::string &first, const std::string &second, 
     if (s == f.end()) { // second not found, it may be in another spec though (f may be a reclink)
         // f is a reclink, so get the record it is pointing to.
         if (auto r = get_ptr<reclink>(f->v)) {
-            auto xddl = rfind(context, "xddl", tag_of);
-            auto c = find(xddl, "record", tag_of, [&](const element &e) {
-                if (auto rec = get_ptr<recdef>(e.v)) {
-                    if (rec->id == r->href) return 1;
-                }
-                return 0;
-            });
+            auto xddl = ict::get_root(context).begin();
+            auto c = std::find_if(xddl.begin(), xddl.end(), 
+                [&](const element &e) {
+                    if (auto rec = get_ptr<recdef>(e.v)) {
+                        if (rec->id == r->href) return true;
+                    }
+                    return false;
+                });
             if (c == xddl.end()) IT_PANIC("cannot find record: " << r->href);
-            s = find(c, second);
+            s = find_first(c, second);
             if (s == c.end()) IT_PANIC("cannot find " << second << " in " << r->href);
         }
     }
