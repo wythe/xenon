@@ -85,7 +85,7 @@ inline Cursor find_first_abs(Cursor parent, ForwardIterator first, ForwardIterat
             if ((curr + 1) == last) { 
                 return child;
             } else {
-                auto c = find_first(child, first, last, curr + 1);
+                auto c = find_first_abs(child, first, last, curr + 1);
                 if (c != child.end()) return c;
             }
         }
@@ -99,4 +99,22 @@ inline Cursor find_first(Cursor parent, const xpath & path) {
         find_first_abs(parent, path.begin(), path.end(), path.begin()) :
         find_first(parent, path.begin(), path.end(), path.begin());
 }
+
+template <typename Cursor>
+inline Cursor rfind_first(Cursor first, const xpath & path) {
+    typedef typename Cursor::ascending_cursor_type ascending_cursor;
+    auto rfirst = ascending_cursor(first);
+    while (!rfirst.is_root()) {
+        if (rfirst->name() == *path.begin()) {
+            auto parent = Cursor(rfirst);
+            if (path.size() == 1) return parent;
+            auto x = find_first_abs(parent, path.begin(), path.end(), path.begin() + 1);
+            if (x != parent.end()) return x;
+        }
+        ++rfirst;
+    }
+    return rfirst;
+}
+
+
 }

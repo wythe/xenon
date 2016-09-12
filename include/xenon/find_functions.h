@@ -4,6 +4,8 @@
 #include <ict/ict.h>
 #include <vector>
 #include <string>
+#include <xenon/find_first.h>
+#include <xenon/for_each_path.h>
 
 namespace xenon {
 // find and rfind algorithms
@@ -65,100 +67,6 @@ inline std::string name_of(const std::string & value) { return value; }
 template <>
 inline std::string name_of(const int & value) { return ict::to_string(value); }
 
-namespace util {
-    template <typename Cursor, typename Op, typename Test>
-    inline Cursor rfind_x(Cursor first, const std::string & name, Op op, Test test) {
-        typedef typename Cursor::ascending_cursor_type ascending_cursor;
-        auto c = ascending_cursor(first);
-        while (!c.is_root()) {
-            if (op(*c) == name && test(*c)) return c;
-            ++c;
-        }
-        return c;
-    }
-    template <typename Cursor, typename PathIter, typename Op, typename Test>
-    inline Cursor find_x(Cursor parent, PathIter first, PathIter last, Op op, Test test) {
-        if (parent.empty()) return parent.end();
-        for (auto i = parent.begin(); i!=parent.end(); ++i) {
-            if (op(*i) == *first) {
-                if (first + 1 == last) {
-                    if (test(*i)) return i;
-                } else {
-                    auto n = find_x(i, first + 1, last, op, test);
-                    if (n != i.end()) return n;
-                }
-            }
-        }
-        return parent.end();
-    }
-}
-
-#if 0
-// find given a path
-template <typename Cursor, typename Op, typename Test>
-inline Cursor find(Cursor parent, const path & path, Op op, Test test) {
-    typedef typename Cursor::linear_type iterator;
-    if (path.absolute()) return util::find_x(parent, path.begin(), path.end(), op, test);
-    else {
-        for (iterator i = parent.begin(); i!= parent.end(); ++i) {
-            if (op(*i) == *path.begin()) {
-                if (path.begin() + 1 == path.end()) {
-                    if (test(*i)) return i;
-                } else {
-                    auto c = Cursor(i);
-                    auto x = util::find_x(c, path.begin() + 1, path.end(), op, test);
-                    if (x != c.end()) return x;
-                }
-            }
-        }
-        return parent.end();
-    }
-}
-
-template <typename Cursor, typename Op>
-inline Cursor find(Cursor parent, const path & path, Op op) {
-    typedef typename Cursor::value_type value_type;
-    return find(parent, path, op, [](const value_type &){ return true; });
-}
-
-template <typename Cursor>
-inline Cursor find(Cursor parent, const path & path) {
-    return find(parent, path, name_of<typename Cursor::value_type>);
-}
-
-#endif
-
-template <typename Cursor, typename Op, typename Test>
-inline Cursor rfind(Cursor first, const path & path, Op op, Test test) {
-    typedef typename Cursor::ascending_cursor_type ascending_cursor;
-    if (!path.absolute()) std::runtime_error("path must be absolute for rfind()");
-    if (path.size() == 1) return util::rfind_x(first, *path.begin(), op, test);
-    
-    auto rfirst = ascending_cursor(first);
-
-    while (!rfirst.is_root()) {
-        if (op(*rfirst) == *path.begin()) {
-            auto parent = Cursor(rfirst);
-            auto x = util::find_x(parent, path.begin() + 1, path.end(), op, test);
-            if (x != parent.end()) return x;
-        }
-        ++rfirst;
-    }
-    return rfirst;
-}
-
-// rfind given a path
-template <typename Cursor, typename Op>
-inline Cursor rfind(Cursor first, const path & path, Op op) {
-    typedef typename Cursor::value_type value_type;
-    return rfind(first, path, op, [](const value_type &){ return true; });
-}
-
-template <typename Cursor>
-inline Cursor rfind(Cursor first, const path & path) {
-    return rfind(first, path, name_of<typename Cursor::value_type>);
-}
-
 template <typename S, typename C> 
 inline void path_string(S & ss, C c) {
     if (!c.is_root()) {
@@ -176,5 +84,3 @@ inline std::string path_string(T c) {
     return ss.take();
 }
 }
-#include <xenon/find_first.h>
-#include <xenon/for_each_path.h>

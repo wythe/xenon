@@ -45,7 +45,7 @@ static int script_datetime(lua::lua_State *L) {
 static int script_Description(lua::lua_State *L) {
     const char * s = lua::luaL_checklstring(L, 1, NULL);
     auto n = get_cursor(L);
-    auto c = rfind(n, s);
+    auto c = rfind_first(n, s);
     if (c.is_root()) lua::lua_pushstring(L, "");
     else lua::lua_pushstring(L, description(c).c_str());
     return 1;
@@ -66,7 +66,7 @@ static int script_EnumValue(lua::lua_State *L) {
 static int script_Value(lua::lua_State *L) {
     const char * s = lua::luaL_checklstring(L, 1, NULL);
     auto n = get_cursor(L);
-    auto c = rfind(n, s);
+    auto c = rfind_first(n, s);
     if (c.is_root()) lua::lua_pushnumber(L, 0);
     else lua::lua_pushnumber(L, c->value());
     return 1;
@@ -109,7 +109,7 @@ static int script_Gsm7(lua::lua_State * L) {
     int fill = 0;
     const char * s = lua::luaL_checklstring(L, 1, NULL);
     if (s) {
-        auto c = rfind(get_cursor(L), s);
+        auto c = rfind_first(get_cursor(L), s);
         if (!c.is_root()) fill = ict::to_integer<int>(c->bits); 
     }
     std::string sms = ict::gsm7(get_cursor(L)->bits, fill);
@@ -442,7 +442,7 @@ void fragment::vparse(spec::cursor self, message::cursor parent, ict::ibitstream
 void jump::vparse(spec::cursor self, message::cursor parent, ict::ibitstream &bs) const {
     try { 
         // get the field this jump is based on
-        auto c = rfind(leaf(parent), base); // c is a field node
+        auto c = rfind_first(leaf(parent), base); // c is a field node
         if (c.is_root()) IT_PANIC("cannot find " << base);
 
         auto elem = c->elem;

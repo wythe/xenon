@@ -253,7 +253,7 @@ message::cursor set_global(spec::cursor self, message::cursor value) {
 spec::cursor get_variable(const std::string & name, spec::cursor context) {
     static auto prop_path = path("xddl/export/prop");
     // look for name previously defined in spec
-    auto first = rfind(context, name);
+    auto first = rfind_first(context, name);
     if (!first.is_root()) return first;
 
     // not there, so look for a prop
@@ -265,7 +265,7 @@ spec::cursor get_variable(const std::string & name, spec::cursor context) {
 
 // parse time
 message::cursor get_variable(const std::string & name, message::cursor context) {
-    auto first = rfind(context, name);
+    auto first = rfind_first(context, name);
     if (!first.is_root()) return first;
 
     // first is now pointing at message root
@@ -314,12 +314,12 @@ int64_t eval_function(const std::string &name, message::cursor context,
         return bit_size(c);
     }
     else if ((name == "defined")) {
-        if (rfind(context, params[0].name).is_root()) return 0;
+        if (rfind_first(context, params[0].name).is_root()) return 0;
         return 1;
     }
 
     else if ((name == "value")) {
-        auto c = rfind(context, params[0].name);
+        auto c = rfind_first(context, params[0].name);
         if (!c.is_root()) return c->value();
         IT_WARN("cannot find " << params[0].name);
         return 0;
