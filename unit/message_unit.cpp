@@ -17,7 +17,7 @@ int count_test(xn::message const & m, std::string const & path) {
 
 struct first_type {
     std::string bits;
-    xenon::xpath path;
+    xenon::path path;
     int result; // -1 means not found
 };
 

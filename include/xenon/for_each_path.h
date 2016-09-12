@@ -28,7 +28,7 @@ inline void for_each_path(Cursor parent, const Path & path, ForwardIterator curr
 }
 
 template <typename Cursor, typename Action>
-void for_each_path(Cursor parent, const xpath & path, Action action) {
+void for_each_path(Cursor parent, const path & path, Action action) {
     for_each_path(parent, path, path.begin(), action);
 }
 

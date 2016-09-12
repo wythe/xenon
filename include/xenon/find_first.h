@@ -7,13 +7,13 @@
 
 namespace xenon {
 // find_first
-struct xpath {
+struct path {
     typedef std::vector<std::string>::iterator iterator;
     typedef std::vector<std::string>::const_iterator const_iterator;
 
-    xpath(const std::vector<std::string> & xpath, bool abs = false) : p(xpath), abs(abs) { }
+    path(const std::vector<std::string> & path, bool abs = false) : p(path), abs(abs) { }
 
-    xpath(const std::string & path_string) {
+    path(const std::string & path_string) {
         auto ps = path_string;
         if (ps.size() == 0) std::runtime_error("invalid empty path");
         if (ps[0] == '/') { 
@@ -29,7 +29,7 @@ struct xpath {
         p = ict::escape_split(ps, '/');
     }
 
-    xpath(const char * path_string) : xpath(std::string(path_string)) {}
+    path(const char * path_string) : path(std::string(path_string)) {}
 
     iterator begin() { return p.begin(); }
     const_iterator begin() const { return p.begin(); }
@@ -46,13 +46,13 @@ struct xpath {
     bool abs = false;
 };
 
-inline ict::osstream & operator<<(ict::osstream & os, const xpath & p) {
+inline ict::osstream & operator<<(ict::osstream & os, const path & p) {
     if (p.absolute()) os << "/";
     ict::join(os, p.cbegin(), p.cend(), "/");
     return os;
 }
 
-inline std::ostream & operator<<(std::ostream & os, const xpath & p) {
+inline std::ostream & operator<<(std::ostream & os, const path & p) {
     if (p.absolute()) os << "/";
     ict::join(os, p.cbegin(), p.cend(), "/");
     return os;
@@ -94,14 +94,14 @@ inline Cursor find_first_abs(Cursor parent, ForwardIterator first, ForwardIterat
 }
 
 template <typename Cursor>
-inline Cursor find_first(Cursor parent, const xpath & path) {
+inline Cursor find_first(Cursor parent, const path & path) {
     return path.absolute() ? 
         find_first_abs(parent, path.begin(), path.end(), path.begin()) :
         find_first(parent, path.begin(), path.end(), path.begin());
 }
 
 template <typename Cursor>
-inline Cursor rfind_first(Cursor first, const xpath & path) {
+inline Cursor rfind_first(Cursor first, const path & path) {
     typedef typename Cursor::ascending_cursor_type ascending_cursor;
     auto rfirst = ascending_cursor(first);
     while (!rfirst.is_root()) {

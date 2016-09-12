@@ -18,23 +18,13 @@ using message = ict::multivector<node>;
 // TODO How to get rid of these two?  We need a multivector::cursor_type that is a const_cursor if m
 // is passed in as const, otherwise just a cursor.  I don't know how to do this, but the stl apparently does
 // somehow for algorithms that take containers.
-#if 0
-inline message::const_cursor find_first(const message & m, const xpath & path) {
+inline message::const_cursor find_first(const message & m, const path & path) {
     return find_first(m.root(), path);
 }
 
-inline message::cursor find_first(message & m, const xpath & path) {
+inline message::cursor find_first(message & m, const path & path) {
     return find_first(m.root(), path);
 }
-#else
-inline message::const_cursor find_first(const message & m, const xpath & path) {
-    return find_first(m.root(), path);
-}
-
-inline message::cursor find_first(message & m, const xpath & path) {
-    return find_first(m.root(), path);
-}
-#endif
 
 std::string to_xml(message::cursor c);
 
