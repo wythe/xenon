@@ -11,13 +11,8 @@ namespace xenon {
 using ict::bitstring;
 using message = ict::multivector<node>;
 
-// node info type
-
 // message algorithms
 
-// TODO How to get rid of these two?  We need a multivector::cursor_type that is a const_cursor if m
-// is passed in as const, otherwise just a cursor.  I don't know how to do this, but the stl apparently does
-// somehow for algorithms that take containers.
 inline message::const_cursor find_first(const message & m, const path & path) {
     return find_first(m.root(), path);
 }

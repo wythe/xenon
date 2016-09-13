@@ -2,8 +2,6 @@
 //-- Copyright 2016 Intrig
 //-- See https://github.com/intrig/xenon for license.
 
-//#include <ict/find_functions.h>
-
 namespace xenon { 
 
 template <>
@@ -38,7 +36,6 @@ inline element& elem_of(spec::cursor c) {
 }
 
 inline void parse(spec::cursor self, msg_cursor parent, ict::ibitstream & bs) {
-    //IT_WARN("parsing: " << *self << " " << self->parser->file << ":" << self->line);
     self->v->vparse(self, parent, bs);
 }
 

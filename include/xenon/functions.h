@@ -6,6 +6,7 @@
 #include <string>
 
 namespace xenon {
+
 // find_first
 struct path {
     typedef std::vector<std::string>::iterator iterator;
@@ -58,7 +59,31 @@ inline std::ostream & operator<<(std::ostream & os, const path & p) {
     return os;
 }
 
-// root a/b a
+template <typename Cursor, typename Path, typename ForwardIterator, typename Action>
+// Cursor - SequenceContainer and ForwardIterator
+// Path - Container with ForwardIterator
+// Action - Lambda Expression that takes a Cursor parameter
+//
+// parent - parent node in tree
+// path - a vector of strings made up from something like "a/b/c"
+// curr - current iterator into path
+// action - lambda function to be called upon match
+inline void for_each_path(Cursor parent, const Path & path, ForwardIterator curr, Action action) {
+    for (auto child = parent.begin(); child != parent.end(); ++child) {
+        if (*curr == child->name()) {
+            if ((curr + 1) == path.end()) { 
+                action(child);
+                for_each_path(child, path, path.begin(), action);
+            } else for_each_path(child, path, curr + 1, action);
+        } else for_each_path(child, path, path.begin(), action);
+    }
+}
+
+template <typename Cursor, typename Action>
+void for_each_path(Cursor parent, const path & path, Action action) {
+    for_each_path(parent, path, path.begin(), action);
+}
+
 // similar to for_each_path, but we return after the first time found
 template <typename Cursor, typename ForwardIterator>
 inline Cursor find_first(Cursor parent, ForwardIterator first, ForwardIterator last, ForwardIterator curr) {
@@ -78,6 +103,7 @@ inline Cursor find_first(Cursor parent, ForwardIterator first, ForwardIterator l
     return parent.end();
 }
 
+// absolute version of above
 template <typename Cursor, typename ForwardIterator>
 inline Cursor find_first_abs(Cursor parent, ForwardIterator first, ForwardIterator last, ForwardIterator curr) {
     for (auto child = parent.begin(); child != parent.end(); ++child) {
@@ -116,5 +142,34 @@ inline Cursor rfind_first(Cursor first, const path & path) {
     return rfirst;
 }
 
+
+template <typename T>  
+inline bool leaf_test(const T &) { return 1; }
+
+template <typename T> 
+inline std::string name_of(const T & a) { return a.name; }
+
+template <>
+inline std::string name_of(const std::string & value) { return value; }
+
+template <>
+inline std::string name_of(const int & value) { return ict::to_string(value); }
+
+template <typename S, typename C> 
+inline void path_string(S & ss, C c) {
+    if (!c.is_root()) {
+        path_string(ss, c.parent());
+        ss << '/';
+        ss << name_of(*c);
+    }
+}
+
+// return the path of a cursor
+template <typename T, typename C = typename T::is_cursor> 
+inline std::string path_string(T c) {
+    ict::osstream ss;
+    path_string(ss, c);
+    return ss.take();
+}
 
 }

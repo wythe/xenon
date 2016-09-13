@@ -3,7 +3,7 @@
 #include "loadunit.h"
 
 #include <boost/filesystem.hpp>
-#include <xenon/xenon.h>
+#include <xenon/spec_server.h>
 
 namespace bf = boost::filesystem;
 using std::cout;

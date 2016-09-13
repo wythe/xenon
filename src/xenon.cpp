@@ -10,7 +10,6 @@
 #include <set>
 
 // xddl script
-#include <xenon/find_functions.h>
 #include <xenon/lua.hpp>
 
 namespace xenon {
