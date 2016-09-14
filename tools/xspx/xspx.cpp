@@ -11,6 +11,7 @@ int main(int argc, char **argv) {
     try {
         std::string hfile;
         std::string sfile;
+        std::string wdfile;
         bool dispatch = false;
         std::string dispatch_name = "dispatch";
         xsp_parser p;
@@ -21,6 +22,9 @@ int main(int argc, char **argv) {
         }));
         line.add(ict::option("source file", 'S', "Output cpp file", "", [&](std::string s){
             sfile = s;
+        }));
+        line.add(ict::option("wd file", 'w', "Output writedown documentation file", "", [&](std::string s){
+            wdfile = s;
         }));
         line.add(ict::option("dispatcher", 'd', "Generate displatch function", dispatch_name, [&](std::string s){ 
             dispatch = true;

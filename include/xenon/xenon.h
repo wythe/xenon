@@ -35,7 +35,6 @@ namespace util {
     template <typename Stream, typename Cursor, typename Filter>
     void to_debug_text(Stream & os, Cursor parent, Filter filter, int level) {
         for (auto c = parent.begin(); c != parent.end(); ++c) if (filter(c)) {
-            // os << ict::spaces(level * 2) << c->tag() << " " << c->mnemonic() << " " << c->name() << '\n';
             os << ict::spaces(level * 2);
             to_debug(os, *c);
             os << '\n';
