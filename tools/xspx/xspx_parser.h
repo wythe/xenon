@@ -254,6 +254,7 @@ void to_dispatch(Os & os, const Xsp & xsp, std::string const & name) {
 
     os << "\n} // end switch";
 }
+
 } // namespace xspx
 
 
