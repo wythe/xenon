@@ -23,7 +23,7 @@ inline message::cursor find_first(message & m, const path & path) {
 
 std::string to_xml(message::cursor c);
 
-// TODO this caused an ambiguity error on gcc 5.4
+// TODO: gcc 5.4 ambiguity issue
 // inline std::string description(const message & m) { return ""; }
 
 inline int64_t bit_size(message::cursor parent) {
