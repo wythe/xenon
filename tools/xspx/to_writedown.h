@@ -9,7 +9,7 @@ std::string attributes(const Elem & elem) {
     if (elem.attributes.empty()) {
         return "attributes: none\n";
     }
-    os << "\n\nattributes | name  | format | required | description\n";
+    os << "\n\nattributes | name  | type | required | description\n";
     os <<     "-----------|-------|--------|----------|------------\n";
     for (auto & a : elem.attributes) {
         os << " | " << a.name << " | " << a.type_name << "|";
@@ -21,13 +21,22 @@ std::string attributes(const Elem & elem) {
     return os.str();
 }
 
+std::string attribute_types(const custom_type_list & types) {
+    std::ostringstream os;
+    os << "\ntype | default | description\n";
+    os <<   "-----|---------|------------\n";
+    for (auto & t : types) {
+        os << t.name << " | " << t.def << " |\n";
+    }
+    return os.str();
+}
+
 template <typename Elem>
 std::string children(const Elem & elem) {
     auto v = elem.children;
     if (v.empty()) return "none";
     for (auto & s : v) {
-        s.insert(0, "&lt;");
-        s.append("&gt;");
+        s.insert(0, "^");
     }
     return ict::join(v, ", ");
 }
@@ -35,7 +44,7 @@ std::string children(const Elem & elem) {
 
 template <typename OS, typename Elem>
 void disp_element(OS & os, Elem const & elem) {
-    os << "# &lt;" << elem.tag << "&gt; {\n\n";
+    os << "# " << elem.tag << " {\n\n";
     
     os << attributes(elem) << "\n\n";
 
@@ -55,6 +64,7 @@ void disp_choices(OS & os, const choice_type & choice) {
 void to_writedown(std::ostream & os, const xsp_parser & xspx) {
     os << ":title XDDL Element Reference\n\n";
     os << ":toc(\"auto\")\n\n";
+
     os << "# Elements {\n";
     for (auto & i : xspx.elems) {
         for (auto & j : i) {
@@ -65,7 +75,11 @@ void to_writedown(std::ostream & os, const xsp_parser & xspx) {
 
     os << "# Polymorphic Elements {\n";
     for (auto & choice : xspx.choices)disp_choices(os, choice); 
-    os << "} // Polymorphic Elements\n";
+    os << "} // Polymorphic Elements\n\n";
+    os << "# Attribute Types {\n";
+    os << attribute_types(xspx.custom_types);
+    os << "} // Attributes\n";
+
 #if 0
 #endif
 
