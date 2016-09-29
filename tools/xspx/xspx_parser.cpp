@@ -28,7 +28,7 @@ xsp_parser::xsp_parser() {
     p.root_tag("xspec");
     p.add_children("xspec", { "nspace", "root", "base", "header", "type", "element", "choice", 
         "group", "code", "parser" });
-    p.add_children("element", { "att", "child", "class", "constr", "start", "end", "public", "group", "code" });
+    p.add_children("element", { "att", "child", "class", "constr", "display", "start", "end", "public", "group", "code" });
     p.add_children("choice", { "element", "group"} );
     p.add_children("group", { "child" });
     p.add_children("parser", { "name", "code" });
@@ -160,6 +160,11 @@ xsp_parser::xsp_parser() {
 
     p.end_handler("child", [&]{
         children.push_back(ict::normalize(cdata));
+        cdata.clear(); });
+
+    p.end_handler("display", [&]{
+        auto & e = elems.back().back();
+        e.display = ict::normalize(cdata);
         cdata.clear(); });
 
     p.end_handler("public", [&]{
@@ -529,6 +534,60 @@ std::string xsp_parser::parser_impl(st::type t) const {
 
 
 namespace xspx {
+
+ict::multivector<elem_type> elem_tree(const xsp_parser & xspx) {
+    ict::multivector<elem_type> tree;
+    std::vector<elem_type> elems = xspx.elems[0];
+
+    // add the choices
+    for (auto & choice : xspx.choices) {
+        elem_type ch;
+        ch.tag = choice.tag;
+        elems.push_back(ch);
+    }
+    
+
+    // now sort according to the tag
+    std::sort(elems.begin(), elems.end(), [](elem_type const & a, elem_type const & b) { 
+        return std::string(a.tag.c_str()) < std::string(b.tag.c_str());
+    });
+
+    // now convert to a multivector
+    for (auto & i : elems) {
+        if (!i.is_base) tree.root().emplace_back(i);
+    }    
+
+    // find the choices and add their subchildren
+    for (auto & choice : xspx.choices) {
+        auto c = std::find_if(tree.begin(), tree.end(), [&](auto & e){ return e.tag == choice.tag; });
+        for (auto & i : choice.elems) {
+            c.emplace_back(i);
+        }
+    }
+#if 0    
+    for (auto & i : elems) {
+        for (auto & j : i) {
+            if (!j.is_base) tree.root().emplace_back(j);
+        }
+    }    
+
+    for (auto & choice : xspx.choices) {
+        elem_type ch;
+        ch.tag = choice.tag;
+        auto c = tree.root().emplace(ch);
+        for (auto & i : choice.elems) {
+            c.emplace_back(i);
+        }
+    }
+#endif
+
+#if 0
+    std::sort(tree.begin(), tree.end(), [](elem_type const & a, elem_type const & b) { 
+        return std::string(a.tag.c_str()) < std::string(b.tag.c_str());
+    });
+#endif
+    return tree;
+}
 
 std::vector<elem_type> unique_elems(const xsp_parser & xspx) {
     auto v = std::vector<elem_type>();

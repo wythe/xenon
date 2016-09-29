@@ -285,11 +285,14 @@
     -->
     <choice tag="record">
         <element name="record">
+            <display>basic record</display>
             <att type="expression">length</att>
             <att type="string" local="false" def="record">name</att>
             <code href="vparse"/>
+            <group href="#common"/>
         </element>
         <element name="reclink">
+            <display>record link</display>
             <att type="expression">length</att>
             <att type="string" local="false" def="record">name</att>
             <att type="url">href</att>
@@ -298,30 +301,38 @@
             <code href="mutable_ref"/>
         </element>
         <element name="recdef">
+            <display>record definition</display>
             <att type="expression">length</att>
             <att type="id_url">id</att>
             <att type="string" local="false" def="record">name</att>
             <code href="vto_string"/>
+            <group href="#common"/>
         </element>
         <group href="#common"/>
     </choice>
 
     <choice tag="repeat">
         <element name="repeat">
+            <display>repeat indefinitely</display>
             <att type="string" local="false">name</att>
             <att type="size">minlen</att>
+            <group href="#common"/>
             <code href="vparse"/>
         </element>
         <element name="num_repeat">
+            <display>repeat based on an expression</display>
             <att type="string" local="false">name</att>
             <att type="expression" req="true">num</att>
+            <group href="#common"/>
             <code href="vparse"/>
         </element>
         <element name="bound_repeat">
+            <display>bound repeat</display>
             <att type="string" local="false">name</att>
             <att type="integer">minlen</att>
             <att type="expression">max</att>
             <att type="expression">min</att>
+            <group href="#common"/>
             <code href="vparse"/>
         </element>
         <group href="#common"/>

@@ -10,6 +10,7 @@
 
 #include <xenon/xml_parser.h>
 #include <ict/string64.h>
+#include <ict/multivector.h>
 
 #define qt(x) "\"" << x << "\""
 
@@ -63,6 +64,7 @@ struct elem_type {
     }
     ict::string64 tag; // the xml tag
     std::string name; // the cpp type, same as tag by defualt
+    std::string display; // the display name for documentation
     bool end_handler;
     bool has_stack;
     bool has_cdata;
@@ -233,7 +235,8 @@ void for_each_element(Xsp & xspx, Pred op) {
 }
 
 
-    std::vector<elem_type> unique_elems(const xsp_parser & xspx);
+std::vector<elem_type> unique_elems(const xsp_parser & xspx);
+ict::multivector<elem_type> elem_tree(const xsp_parser & xspx);
 
 template <typename Os, typename Xsp>
 void to_dispatch(Os & os, const Xsp & xsp, std::string const & name) {
