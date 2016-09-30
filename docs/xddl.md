@@ -44,12 +44,11 @@
 
 
 
-attributes | name  | [AttributeTypes](#AttributeTypes) | required | description
+attributes | name  | [type](#AttributeTypes) | required | description
 -----------|-------|--------|----------|------------
- | name | string| yes  | 
+ | name | string| &#10004  | 
  | type | url| | 
  | bias | integer| | 
- | length | expression| | 
  | default | expression| | 
 
 
@@ -60,9 +59,9 @@ children: [comment](#comment), [item](#item), [range](#range), [script](#script)
 
 
 
-attributes | name  | [AttributeTypes](#AttributeTypes) | required | description
+attributes | name  | [type](#AttributeTypes) | required | description
 -----------|-------|--------|----------|------------
- | value | integer| yes  | 
+ | value | integer| &#10004  | 
 
 
 children: [bit](#bit), [comment](#comment), [cstr](#cstr), [field](#field), [fragment](#fragment), [jump](#jump), [if](#if), [oob](#oob), [pad](#pad), [peek](#peek), [enc](#enc), [prop](#prop), [record](#record), [repeat](#repeat), [setprop](#setprop), [switch](#switch), [uint8](#uint8), [uint16](#uint16), [uint32](#uint32), [uint64](#uint64), [while](#while)
@@ -81,10 +80,10 @@ children: none
 
 
 
-attributes | name  | [AttributeTypes](#AttributeTypes) | required | description
+attributes | name  | [type](#AttributeTypes) | required | description
 -----------|-------|--------|----------|------------
  | max | expression| | 
- | name | string| yes  | 
+ | name | string| &#10004  | 
 
 
 children: none
@@ -121,12 +120,12 @@ children: [prop](#prop)
 
 
 
-attributes | name  | [AttributeTypes](#AttributeTypes) | required | description
+attributes | name  | [type](#AttributeTypes) | required | description
 -----------|-------|--------|----------|------------
- | name | string| yes  | 
+ | name | string| &#10004  | 
  | type | url| | 
  | bias | integer| | 
- | length | expression| yes  | 
+ | length | expression| &#10004  | 
  | default | expression| | 
 
 
@@ -137,9 +136,9 @@ children: [comment](#comment), [item](#item), [range](#range), [script](#script)
 
 
 
-attributes | name  | [AttributeTypes](#AttributeTypes) | required | description
+attributes | name  | [type](#AttributeTypes) | required | description
 -----------|-------|--------|----------|------------
- | href | url| yes  | 
+ | href | url| &#10004  | 
 
 
 children: none
@@ -149,9 +148,9 @@ children: none
 
 
 
-attributes | name  | [AttributeTypes](#AttributeTypes) | required | description
+attributes | name  | [type](#AttributeTypes) | required | description
 -----------|-------|--------|----------|------------
- | expr | expression| yes  | 
+ | expr | expression| &#10004  | 
 
 
 children: [bit](#bit), [comment](#comment), [cstr](#cstr), [field](#field), [fragment](#fragment), [jump](#jump), [if](#if), [oob](#oob), [pad](#pad), [peek](#peek), [enc](#enc), [prop](#prop), [record](#record), [repeat](#repeat), [setprop](#setprop), [switch](#switch), [uint8](#uint8), [uint16](#uint16), [uint32](#uint32), [uint64](#uint64), [while](#while)
@@ -161,11 +160,11 @@ children: [bit](#bit), [comment](#comment), [cstr](#cstr), [field](#field), [fra
 
 
 
-attributes | name  | [AttributeTypes](#AttributeTypes) | required | description
+attributes | name  | [type](#AttributeTypes) | required | description
 -----------|-------|--------|----------|------------
- | key | integer| yes  | 
+ | key | integer| &#10004  | 
  | href | url| | 
- | value | string| yes  | 
+ | value | string| &#10004  | 
 
 
 children: [comment](#comment)
@@ -175,9 +174,9 @@ children: [comment](#comment)
 
 
 
-attributes | name  | [AttributeTypes](#AttributeTypes) | required | description
+attributes | name  | [type](#AttributeTypes) | required | description
 -----------|-------|--------|----------|------------
- | base | jump_name| yes  | 
+ | base | jump_name| &#10004  | 
 
 
 children: none
@@ -196,7 +195,7 @@ children: [type](#type), [start](#start), [export](#export), [bit](#bit), [comme
 
 
 
-attributes | name  | [AttributeTypes](#AttributeTypes) | required | description
+attributes | name  | [type](#AttributeTypes) | required | description
 -----------|-------|--------|----------|------------
  | mod | pos_integer| | 
  | name | string| | 
@@ -210,11 +209,11 @@ children: none
 
 
 
-attributes | name  | [AttributeTypes](#AttributeTypes) | required | description
+attributes | name  | [type](#AttributeTypes) | required | description
 -----------|-------|--------|----------|------------
- | name | string| yes  | 
- | length | expression| yes  | 
- | offset | size| yes  | 
+ | name | string| &#10004  | 
+ | length | expression| &#10004  | 
+ | offset | size| &#10004  | 
 
 
 children: none
@@ -224,9 +223,9 @@ children: none
 
 
 
-attributes | name  | [AttributeTypes](#AttributeTypes) | required | description
+attributes | name  | [type](#AttributeTypes) | required | description
 -----------|-------|--------|----------|------------
- | name | string| yes  | 
+ | name | string| &#10004  | 
  | type | url| | 
  | value | expression| | 
  | visible | bool| | 
@@ -239,12 +238,12 @@ children: [comment](#comment), [item](#item), [range](#range), [script](#script)
 
 
 
-attributes | name  | [AttributeTypes](#AttributeTypes) | required | description
+attributes | name  | [type](#AttributeTypes) | required | description
 -----------|-------|--------|----------|------------
- | end | integer| yes  | 
+ | end | integer| &#10004  | 
  | href | url| | 
  | value | string| | 
- | start | integer| yes  | 
+ | start | integer| &#10004  | 
 
 
 children: [comment](#comment)
@@ -259,7 +258,7 @@ record has multiple attribute signatures
 
 
 
-attributes | name  | [AttributeTypes](#AttributeTypes) | required | description
+attributes | name  | [type](#AttributeTypes) | required | description
 -----------|-------|--------|----------|------------
  | name | string| | 
  | length | expression| | 
@@ -272,7 +271,7 @@ children: [bit](#bit), [comment](#comment), [cstr](#cstr), [field](#field), [fra
 
 
 
-attributes | name  | [AttributeTypes](#AttributeTypes) | required | description
+attributes | name  | [type](#AttributeTypes) | required | description
 -----------|-------|--------|----------|------------
  | name | string| | 
  | href | url| | 
@@ -286,7 +285,7 @@ children: none
 
 
 
-attributes | name  | [AttributeTypes](#AttributeTypes) | required | description
+attributes | name  | [type](#AttributeTypes) | required | description
 -----------|-------|--------|----------|------------
  | id | id_url| | 
  | name | string| | 
@@ -305,7 +304,7 @@ repeat has multiple attribute signatures
 
 
 
-attributes | name  | [AttributeTypes](#AttributeTypes) | required | description
+attributes | name  | [type](#AttributeTypes) | required | description
 -----------|-------|--------|----------|------------
  | name | string| | 
  | minlen | size| | 
@@ -318,9 +317,9 @@ children: [bit](#bit), [comment](#comment), [cstr](#cstr), [field](#field), [fra
 
 
 
-attributes | name  | [AttributeTypes](#AttributeTypes) | required | description
+attributes | name  | [type](#AttributeTypes) | required | description
 -----------|-------|--------|----------|------------
- | num | expression| yes  | 
+ | num | expression| &#10004  | 
  | name | string| | 
 
 
@@ -331,7 +330,7 @@ children: [bit](#bit), [comment](#comment), [cstr](#cstr), [field](#field), [fra
 
 
 
-attributes | name  | [AttributeTypes](#AttributeTypes) | required | description
+attributes | name  | [type](#AttributeTypes) | required | description
 -----------|-------|--------|----------|------------
  | min | expression| | 
  | max | expression| | 
@@ -355,11 +354,11 @@ children: none
 
 
 
-attributes | name  | [AttributeTypes](#AttributeTypes) | required | description
+attributes | name  | [type](#AttributeTypes) | required | description
 -----------|-------|--------|----------|------------
- | name | setprop_name| yes  | 
+ | name | setprop_name| &#10004  | 
  | type | url| | 
- | value | expression| yes  | 
+ | value | expression| &#10004  | 
 
 
 children: [comment](#comment), [item](#item), [range](#range), [script](#script)
@@ -378,9 +377,9 @@ children: [bit](#bit), [comment](#comment), [cstr](#cstr), [field](#field), [fra
 
 
 
-attributes | name  | [AttributeTypes](#AttributeTypes) | required | description
+attributes | name  | [type](#AttributeTypes) | required | description
 -----------|-------|--------|----------|------------
- | expr | expression| yes  | 
+ | expr | expression| &#10004  | 
 
 
 children: [case](#case), [default](#default)
@@ -390,9 +389,9 @@ children: [case](#case), [default](#default)
 
 
 
-attributes | name  | [AttributeTypes](#AttributeTypes) | required | description
+attributes | name  | [type](#AttributeTypes) | required | description
 -----------|-------|--------|----------|------------
- | id | id_url| yes  | 
+ | id | id_url| &#10004  | 
  | name | string| | 
 
 
@@ -403,12 +402,11 @@ children: [comment](#comment), [item](#item), [range](#range), [script](#script)
 
 
 
-attributes | name  | [AttributeTypes](#AttributeTypes) | required | description
+attributes | name  | [type](#AttributeTypes) | required | description
 -----------|-------|--------|----------|------------
- | name | string| yes  | 
+ | name | string| &#10004  | 
  | type | url| | 
  | bias | integer| | 
- | length | expression| | 
  | default | expression| | 
 
 
@@ -419,12 +417,11 @@ children: [comment](#comment), [item](#item), [range](#range), [script](#script)
 
 
 
-attributes | name  | [AttributeTypes](#AttributeTypes) | required | description
+attributes | name  | [type](#AttributeTypes) | required | description
 -----------|-------|--------|----------|------------
- | name | string| yes  | 
+ | name | string| &#10004  | 
  | type | url| | 
  | bias | integer| | 
- | length | expression| | 
  | default | expression| | 
 
 
@@ -435,12 +432,11 @@ children: [comment](#comment), [item](#item), [range](#range), [script](#script)
 
 
 
-attributes | name  | [AttributeTypes](#AttributeTypes) | required | description
+attributes | name  | [type](#AttributeTypes) | required | description
 -----------|-------|--------|----------|------------
- | name | string| yes  | 
+ | name | string| &#10004  | 
  | type | url| | 
  | bias | integer| | 
- | length | expression| | 
  | default | expression| | 
 
 
@@ -451,12 +447,11 @@ children: [comment](#comment), [item](#item), [range](#range), [script](#script)
 
 
 
-attributes | name  | [AttributeTypes](#AttributeTypes) | required | description
+attributes | name  | [type](#AttributeTypes) | required | description
 -----------|-------|--------|----------|------------
- | name | string| yes  | 
+ | name | string| &#10004  | 
  | type | url| | 
  | bias | integer| | 
- | length | expression| | 
  | default | expression| | 
 
 
@@ -467,10 +462,10 @@ children: [comment](#comment), [item](#item), [range](#range), [script](#script)
 
 
 
-attributes | name  | [AttributeTypes](#AttributeTypes) | required | description
+attributes | name  | [type](#AttributeTypes) | required | description
 -----------|-------|--------|----------|------------
  | name | string| | 
- | expr | expression| yes  | 
+ | expr | expression| &#10004  | 
 
 
 children: [bit](#bit), [comment](#comment), [cstr](#cstr), [field](#field), [fragment](#fragment), [jump](#jump), [if](#if), [oob](#oob), [pad](#pad), [peek](#peek), [enc](#enc), [prop](#prop), [record](#record), [repeat](#repeat), [setprop](#setprop), [switch](#switch), [uint8](#uint8), [uint16](#uint16), [uint32](#uint32), [uint64](#uint64), [while](#while)

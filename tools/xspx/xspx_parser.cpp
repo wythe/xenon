@@ -3,21 +3,29 @@
 #include "xspx_parser.h"
 #include <xenon/recref.h>
 
-elem_type merge_elems(const elem_type & a, const elem_type & b) {
-    elem_type dest = a;
+elem_type merge_elems(const elem_type & base, const elem_type & b) {
+    IT_WARN(b); 
+    elem_type dest = base;
     dest.tag = b.tag;
     dest.isa = b.isa;
 
+    // mark all the dest attributes as hidden so they don't show in docs
     // merge the attributes
     auto dest_atts = b.attributes;
-    dest_atts.insert(dest_atts.end(), a.attributes.begin(), a.attributes.end());
+#if 1
+    for (auto a : base.attributes) {
+        // a.hidden = true;
+        dest_atts.push_back(a);
+    }
+#else
+    dest_atts.insert(dest_atts.end(), base.attributes.begin(), base.attributes.end());
+#endif
     std::stable_sort(dest_atts.begin(), dest_atts.end());
     auto last = std::unique(dest_atts.begin(), dest_atts.end());
     dest_atts.erase(last, dest_atts.end());
     dest.attributes = dest_atts;
 
     // TODO: merge the children vector as well (if ever needed)
-    
     return dest;
 }
 

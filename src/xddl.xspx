@@ -187,12 +187,12 @@
     </element>
 
     <!-- TODO: make length a "fixed" att, dissallow it being set by user (make it a private?) -->
-    <element tag="bit" isa="field"><att type="expression" def="1">length</att></element>
+    <element tag="bit" isa="field"><att type="expression" fixed="true" def="1">length</att></element>
 
-    <element tag="uint8" isa="field"> <att type="expression" def="8">length</att> </element>
-    <element tag="uint16" isa="field"> <att type="expression" def="16">length</att> </element>
-    <element tag="uint32" isa="field"> <att type="expression" def="32">length</att> </element>
-    <element tag="uint64" isa="field"> <att type="expression" def="64">length</att> </element>
+    <element tag="uint8" isa="field"> <att type="expression" fixed="true" def="8">length</att> </element>
+    <element tag="uint16" isa="field"> <att type="expression" fixed="true" def="16">length</att> </element>
+    <element tag="uint32" isa="field"> <att type="expression" fixed="true" def="32">length</att> </element>
+    <element tag="uint64" isa="field"> <att type="expression" fixed="true" def="64">length</att> </element>
 
     <element tag="cstr">
         <att type="expression" def="1024">max</att>

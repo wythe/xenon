@@ -9,13 +9,15 @@ std::string attributes(const Elem & elem) {
     if (elem.attributes.empty()) {
         return "attributes: none\n\n";
     }
-    os << "\n\nattributes | name  | ^AttributeTypes | required | description\n";
+    os << "\n\nattributes | name  | [type](#AttributeTypes) | required | description\n";
     os <<     "-----------|-------|--------|----------|------------\n";
     for (auto & a : elem.attributes) {
-        os << " | " << a.name << " | " << a.type_name << "|";
-        if (a.required) os << " yes ";
-        os << " | ";
-        os << "\n";
+        if (a.fixed.empty()) {
+            os << " | " << a.name << " | " << a.type_name << "|";
+            if (a.required) os << " &#10004 ";
+            os << " | ";
+            os << "\n";
+        }
     }
 
     return os.str();

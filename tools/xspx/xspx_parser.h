@@ -22,6 +22,7 @@ struct xml_att_type {
     std::string member_name;
     bool local = true;
     bool required = false;
+    bool hidden = false;  // TODO: hidden from docs from now but could still be used
     std::string def;
     friend bool operator<(const xml_att_type & a, const xml_att_type & b) {
         return a.name < b.name;
@@ -36,6 +37,18 @@ struct xml_att_type {
         return !(a.name == b.name);
     }
 };
+
+inline std::ostream & operator<<(std::ostream & os, const xml_att_type & att) {
+    os << "name: " << att.name << '\n';
+    os << "fixed: " << att.fixed << '\n';
+    os << "type_name: " << att.type_name << '\n';
+    os << "member_name: " << att.member_name << '\n';
+    os << "local: " << att.local << '\n';
+    os << "required: " << att.required << '\n';
+    os << "hidden: " << att.hidden << '\n';
+    os << "def: " << att.def << '\n';
+    return os;
+}
 
 typedef std::vector<xml_att_type> xml_att_list;
 
@@ -80,6 +93,18 @@ struct elem_type {
     bool is_base = false;
     int uid = 0;
 };
+
+inline std::ostream & operator<<(std::ostream & os, const elem_type & elem) {
+    os << "tag: " << elem.tag << '\n';
+    os << "name: " << elem.name << '\n';
+    os << "display: " << elem.display << '\n';
+    os << "children: " << ict::join(elem.children) << '\n';
+    os << "attributes:\n"; 
+    for (auto & a : elem.attributes) os << a << '\n';
+    os << "isa: " << elem.isa;
+
+    return os;
+}
 
 typedef std::vector<elem_type> elem_list;
 typedef std::vector<elem_list> elem_stack;
