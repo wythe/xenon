@@ -187,12 +187,12 @@
     </element>
 
     <!-- TODO: make length a "fixed" att, dissallow it being set by user (make it a private?) -->
-    <element tag="bit" isa="field"><att type="expression" def="1">length</att></element>
+    <element tag="bit" isa="field"><att type="expression" fixed="true" def="1">length</att></element>
 
-    <element tag="uint8" isa="field"> <att type="expression" def="8">length</att> </element>
-    <element tag="uint16" isa="field"> <att type="expression" def="16">length</att> </element>
-    <element tag="uint32" isa="field"> <att type="expression" def="32">length</att> </element>
-    <element tag="uint64" isa="field"> <att type="expression" def="64">length</att> </element>
+    <element tag="uint8" isa="field"> <att type="expression" fixed="true" def="8">length</att> </element>
+    <element tag="uint16" isa="field"> <att type="expression" fixed="true" def="16">length</att> </element>
+    <element tag="uint32" isa="field"> <att type="expression" fixed="true" def="32">length</att> </element>
+    <element tag="uint64" isa="field"> <att type="expression" fixed="true" def="64">length</att> </element>
 
     <element tag="cstr">
         <att type="expression" def="1024">max</att>
@@ -285,11 +285,14 @@
     -->
     <choice tag="record">
         <element name="record">
+            <display>basic record</display>
             <att type="expression">length</att>
             <att type="string" local="false" def="record">name</att>
             <code href="vparse"/>
+            <group href="#common"/>
         </element>
         <element name="reclink">
+            <display>record link</display>
             <att type="expression">length</att>
             <att type="string" local="false" def="record">name</att>
             <att type="url">href</att>
@@ -298,30 +301,38 @@
             <code href="mutable_ref"/>
         </element>
         <element name="recdef">
+            <display>record definition</display>
             <att type="expression">length</att>
             <att type="id_url">id</att>
             <att type="string" local="false" def="record">name</att>
             <code href="vto_string"/>
+            <group href="#common"/>
         </element>
         <group href="#common"/>
     </choice>
 
     <choice tag="repeat">
         <element name="repeat">
+            <display>repeat indefinitely</display>
             <att type="string" local="false">name</att>
             <att type="size">minlen</att>
+            <group href="#common"/>
             <code href="vparse"/>
         </element>
         <element name="num_repeat">
+            <display>repeat based on an expression</display>
             <att type="string" local="false">name</att>
             <att type="expression" req="true">num</att>
+            <group href="#common"/>
             <code href="vparse"/>
         </element>
         <element name="bound_repeat">
+            <display>bound repeat</display>
             <att type="string" local="false">name</att>
             <att type="integer">minlen</att>
             <att type="expression">max</att>
             <att type="expression">min</att>
+            <group href="#common"/>
             <code href="vparse"/>
         </element>
         <group href="#common"/>

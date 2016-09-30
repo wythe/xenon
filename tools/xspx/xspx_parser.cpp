@@ -3,21 +3,29 @@
 #include "xspx_parser.h"
 #include <xenon/recref.h>
 
-elem_type merge_elems(const elem_type & a, const elem_type & b) {
-    elem_type dest = a;
+elem_type merge_elems(const elem_type & base, const elem_type & b) {
+    IT_WARN(b); 
+    elem_type dest = base;
     dest.tag = b.tag;
     dest.isa = b.isa;
 
+    // mark all the dest attributes as hidden so they don't show in docs
     // merge the attributes
     auto dest_atts = b.attributes;
-    dest_atts.insert(dest_atts.end(), a.attributes.begin(), a.attributes.end());
+#if 1
+    for (auto a : base.attributes) {
+        // a.hidden = true;
+        dest_atts.push_back(a);
+    }
+#else
+    dest_atts.insert(dest_atts.end(), base.attributes.begin(), base.attributes.end());
+#endif
     std::stable_sort(dest_atts.begin(), dest_atts.end());
     auto last = std::unique(dest_atts.begin(), dest_atts.end());
     dest_atts.erase(last, dest_atts.end());
     dest.attributes = dest_atts;
 
     // TODO: merge the children vector as well (if ever needed)
-    
     return dest;
 }
 
@@ -28,7 +36,7 @@ xsp_parser::xsp_parser() {
     p.root_tag("xspec");
     p.add_children("xspec", { "nspace", "root", "base", "header", "type", "element", "choice", 
         "group", "code", "parser" });
-    p.add_children("element", { "att", "child", "class", "constr", "start", "end", "public", "group", "code" });
+    p.add_children("element", { "att", "child", "class", "constr", "display", "start", "end", "public", "group", "code" });
     p.add_children("choice", { "element", "group"} );
     p.add_children("group", { "child" });
     p.add_children("parser", { "name", "code" });
@@ -160,6 +168,11 @@ xsp_parser::xsp_parser() {
 
     p.end_handler("child", [&]{
         children.push_back(ict::normalize(cdata));
+        cdata.clear(); });
+
+    p.end_handler("display", [&]{
+        auto & e = elems.back().back();
+        e.display = ict::normalize(cdata);
         cdata.clear(); });
 
     p.end_handler("public", [&]{
@@ -529,6 +542,60 @@ std::string xsp_parser::parser_impl(st::type t) const {
 
 
 namespace xspx {
+
+ict::multivector<elem_type> elem_tree(const xsp_parser & xspx) {
+    ict::multivector<elem_type> tree;
+    std::vector<elem_type> elems = xspx.elems[0];
+
+    // add the choices
+    for (auto & choice : xspx.choices) {
+        elem_type ch;
+        ch.tag = choice.tag;
+        elems.push_back(ch);
+    }
+    
+
+    // now sort according to the tag
+    std::sort(elems.begin(), elems.end(), [](elem_type const & a, elem_type const & b) { 
+        return std::string(a.tag.c_str()) < std::string(b.tag.c_str());
+    });
+
+    // now convert to a multivector
+    for (auto & i : elems) {
+        if (!i.is_base) tree.root().emplace_back(i);
+    }    
+
+    // find the choices and add their subchildren
+    for (auto & choice : xspx.choices) {
+        auto c = std::find_if(tree.begin(), tree.end(), [&](auto & e){ return e.tag == choice.tag; });
+        for (auto & i : choice.elems) {
+            c.emplace_back(i);
+        }
+    }
+#if 0    
+    for (auto & i : elems) {
+        for (auto & j : i) {
+            if (!j.is_base) tree.root().emplace_back(j);
+        }
+    }    
+
+    for (auto & choice : xspx.choices) {
+        elem_type ch;
+        ch.tag = choice.tag;
+        auto c = tree.root().emplace(ch);
+        for (auto & i : choice.elems) {
+            c.emplace_back(i);
+        }
+    }
+#endif
+
+#if 0
+    std::sort(tree.begin(), tree.end(), [](elem_type const & a, elem_type const & b) { 
+        return std::string(a.tag.c_str()) < std::string(b.tag.c_str());
+    });
+#endif
+    return tree;
+}
 
 std::vector<elem_type> unique_elems(const xsp_parser & xspx) {
     auto v = std::vector<elem_type>();
