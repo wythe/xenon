@@ -14,7 +14,7 @@ std::string attributes(const Elem & elem) {
     for (auto & a : elem.attributes) {
         if (a.fixed.empty()) {
             os << " | " << a.name << " | " << a.type_name << "|";
-            if (a.required) os << " &#10004 ";
+            if (a.required) os << " &#10004; ";
             os << " | ";
             os << "\n";
         }

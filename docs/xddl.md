@@ -46,7 +46,7 @@
 
 attributes | name  | [type](#AttributeTypes) | required | description
 -----------|-------|--------|----------|------------
- | name | string| &#10004  | 
+ | name | string| &#10004;  | 
  | type | url| | 
  | bias | integer| | 
  | default | expression| | 
@@ -61,7 +61,7 @@ children: [comment](#comment), [item](#item), [range](#range), [script](#script)
 
 attributes | name  | [type](#AttributeTypes) | required | description
 -----------|-------|--------|----------|------------
- | value | integer| &#10004  | 
+ | value | integer| &#10004;  | 
 
 
 children: [bit](#bit), [comment](#comment), [cstr](#cstr), [field](#field), [fragment](#fragment), [jump](#jump), [if](#if), [oob](#oob), [pad](#pad), [peek](#peek), [enc](#enc), [prop](#prop), [record](#record), [repeat](#repeat), [setprop](#setprop), [switch](#switch), [uint8](#uint8), [uint16](#uint16), [uint32](#uint32), [uint64](#uint64), [while](#while)
@@ -83,7 +83,7 @@ children: none
 attributes | name  | [type](#AttributeTypes) | required | description
 -----------|-------|--------|----------|------------
  | max | expression| | 
- | name | string| &#10004  | 
+ | name | string| &#10004;  | 
 
 
 children: none
@@ -122,10 +122,10 @@ children: [prop](#prop)
 
 attributes | name  | [type](#AttributeTypes) | required | description
 -----------|-------|--------|----------|------------
- | name | string| &#10004  | 
+ | name | string| &#10004;  | 
  | type | url| | 
  | bias | integer| | 
- | length | expression| &#10004  | 
+ | length | expression| &#10004;  | 
  | default | expression| | 
 
 
@@ -138,7 +138,7 @@ children: [comment](#comment), [item](#item), [range](#range), [script](#script)
 
 attributes | name  | [type](#AttributeTypes) | required | description
 -----------|-------|--------|----------|------------
- | href | url| &#10004  | 
+ | href | url| &#10004;  | 
 
 
 children: none
@@ -150,7 +150,7 @@ children: none
 
 attributes | name  | [type](#AttributeTypes) | required | description
 -----------|-------|--------|----------|------------
- | expr | expression| &#10004  | 
+ | expr | expression| &#10004;  | 
 
 
 children: [bit](#bit), [comment](#comment), [cstr](#cstr), [field](#field), [fragment](#fragment), [jump](#jump), [if](#if), [oob](#oob), [pad](#pad), [peek](#peek), [enc](#enc), [prop](#prop), [record](#record), [repeat](#repeat), [setprop](#setprop), [switch](#switch), [uint8](#uint8), [uint16](#uint16), [uint32](#uint32), [uint64](#uint64), [while](#while)
@@ -162,9 +162,9 @@ children: [bit](#bit), [comment](#comment), [cstr](#cstr), [field](#field), [fra
 
 attributes | name  | [type](#AttributeTypes) | required | description
 -----------|-------|--------|----------|------------
- | key | integer| &#10004  | 
+ | key | integer| &#10004;  | 
  | href | url| | 
- | value | string| &#10004  | 
+ | value | string| &#10004;  | 
 
 
 children: [comment](#comment)
@@ -176,7 +176,7 @@ children: [comment](#comment)
 
 attributes | name  | [type](#AttributeTypes) | required | description
 -----------|-------|--------|----------|------------
- | base | jump_name| &#10004  | 
+ | base | jump_name| &#10004;  | 
 
 
 children: none
@@ -211,9 +211,9 @@ children: none
 
 attributes | name  | [type](#AttributeTypes) | required | description
 -----------|-------|--------|----------|------------
- | name | string| &#10004  | 
- | length | expression| &#10004  | 
- | offset | size| &#10004  | 
+ | name | string| &#10004;  | 
+ | length | expression| &#10004;  | 
+ | offset | size| &#10004;  | 
 
 
 children: none
@@ -225,7 +225,7 @@ children: none
 
 attributes | name  | [type](#AttributeTypes) | required | description
 -----------|-------|--------|----------|------------
- | name | string| &#10004  | 
+ | name | string| &#10004;  | 
  | type | url| | 
  | value | expression| | 
  | visible | bool| | 
@@ -240,10 +240,10 @@ children: [comment](#comment), [item](#item), [range](#range), [script](#script)
 
 attributes | name  | [type](#AttributeTypes) | required | description
 -----------|-------|--------|----------|------------
- | end | integer| &#10004  | 
+ | end | integer| &#10004;  | 
  | href | url| | 
  | value | string| | 
- | start | integer| &#10004  | 
+ | start | integer| &#10004;  | 
 
 
 children: [comment](#comment)
@@ -319,7 +319,7 @@ children: [bit](#bit), [comment](#comment), [cstr](#cstr), [field](#field), [fra
 
 attributes | name  | [type](#AttributeTypes) | required | description
 -----------|-------|--------|----------|------------
- | num | expression| &#10004  | 
+ | num | expression| &#10004;  | 
  | name | string| | 
 
 
@@ -356,9 +356,9 @@ children: none
 
 attributes | name  | [type](#AttributeTypes) | required | description
 -----------|-------|--------|----------|------------
- | name | setprop_name| &#10004  | 
+ | name | setprop_name| &#10004;  | 
  | type | url| | 
- | value | expression| &#10004  | 
+ | value | expression| &#10004;  | 
 
 
 children: [comment](#comment), [item](#item), [range](#range), [script](#script)
@@ -379,7 +379,7 @@ children: [bit](#bit), [comment](#comment), [cstr](#cstr), [field](#field), [fra
 
 attributes | name  | [type](#AttributeTypes) | required | description
 -----------|-------|--------|----------|------------
- | expr | expression| &#10004  | 
+ | expr | expression| &#10004;  | 
 
 
 children: [case](#case), [default](#default)
@@ -391,7 +391,7 @@ children: [case](#case), [default](#default)
 
 attributes | name  | [type](#AttributeTypes) | required | description
 -----------|-------|--------|----------|------------
- | id | id_url| &#10004  | 
+ | id | id_url| &#10004;  | 
  | name | string| | 
 
 
@@ -404,7 +404,7 @@ children: [comment](#comment), [item](#item), [range](#range), [script](#script)
 
 attributes | name  | [type](#AttributeTypes) | required | description
 -----------|-------|--------|----------|------------
- | name | string| &#10004  | 
+ | name | string| &#10004;  | 
  | type | url| | 
  | bias | integer| | 
  | default | expression| | 
@@ -419,7 +419,7 @@ children: [comment](#comment), [item](#item), [range](#range), [script](#script)
 
 attributes | name  | [type](#AttributeTypes) | required | description
 -----------|-------|--------|----------|------------
- | name | string| &#10004  | 
+ | name | string| &#10004;  | 
  | type | url| | 
  | bias | integer| | 
  | default | expression| | 
@@ -434,7 +434,7 @@ children: [comment](#comment), [item](#item), [range](#range), [script](#script)
 
 attributes | name  | [type](#AttributeTypes) | required | description
 -----------|-------|--------|----------|------------
- | name | string| &#10004  | 
+ | name | string| &#10004;  | 
  | type | url| | 
  | bias | integer| | 
  | default | expression| | 
@@ -449,7 +449,7 @@ children: [comment](#comment), [item](#item), [range](#range), [script](#script)
 
 attributes | name  | [type](#AttributeTypes) | required | description
 -----------|-------|--------|----------|------------
- | name | string| &#10004  | 
+ | name | string| &#10004;  | 
  | type | url| | 
  | bias | integer| | 
  | default | expression| | 
@@ -465,7 +465,7 @@ children: [comment](#comment), [item](#item), [range](#range), [script](#script)
 attributes | name  | [type](#AttributeTypes) | required | description
 -----------|-------|--------|----------|------------
  | name | string| | 
- | expr | expression| &#10004  | 
+ | expr | expression| &#10004;  | 
 
 
 children: [bit](#bit), [comment](#comment), [cstr](#cstr), [field](#field), [fragment](#fragment), [jump](#jump), [if](#if), [oob](#oob), [pad](#pad), [peek](#peek), [enc](#enc), [prop](#prop), [record](#record), [repeat](#repeat), [setprop](#setprop), [switch](#switch), [uint8](#uint8), [uint16](#uint16), [uint32](#uint32), [uint64](#uint64), [while](#while)
