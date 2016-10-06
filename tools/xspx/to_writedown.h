@@ -19,7 +19,6 @@ std::string attributes(const Elem & elem) {
             os << "\n";
         }
     }
-
     return os.str();
 }
 
@@ -43,13 +42,18 @@ std::string children(const Elem & elem) {
     return ict::join(v, ", ");
 }
 
+inline std::string anchor(const std::string & x) {
+    std::string y;
+    for (auto c : x) {
+        if (std::isalnum(c)) y+=c;
+    }
+    return y;
+}
+
 template <typename OS, typename Cursor>
 void disp_element(OS & os, Cursor c) {
-    if (c->display.empty()) {
-        os << "# " << c->tag << " {\n\n";
-    } else {
-        os << "# " << c->display <<  "{\n\n";
-    }
+    std::string n = (c->display.empty()) ? c->tag.c_str() : c->display; 
+    os << "# " << n << " {\n\n";
     
     if (!c.empty()) {
         os << c->tag << " has multiple attribute signatures\n\n";
@@ -61,6 +65,8 @@ void disp_element(OS & os, Cursor c) {
 
         os << "children: " << children(*c) << "\n\n";
     }
+
+    os << ":include ex.wd#" << anchor(n) << "?\n";
 
     os << "}\n\n";
 }

@@ -204,6 +204,7 @@
     <!-- fragment is an inline record ref.  
     TODO remove this or add inline attribute to record ref? -->
     <element tag="fragment" name="fragment">
+        <display>fragment</display>
         <att type="url" req="true">href</att>
         <code href="vparse"/>
         <code href="mutable_ref"/>
