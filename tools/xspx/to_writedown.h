@@ -55,6 +55,8 @@ void disp_element(OS & os, Cursor c) {
     std::string n = (c->display.empty()) ? c->tag.c_str() : c->display; 
     os << "# " << n << " {\n\n";
     
+    os << ":include ex.wd#" << anchor(n) << "/summary?\n";
+
     if (!c.empty()) {
         os << c->tag << " has multiple attribute signatures\n\n";
         for (auto choice = c.begin(); choice!=c.end(); ++choice) {
@@ -66,7 +68,7 @@ void disp_element(OS & os, Cursor c) {
         os << "children: " << children(*c) << "\n\n";
     }
 
-    os << ":include ex.wd#" << anchor(n) << "?\n";
+    os << ":include ex.wd#" << anchor(n) << "/detail?\n";
 
     os << "}\n\n";
 }

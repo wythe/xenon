@@ -4,7 +4,7 @@
 #include <xenon/recref.h>
 
 elem_type merge_elems(const elem_type & base, const elem_type & b) {
-    IT_WARN(b); 
+    // IT_WARN(b); 
     elem_type dest = base;
     dest.tag = b.tag;
     dest.isa = b.isa;
