@@ -407,8 +407,8 @@ void element::var_type::vparse(spec::cursor self, message::cursor parent, ict::i
 
 void xddl::vparse(spec::cursor self, message::cursor parent, ict::ibitstream & bs) const {
     auto st = find_child_with_tag(self, "start");
-    if (st == self.end()) IT_PANIC("no <start> element in " << self->parser->file);
-    parse(st, parent, bs);
+    if (st == self.end()) parse(self.begin(), parent, bs);
+    else parse(st, parent, bs);
 }
 
 void start::vparse(spec::cursor self, message::cursor parent, ict::ibitstream & bs) const {
