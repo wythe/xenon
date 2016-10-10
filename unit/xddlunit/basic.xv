@@ -956,3 +956,7 @@ count: 1
 f: /z: 1: 8: #01: 
 
 
+m: field01a.xddl: @1
+count: 1
+f: /foo: 1: 1: @1: 
+
