@@ -87,6 +87,9 @@ public:
      Return the default start record or throw exception.
      */
     spec::cursor start() const {
+#if 1
+        return base().ast.root().begin();
+#else
         if (empty()) IT_PANIC("empty spec list");
         auto root = base().ast.root();
         auto xddl = root.begin(); // the first specs <xddl> element
@@ -94,6 +97,7 @@ public:
             return e.tag() == "start"; });
         if (st != xddl.end()) return st;
         return xddl;
+#endif
     }
 
     spec & base() const { return *(doms.begin()); }
