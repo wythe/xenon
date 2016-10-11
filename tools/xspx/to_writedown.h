@@ -7,9 +7,9 @@ template <typename Elem>
 std::string attributes(const Elem & elem) {
     std::ostringstream os;
     if (elem.attributes.empty()) {
-        return "attributes: none\n\n";
+        return "\nattributes: none\n\n";
     }
-    os << "\n\nattributes | name  | [type](#AttributeTypes) | required | description\n";
+    os << "\nattributes | name  | [type](#AttributeTypes) | required | description\n";
     os <<     "-----------|-------|--------|----------|------------\n";
     for (auto & a : elem.attributes) {
         if (a.fixed.empty()) {
