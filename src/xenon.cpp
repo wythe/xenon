@@ -145,6 +145,10 @@ void element::to_string(std::ostream & os) const {
 }
 
 
+void record::vto_string(std::ostream & os) const {
+    os << id;
+}
+
 void recdef::vto_string(std::ostream & os) const {
     os << id;
 }
@@ -258,16 +262,18 @@ void type::vend_handler(spec::cursor self, spec &parser) {
 }
 
 template <typename T, typename Cursor, typename Map>
-void create_url_map(Cursor self, Map & m, ict::string64 tag) {
-    for (auto i = self.cbegin(); i!= self.cend(); ++i) {
+void create_url_map(Cursor parent, Map & m, ict::string64 tag) {
+    auto anon = recref("anon");
+    ict::recurse(parent, [&](spec::cursor & i){
         if (i->tag() == tag) {
             if (auto f = get_ptr<T>(i->v)) {
                 auto c = m.find(f->id);
                 if (c == m.end()) m[f->id] = i;
-                else IT_PANIC("id " << f->id << " already used");
+                else if (f->id != anon && !f->id.empty()) IT_PANIC("id " << f->id << " already used");
             }
         }
-    }
+
+    });
 }
 
 template <typename Cursor, typename Map>
@@ -468,13 +474,19 @@ void jump::vparse(spec::cursor self, message::cursor parent, ict::ibitstream &bs
 
 void reclink::vparse(spec::cursor self, message::cursor parent, ict::ibitstream &bs) const {
     auto rec = parent.emplace(node::record_node, self);
-    auto l = length.value(rec);
     ict::constraint ct(bs, length.value(rec));
     parse_ref(self, rec, bs, ref, href, self->parser);
     if (!length.empty()) add_extra(self, rec, bs);
 }
 
 void record::vparse(spec::cursor self, message::cursor parent, ict::ibitstream & bs) const {
+    auto rec = parent.emplace(node::record_node, self);
+    ict::constraint ct(bs, length.value(rec));
+    parse_children(self, rec, bs);
+    if (!length.empty()) add_extra(self, parent, bs);
+}
+
+void recdef::vparse(spec::cursor self, message::cursor parent, ict::ibitstream & bs) const {
     auto rec = parent.emplace(node::record_node, self);
     ict::constraint ct(bs, length.value(rec));
     parse_children(self, rec, bs);

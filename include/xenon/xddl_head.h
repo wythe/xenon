@@ -28,7 +28,7 @@ template <typename Cursor>
 inline recref create_url(Cursor, const std::string & x) {
     if (x.empty()) return recref();
     recref a(x);
-    if (a.empty()) IT_PANIC("invalid url: " << x);
+    // if (a.empty()) IT_PANIC("invalid url: " << x);
     return a;
 }
 
@@ -107,6 +107,16 @@ inline size_t fragment_test(const AttList &) {
     return 0;
 }
 
+#if 1
+template <typename AttList>
+inline size_t record_test(const AttList & atts) {
+    auto id = find_att(atts, "id");
+    auto href = find_att(atts, "href");
+    if (!id.empty() && !href.empty()) IT_PANIC("both id and href are defined");
+    if (!href.empty()) return 0;
+    return 1;
+}
+#else
 template <typename AttList>
 inline size_t record_test(const AttList & atts) {
     auto id = find_att(atts, "id");
@@ -116,6 +126,7 @@ inline size_t record_test(const AttList & atts) {
     if (!href.empty()) return 1;
     return 2;
 }
+#endif
 
 template <typename AttList>
 inline size_t repeat_test(const AttList & atts) {
