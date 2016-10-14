@@ -149,10 +149,6 @@ void record::vto_string(std::ostream & os) const {
     os << id;
 }
 
-void recdef::vto_string(std::ostream & os) const {
-    os << id;
-}
-
 void type::vto_string(std::ostream & os) const {
     os << id << '\n';
     for (auto & i : items) os << "  item: " << i.first << " " << i.second.value << '\n';
@@ -374,7 +370,7 @@ void enc::vend_handler(spec::cursor self, spec &) {
 }
 
 void xddl::vend_handler(spec::cursor self, spec & parser) {
-    create_url_map<recdef>(self, parser.recdef_map, "record");
+    create_url_map<record>(self, parser.recdef_map, "record");
     create_url_map<type>(self, parser.type_map, "type");
 
     // If there is a start, then it gets its own record reference.
@@ -480,13 +476,6 @@ void reclink::vparse(spec::cursor self, message::cursor parent, ict::ibitstream 
 }
 
 void record::vparse(spec::cursor self, message::cursor parent, ict::ibitstream & bs) const {
-    auto rec = parent.emplace(node::record_node, self);
-    ict::constraint ct(bs, length.value(rec));
-    parse_children(self, rec, bs);
-    if (!length.empty()) add_extra(self, parent, bs);
-}
-
-void recdef::vparse(spec::cursor self, message::cursor parent, ict::ibitstream & bs) const {
     auto rec = parent.emplace(node::record_node, self);
     ict::constraint ct(bs, length.value(rec));
     parse_children(self, rec, bs);

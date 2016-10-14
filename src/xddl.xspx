@@ -285,16 +285,7 @@
     It must return the index of the matching element within the sequence, or throw exception error.
     -->
     <choice tag="record">
-        <element name="reclink">
-            <display>record link</display>
-            <att type="expression">length</att>
-            <att type="string" local="false" def="record">name</att>
-            <att type="url">href</att>
-            <code href="vparse"/>
-            <code href="vhref"/>
-            <code href="mutable_ref"/>
-        </element>
-        <element name="recdef">
+        <element name="record">
             <display>record definition</display>
             <att type="expression">length</att>
             <att type="id_url">id</att>
@@ -303,14 +294,14 @@
             <code href="vparse"/>
             <group href="#common"/>
         </element>
-        <element name="record">
-            <display>basic record</display>
+        <element name="reclink">
+            <display>record link</display>
             <att type="expression">length</att>
             <att type="string" local="false" def="record">name</att>
-            <att type="id_url">id</att>
-            <code href="vto_string"/>
+            <att type="url">href</att>
             <code href="vparse"/>
-            <group href="#common"/>
+            <code href="vhref"/>
+            <code href="mutable_ref"/>
         </element>
         <group href="#common"/>
     </choice>

@@ -107,26 +107,14 @@ inline size_t fragment_test(const AttList &) {
     return 0;
 }
 
-#if 1
 template <typename AttList>
 inline size_t record_test(const AttList & atts) {
     auto id = find_att(atts, "id");
     auto href = find_att(atts, "href");
     if (!id.empty() && !href.empty()) IT_PANIC("both id and href are defined");
-    if (!href.empty()) return 0;
-    return 1;
-}
-#else
-template <typename AttList>
-inline size_t record_test(const AttList & atts) {
-    auto id = find_att(atts, "id");
-    auto href = find_att(atts, "href");
-    if (id.empty() && href.empty()) return 0;
-    if (!id.empty() && !href.empty()) IT_PANIC("id and href are mutually exclusive attributes");
     if (!href.empty()) return 1;
-    return 2;
+    return 0;
 }
-#endif
 
 template <typename AttList>
 inline size_t repeat_test(const AttList & atts) {
