@@ -43,10 +43,8 @@ std::string children(const Elem & elem) {
 }
 
 inline std::string anchor(const std::string & x) {
-    std::string y;
-    for (auto c : x) {
-        if (std::isalnum(c)) y+=c;
-    }
+    std::string y = x;
+    std::replace(y.begin(), y.end(), ' ', '-');
     return y;
 }
 
