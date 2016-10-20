@@ -751,7 +751,7 @@ treat a value as an ASCII string.
 
     <type id="string">
       <script>
-        description = string.format("%[&lt;s&gt;](#s)", ascii());
+        description = string.format("%s", ascii());
       </script>
     </type>
 
