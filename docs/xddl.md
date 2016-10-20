@@ -738,7 +738,7 @@ children: none
 
 
 
-The language is [Lua](http:Documentation on Lua can be found at **[www.lua.org](http:
+The language is [Lua](http:Documentation on Lua can be found at [www.lua.org](http:
 <h2 id="The-description-Variable">1.20.1 The description Variable</h2>
 
 
