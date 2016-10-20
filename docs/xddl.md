@@ -8,8 +8,8 @@
     * 1.6 [enc](#enc)
     * 1.7 [export](#export)
     * 1.8 [field](#field)
-        * 1.8.1 [bias](#bias)
-        * 1.8.2 [type](#type)
+        * 1.8.1 [bias Attribute](#bias-Attribute)
+        * 1.8.2 [type Attribute](#type-Attribute)
     * 1.9 [fragment](#fragment)
     * 1.10 [if](#if)
     * 1.11 [item](#item)
@@ -21,29 +21,33 @@
     * 1.16 [prop](#prop)
     * 1.17 [range](#range)
     * 1.18 [record](#record)
-        * 1.18.1 [record definition](#recorddefinition)
-        * 1.18.2 [record link](#recordlink)
+        * 1.18.1 [record definition](#record-definition)
+        * 1.18.2 [record link](#record-link)
     * 1.19 [repeat](#repeat)
-        * 1.19.1 [repeat indefinitely](#repeatindefinitely)
-        * 1.19.2 [repeat based on an expression](#repeatbasedonanexpression)
-        * 1.19.3 [bound repeat](#boundrepeat)
+        * 1.19.1 [repeat indefinitely](#repeat-indefinitely)
+        * 1.19.2 [repeat based on an expression](#repeat-based-on-an-expression)
+        * 1.19.3 [bound repeat](#bound-repeat)
     * 1.20 [script](#script)
+        * 1.20.1 [The description Variable](#The-description-Variable)
+        * 1.20.2 [XddlScript Functions](#XddlScript-Functions)
     * 1.21 [setprop](#setprop)
     * 1.22 [start](#start)
     * 1.23 [switch](#switch)
     * 1.24 [type](#type)
+        * 1.24.1 [Anonymous Types](#Anonymous-Types)
     * 1.25 [uint16](#uint16)
     * 1.26 [uint32](#uint32)
     * 1.27 [uint64](#uint64)
     * 1.28 [uint8](#uint8)
     * 1.29 [while](#while)
     * 1.30 [xddl](#xddl)
-* 2 [Attribute Types](#AttributeTypes)
+* 2 [Attribute Types](#Attribute-Types)
 
 <h2 id="Elements">1 Elements</h2>
 <h2 id="bit">1.1 bit</h2>
 
-A [bit](#bit) is a bit.
+A [&lt;bit&gt;](#bit) is a bit.
+
 
 
 attributes | name  | [type](#AttributeTypes) | required | description
@@ -70,7 +74,7 @@ And decoding a bit with [idm](#idm):
     x     1       1      @1
 <h2 id="case">1.2 case</h2>
 
-The [case](#case) element only appears as a child of the [switch](#switch) element.  It is similar to the *case* keyword in 
+The [&lt;case&gt;](#case) element only appears as a child of the [&lt;switch&gt;](#switch) element.  It is similar to the *case* keyword in 
 *C++*.
 
 attributes | name  | [type](#AttributeTypes) | required | description
@@ -81,7 +85,7 @@ attributes | name  | [type](#AttributeTypes) | required | description
 children: [bit](#bit), [comment](#comment), [cstr](#cstr), [field](#field), [fragment](#fragment), [jump](#jump), [if](#if), [oob](#oob), [pad](#pad), [peek](#peek), [enc](#enc), [prop](#prop), [record](#record), [repeat](#repeat), [setprop](#setprop), [switch](#switch), [uint8](#uint8), [uint16](#uint16), [uint32](#uint32), [uint64](#uint64), [while](#while)
 
 
-See the [switch](#switch) element for example usage.
+See the [&lt;switch&gt;](#switch) element for example usage.
 <h2 id="comment">1.3 comment</h2>
 
 attributes: none
@@ -92,7 +96,7 @@ children: none
 
 <h2 id="cstr">1.4 cstr</h2>
 
-The [cstr](#cstr) element represents a null-terminated C string.
+The [&lt;cstr&gt;](#cstr) element represents a null-terminated C string.
 
 attributes | name  | [type](#AttributeTypes) | required | description
 -----------|-------|--------|----------|------------
@@ -117,7 +121,7 @@ Decoding the ASCII hex for "Hello" yields:
     greeting 48      79600447942400 #48656C6C6F00 Hello
 <h2 id="default">1.5 default</h2>
 
-The [default](#default) element only appears as a child of the [switch](#switch) element.  It is similar to the *default* keyword in 
+The [&lt;default&gt;](#default) element only appears as a child of the [&lt;switch&gt;](#switch) element.  It is similar to the *default* keyword in 
 *C/C++*.
 
 attributes: none
@@ -128,10 +132,10 @@ children: [bit](#bit), [comment](#comment), [cstr](#cstr), [field](#field), [fra
 
 
 
-See the [switch](#switch) element for example usage.
+See the [&lt;switch&gt;](#switch) element for example usage.
 <h2 id="enc">1.6 enc</h2>
 
-The [enc](#enc) element is used to encapsulate encoding fields. Encoding fields are by default not displayed in the [idm](#idm). 
+The [&lt;enc&gt;](#enc) element is used to encapsulate encoding fields. Encoding fields are by default not displayed in the [idm](#idm). 
 
 attributes: none
 
@@ -143,7 +147,7 @@ children: [fragment](#fragment), [type](#type), [start](#start), [bit](#bit), [c
 
 Here is an example that reads a `size` field and then a field of that length.  
 In this case, we consider `size` to be an encoding field, and not an important part of the message for display 
-purposes.  We surround it with [enc](#enc) to indicate so.
+purposes.  We surround it with [&lt;enc&gt;](#enc) to indicate so.
 
     <xddl>
       <enc>
@@ -167,7 +171,7 @@ But running [idm](#idm) with the `--encoding` flag will display it:
 However, records inserted within an encoding range are themselves not considered to be encoding.
 <h2 id="export">1.7 export</h2>
 
-[export](#export) provides a way to create global properties in a message.  These properties can be used and set by different 
+[&lt;export&gt;](#export) provides a way to create global properties in a message.  These properties can be used and set by different 
 records as a message is being parsed.  
 
 attributes: none
@@ -212,7 +216,7 @@ properties.
 
 <h2 id="field">1.8 field</h2>
 
-The [field](#field) element identifies an integer unit of information specific to the message being represented.  
+The [&lt;field&gt;](#field) element identifies an integer unit of information specific to the message being represented.  
 
 It must have a `name` and `length` attribute.  The `length` is specified in bits, and may be any nonnegative integer
 value.  It does not have to be byte aligned within the record it appears.
@@ -248,7 +252,7 @@ Parsing the four bit message "@1111" results in:
     
     Name     Length  Value  Hex   Description
     sequence 4       15     @1111
-<h2 id="bias">1.8.1 bias</h2>
+<h2 id="bias-Attribute">1.8.1 bias Attribute</h2>
 
 
 The optional `bias` attribute is used to offset the value of field by a
@@ -282,13 +286,13 @@ all zeroes, here is what we get:
 As you can see, the *Value* column is offset by the `bias`.  The *Hex*
 column still reflects the original bit pattern.
 
-<h2 id="type">1.8.2 type</h2>
+<h2 id="type-Attribute">1.8.2 type Attribute</h2>
 
 
-The optional `type` attribute references a [type](#type) element's `id`.  See the [type](#type) element
+The optional `type` attribute references a [&lt;type&gt;](#type) element's `id`.  See the [&lt;type&gt;](#type) element
 reference for examples.
 
-This example references a locally defined [type](#type).  See the [type](#type) documentation for more information.
+This example references a locally defined [&lt;type&gt;](#type).
 
     <xddl>
      <type id="HelloType">
@@ -340,7 +344,7 @@ Fragments are useful sometimes when many messages contain the same handfull of f
 <h2 id="if">1.10 if</h2>
 
 
-The [if](#if) element provides a way to conditionally include other elements based
+The [&lt;if&gt;](#if) element provides a way to conditionally include other elements based
 on an *expression*.
 
 
@@ -379,7 +383,7 @@ evaluate to zero, the conditional elements will be included.
 <h2 id="item">1.11 item</h2>
 
 
-The [item](#item) element only appears as a child of the [type](#type) element.  It is
+The [&lt;item&gt;](#item) element only appears as a child of the [&lt;type&gt;](#type) element.  It is
 used to specify an item of an enumerated list.
 
 
@@ -394,12 +398,12 @@ attributes | name  | [type](#AttributeTypes) | required | description
 children: [comment](#comment)
 
 
-The option *url* attribute can be specified and is used in conjuntion with the [jump](#jump) element.
+The option *href* attribute can be specified and is used in conjuntion with the [&lt;jump&gt;](#jump) element.
 
-See [type](#type) for example usage.
+See [&lt;type&gt;](#type) for example usage.
 <h2 id="jump">1.12 jump</h2>
 
-A [jump](#jump) element provides an easy way to choose a record to parse based on a value.
+A [&lt;jump&gt;](#jump) element provides an easy way to choose a record to parse based on a value.
 
 attributes | name  | [type](#AttributeTypes) | required | description
 -----------|-------|--------|----------|------------
@@ -410,7 +414,7 @@ children: none
 
 
 A common pattern among parsing messages is to choose one of many records to parse based on a single field's value, a
-message type, for example.  This can easy enough be done with a [switch](#switch) element:
+message type, for example.  This can easy enough be done with a [&lt;switch&gt;](#switch) element:
 
     <uint8 name="msg-id"/>
     <switch expr="msg-id">
@@ -428,7 +432,7 @@ message type, for example.  This can easy enough be done with a [switch](#switch
           .
     </switch>
 
-Using [jump](#jump) along with [type](#type) can greatly simplify this trivial case:
+Using [&lt;jump&gt;](#jump) along with [&lt;type&gt;](#type) can greatly simplify this trivial case:
 
     <uint8 name="msg-id" type="#msg-id"/>
     <type id="msg-type">
@@ -444,7 +448,7 @@ Using [jump](#jump) along with [type](#type) can greatly simplify this trivial c
 The above two listings are functionally equivalent.
 <h2 id="oob">1.13 oob</h2>
 
-[oob](#oob) is used to indicate out-of-band data.  It is functionally equivalent to [enc](#enc).
+[&lt;oob&gt;](#oob) is used to indicate out-of-band data.  It is functionally equivalent to [&lt;enc&gt;](#enc).
 
 attributes: none
 
@@ -455,7 +459,7 @@ children: [type](#type), [start](#start), [export](#export), [bit](#bit), [comme
 <h2 id="pad">1.14 pad</h2>
 
 
-The [pad](#pad) element is used to align a record to a boundary.  Typically, this
+The [&lt;pad&gt;](#pad) element is used to align a record to a boundary.  Typically, this
 will be a byte boundary, but can be changed by using the attributes.
 
 It's length is not determined by a fixed value or expression, rather it is
@@ -472,8 +476,8 @@ attributes | name  | [type](#AttributeTypes) | required | description
 children: none
 
 
-Without attributes specified, the [pad](#pad) element will consume bits of the
-record until the record is byte aligned.  For example, the [pad](#pad) element in following
+Without attributes specified, the [&lt;pad&gt;](#pad) element will consume bits of the
+record until the record is byte aligned.  For example, the [&lt;pad&gt;](#pad) element in following
 document will consume 3 bits in order to make the message byte aligned.
 
     <xddl>
@@ -507,13 +511,13 @@ If we change the length of the *A* field to 2, we get a pad of 6.
 <h2 id="mod">1.14.1 mod</h2>
 
 
-The *mod* attribute is used to further modify the behavior.  For example,
+The *mod* attribute defaults to 8, but can be modified.  For example,
 it may be desireable to pad to the nearest 2-byte boundary, in which case
-we would specify a pad of 16.  
+we would specify a *mod* of 16.  
 
 <h2 id="peek">1.15 peek</h2>
 
-The [peek](#peek) element provides access to data ahead in the message.  This 
+The [&lt;peek&gt;](#peek) element provides access to data ahead in the message.  This 
 information can then be referenced in expressions.
 
 
@@ -528,7 +532,7 @@ children: none
 
 
 In some protocols a field cannot be decoded correctly until a subsequent
-field is known.  The [peek](#peek) element provides a solution for this situation.
+field is known.  The [&lt;peek&gt;](#peek) element provides a solution for this situation.
 
     <xddl>
       <peek name="pd" offset="4" length="4"/>
@@ -543,11 +547,14 @@ field is known.  The [peek](#peek) element provides a solution for this situatio
         </case>
        </switch>
     </xddl>
-The above example illustrates a typical use of the [peek](#peek) element. Notice the [peek](#peek) "looks ahead" to the "protocol
-discriminator" in each of the [case](#case) elements to determine what its value should be.  Then the [switch](#switch) can be properly
+The above example illustrates a typical use of the [&lt;peek&gt;](#peek) element. Notice the [&lt;peek&gt;](#peek) "looks ahead" to the "protocol
+discriminator" in each of the [&lt;case&gt;](#case) elements to determine what its value should be.  Then the [&lt;switch&gt;](#switch) can be properly
 evaluated.
 
 <h2 id="prop">1.16 prop</h2>
+
+The [&lt;prop&gt;](#prop) element declares and initializes a property.  Properties can
+be referenced in expressions just like fields.
 
 attributes | name  | [type](#AttributeTypes) | required | description
 -----------|-------|--------|----------|------------
@@ -559,7 +566,18 @@ attributes | name  | [type](#AttributeTypes) | required | description
 
 children: [comment](#comment), [item](#item), [range](#range), [script](#script)
 
+
+Properties provide a way to create a data member in the current scope.
+This property can later be referenced in expressions.  It is similar to a
+field, but does not consume data from the message, and it can later be
+changed using the [&lt;setprop&gt;](#setprop) element. 
+
+Also similar to fields, a property can reference a [&lt;type&gt;](#type) using the type
+attribute.  This too can later be changed with the [&lt;setprop&gt;](#setprop) element.
 <h2 id="range">1.17 range</h2>
+
+The [&lt;range&gt;](#range) element is used to specify a range of values for a [&lt;type&gt;](#type).
+
 
 attributes | name  | [type](#AttributeTypes) | required | description
 -----------|-------|--------|----------|------------
@@ -571,10 +589,73 @@ attributes | name  | [type](#AttributeTypes) | required | description
 
 children: [comment](#comment)
 
+
+[&lt;range&gt;](#range) elements can exist along side [&lt;item&gt;](#item) elements. The [&lt;item&gt;](#item) values are
+evaluated first, and the [&lt;range&gt;](#range) second.  This means a [&lt;range&gt;](#range) can overlap
+existing items.  Using these two mechanics, we can use a [&lt;range&gt;](#range) as a
+default if no items match a particular value.
+
+The following example illustrates this.  The first part of the enumerated type lists
+several colors with their RGB Hex Triplet.  The [&lt;range&gt;](#range) at the bottom will
+be used if no [&lt;item&gt;](#item) matches.
+
+    <xddl>
+     <type id="colors">
+        <item key="#F0F8FF" value="Alice blue"/>
+        <item key="#E32636" value="Alizarin"/>
+        <item key="#E52B50" value="Amaranth"/>
+        <item key="#FFBF00" value="Amber"/>
+        <item key="#9966CC" value="Amethyst"/>
+        <item key="#FBCEB1" value="Apricot"/>
+        <item key="#00FFFF" value="Aqua"/>
+        <item key="#7FFFD4" value="Aquamarine"/>
+        <item key="#4B5320" value="Army green"/>
+        <item key="#7BA05B" value="Asparagus"/>
+        <item key="#FF9966" value="Atomic tangerine"/>
+        <item key="#6D351A" value="Auburn"/>
+        <item key="#007FFF" value="Azure (color wheel)"/>
+        <item key="#F0FFFF" value="Azure (web)"/>
+    
+        <range start="0" end="#FFFFFF" value="Unknown Color"/>
+     </type>
+      <start>
+        <field length="24" name="first" type="#colors"/>
+        <field length="24" name="second" type="#colors"/>
+        <field length="24" name="third" type="#colors"/>
+        <field length="24" name="fourth" type="#colors"/>
+        <field length="24" name="fifth" type="#colors"/>
+        <field length="24" name="sixth" type="#colors"/>
+        <field length="24" name="seventh" type="#colors"/>
+        <field length="24" name="eighth" type="#colors"/>
+        <field length="24" name="ninth" type="#colors"/>
+      </start>
+    </xddl>
+Parsing a message with this file yields:
+
+    # idm range.xddl E3263600FFFF0000FFF0FFFF66FF00ACE1AF4B5320FF9966F19CBB
+    
+    Name    Length  Value    Hex     Description
+    first   24      14886454 #E32636 Alizarin
+    second  24      65535    #00FFFF Aqua
+    third   24      255      #0000FF Unknown Color
+    fourth  24      15794175 #F0FFFF Azure (web)
+    fifth   24      6749952  #66FF00 Unknown Color
+    sixth   24      11329967 #ACE1AF Unknown Color
+    seventh 24      4936480  #4B5320 Army green
+    eighth  24      16750950 #FF9966 Atomic tangerine
+    ninth   24      15834299 #F19CBB Unknown Color
+See the [&lt;type&gt;](#type) element reference for more usage of types.
+
 <h2 id="record">1.18 record</h2>
+
+
+A [&lt;record&gt;](#record) is a way to group elements together, including other records.  If given an *id*, records can then be
+referenced from other places in the document, or from a different document, using URL notation.
+
+Hence, [&lt;record&gt;](#record) can be used in two different ways:
 record has multiple attribute signatures
 
-<h2 id="recorddefinition">1.18.1 record definition</h2>
+<h2 id="record-definition">1.18.1 record definition</h2>
 
 attributes | name  | [type](#AttributeTypes) | required | description
 -----------|-------|--------|----------|------------
@@ -585,7 +666,7 @@ attributes | name  | [type](#AttributeTypes) | required | description
 
 children: [bit](#bit), [comment](#comment), [cstr](#cstr), [field](#field), [fragment](#fragment), [jump](#jump), [if](#if), [oob](#oob), [pad](#pad), [peek](#peek), [enc](#enc), [prop](#prop), [record](#record), [repeat](#repeat), [setprop](#setprop), [switch](#switch), [uint8](#uint8), [uint16](#uint16), [uint32](#uint32), [uint64](#uint64), [while](#while)
 
-<h2 id="recordlink">1.18.2 record link</h2>
+<h2 id="record-link">1.18.2 record link</h2>
 
 attributes | name  | [type](#AttributeTypes) | required | description
 -----------|-------|--------|----------|------------
@@ -596,10 +677,23 @@ attributes | name  | [type](#AttributeTypes) | required | description
 
 children: none
 
+
+
+Example:
+
+    <record id="ack">
+        <uint8 name="sequence number"/>
+        <uint8 name="error"/>
+    </record>
+
 <h2 id="repeat">1.19 repeat</h2>
+
+
+The [&lt;repeat&gt;](#repeat) element repeats its child elements a certain number of times, creating a record for each iteration.  
+There are three different ways to use [&lt;repeat&gt;](#repeat), based on the attribute signature, described below.
 repeat has multiple attribute signatures
 
-<h2 id="repeatindefinitely">1.19.1 repeat indefinitely</h2>
+<h2 id="repeat-indefinitely">1.19.1 repeat indefinitely</h2>
 
 attributes | name  | [type](#AttributeTypes) | required | description
 -----------|-------|--------|----------|------------
@@ -609,7 +703,7 @@ attributes | name  | [type](#AttributeTypes) | required | description
 
 children: [bit](#bit), [comment](#comment), [cstr](#cstr), [field](#field), [fragment](#fragment), [jump](#jump), [if](#if), [oob](#oob), [pad](#pad), [peek](#peek), [enc](#enc), [prop](#prop), [record](#record), [repeat](#repeat), [setprop](#setprop), [switch](#switch), [uint8](#uint8), [uint16](#uint16), [uint32](#uint32), [uint64](#uint64), [while](#while)
 
-<h2 id="repeatbasedonanexpression">1.19.2 repeat based on an expression</h2>
+<h2 id="repeat-based-on-an-expression">1.19.2 repeat based on an expression</h2>
 
 attributes | name  | [type](#AttributeTypes) | required | description
 -----------|-------|--------|----------|------------
@@ -619,7 +713,7 @@ attributes | name  | [type](#AttributeTypes) | required | description
 
 children: [bit](#bit), [comment](#comment), [cstr](#cstr), [field](#field), [fragment](#fragment), [jump](#jump), [if](#if), [oob](#oob), [pad](#pad), [peek](#peek), [enc](#enc), [prop](#prop), [record](#record), [repeat](#repeat), [setprop](#setprop), [switch](#switch), [uint8](#uint8), [uint16](#uint16), [uint32](#uint32), [uint64](#uint64), [while](#while)
 
-<h2 id="boundrepeat">1.19.3 bound repeat</h2>
+<h2 id="bound-repeat">1.19.3 bound repeat</h2>
 
 attributes | name  | [type](#AttributeTypes) | required | description
 -----------|-------|--------|----------|------------
@@ -633,13 +727,86 @@ children: [bit](#bit), [comment](#comment), [cstr](#cstr), [field](#field), [fra
 
 <h2 id="script">1.20 script</h2>
 
+The [&lt;script&gt;](#script) element contains XddlScript.  It appears as a child of the [&lt;type&gt;](#type) element and is used to specify or refine a
+field's description.
+
 attributes: none
 
 
 
 children: none
 
+
+
+The language is [Lua](http:Documentation on Lua can be found at **[www.lua.org](http:
+<h2 id="The-description-Variable">1.20.1 The description Variable</h2>
+
+
+The purpose of the [&lt;script&gt;](#script) element is to set a field's (or
+property's) description.  This is done by setting a variable named
+*description* to a string.  Here's a simple example that uses a [&lt;script&gt;](#script) to
+treat a value as an ASCII string.
+
+    <type id="string">
+      <script>
+        description = string.format("%[&lt;s&gt;](#s)", ascii());
+      </script>
+    </type>
+
+The *ascii()* function is an XddlScript function that interprets the current
+value as an ASCII string.  
+
+<h2 id="XddlScript-Functions">1.20.2 XddlScript Functions</h2>
+
+
+The following table lists all the currently supported XddlScript functions
+and is subject to change.  The function availability when used used by [&lt;field&gt;](#field) or [&lt;prop&gt;](#prop) 
+elements is also noted.  
+
+Function              | fields | props | Description
+----------------------|--------|-------|---------------------------------------------------------
+ascii                 | &#10004;    |       | Return the current value as an ASCII string
+ascii7                | &#10004;    |       | Return the current value as a 7 bit ASCII string
+Description(name)     | &#10004;    | &#10004;   | Return the description of a previous field
+EnumValue             | &#10004;    | &#10004;   | Return the &lt;enum&gt; description of the current value if it has one
+Value(name)           | &#10004;    | &#10004;   | Return the value of another field
+slice(offset, length) | &#10004;    |       | Slice a field into pieces, see description below
+TwosComplement        | &#10004;    |       | Return the current value as a two's complement integer
+search(name)          | &#10004;    | &#10004;   | Return the description of a node in the message by name
+
+
+The *ascii()* string does not have to be null terminated.  However, if 
+it is null terminated, the characters after the termination character will
+be ignored.  Any non-printable characters will be printed as periods.  
+
+The *Description()* function will return the description of a node that is in scope.
+The *search()* function will do a depth-first search for a field from the 
+top of the message.
+
+The *slice()* function can take the current value and return a value of just a
+bit range, a subset of the entire bitstring that makes up the value.  A
+good example is taking a 32-bit IP address type and representing it in the
+familiar dot notation:
+
+    <xddl>
+    <type id="ip_address">
+      <script>
+        description = string.format("%d.%d.%d.%d", slice(0, 8), slice(8, 8), slice(16, 8), slice(24, 8))
+      </script>
+    </type>
+      <start>
+        <uint32 name="address" type="#ip_address"/>
+      </start>
+    </xddl>
+And parsing some data:
+
+    # idm ipscript.xddl AF38B1E6
+    
+    Name    Length  Value      Hex       Description
+    address 32      2939728358 #AF38B1E6 175.56.177.230
 <h2 id="setprop">1.21 setprop</h2>
+
+The [&lt;setprop&gt;](#setprop) element provides a way to change the value or type of a property.
 
 attributes | name  | [type](#AttributeTypes) | required | description
 -----------|-------|--------|----------|------------
@@ -650,7 +817,14 @@ attributes | name  | [type](#AttributeTypes) | required | description
 
 children: [comment](#comment), [item](#item), [range](#range), [script](#script)
 
+
+The *name* is the name of a property that was previously created using the [&lt;prop&gt;](#prop) element.  It must exist and be in
+scope.  The *type* will set a new [&lt;type&gt;](#type) reference of the property.  This must be specified even if the type hasn't
+changed, otherwise the type will be removed.  The *value* is the new value of the property.
 <h2 id="start">1.22 start</h2>
+
+The [&lt;start&gt;](#start) element is optional and specifies the starting record of a document.
+If the [&lt;start&gt;](#start) is not specified, then parsing will begin at the beginning of the document. 
 
 attributes: none
 
@@ -658,7 +832,16 @@ attributes: none
 
 children: [bit](#bit), [comment](#comment), [cstr](#cstr), [field](#field), [fragment](#fragment), [jump](#jump), [if](#if), [oob](#oob), [pad](#pad), [peek](#peek), [enc](#enc), [prop](#prop), [record](#record), [repeat](#repeat), [setprop](#setprop), [switch](#switch), [uint8](#uint8), [uint16](#uint16), [uint32](#uint32), [uint64](#uint64), [while](#while)
 
+
+A typical XDDL specification contains many records, one for each message type to be parsed.  It is convenient to 
+have an explicit starting point for parsing, and that is what [&lt;start&gt;](#start) is for.  It is analogous to the *main()* function
+in C/C++.
 <h2 id="switch">1.23 switch</h2>
+
+The [&lt;switch&gt;](#switch) element is similar in function to the *switch* statement in
+popular general purpose programming languages.  Based on the evaluation of
+the *expr* attribute, a particular [&lt;case&gt;](#case) element's contents will be parsed.
+
 
 attributes | name  | [type](#AttributeTypes) | required | description
 -----------|-------|--------|----------|------------
@@ -667,7 +850,94 @@ attributes | name  | [type](#AttributeTypes) | required | description
 
 children: [case](#case), [default](#default)
 
+
+In order for it to be parsed, the [&lt;switch&gt;](#switch) element's *expr* attribute must
+evaluate to the [&lt;case&gt;](#case) element's *value* attribute.
+
+The *value* of each [&lt;case&gt;](#case) child must be unique.
+
+There is no need for a corresponding *break*.  Execution will only
+"fall-through" if the [&lt;case&gt;](#case) being executed is empty.
+
+If no matches are found, and a [&lt;default&gt;](#default) element exists as a child of the
+[&lt;switch&gt;](#switch), then its contents will be parsed.  There can be at most one
+[&lt;default&gt;](#default) child.
+
+Otherwise, nothing will be parsed.
+
+The following example illustrates the use of a [&lt;switch&gt;](#switch).  It describes a
+message of three octets.  The first octet is used for the *expr* in the [&lt;switch&gt;](#switch)
+element.  The second octet is read by the corresponding [&lt;case&gt;](#case) contents, and
+the final octet is read into the *check* field.
+
+    <xddl>
+      <start>
+    	 <field name="choice" length="8"/>
+    	 <switch expr="choice">
+    	  <case value="1">
+    	   <field name="a" length="4"/>
+    	   <field name="b" length="4"/>
+    	  </case>
+    	  <case value="2">
+    	   <field name="c" length="1"/>
+    	   <field name="d" length="7"/>
+    	  </case>
+    	  <case value="3"/> <!-- "fall through" -->
+    	  <case value="4">
+    	   <field name="e" length="2"/>
+    	   <field name="f" length="6"/>
+    	  </case>
+    	  <default>
+    	   <field name="g" length="2"/>
+    	   <field name="h" length="6"/>
+    	  </default>
+    	 </switch>
+    	 <field name="check" length="8"/>
+      </start>
+    </xddl>
+    
+We can parse the file with different messages to see the different paths
+are followed:
+
+Here we follow the first case:
+
+    # idm choice.xddl 0104FF
+    
+    Name   Length  Value  Hex   Description
+    choice 8       1      #01
+    a      4       0      @0000
+    b      4       4      @0100
+    check  8       255    #FF
+The "fall-through" case:
+
+    # idm choice.xddl 031AFF 041AFF
+    
+    Name   Length  Value  Hex     Description
+    choice 8       3      #03
+    e      2       0      @00
+    f      6       26     @011010
+    check  8       255    #FF
+    Name   Length  Value  Hex     Description
+    choice 8       4      #04
+    e      2       0      @00
+    f      6       26     @011010
+    check  8       255    #FF
+Both of the above messages follow the `value="4"` case.
+
+And finally the [&lt;default&gt;](#default) case can be followed if we specify a *choice* that
+does not match any other [&lt;case&gt;](#case):
+
+    # idm choice.xddl AAFEFF
+    
+    Name   Length  Value  Hex     Description
+    choice 8       170    #AA
+    g      2       3      @11
+    h      6       62     @111110
+    check  8       255    #FF
 <h2 id="type">1.24 type</h2>
+
+The [&lt;type&gt;](#type) tag is used to specify valid values for [&lt;field&gt;](#field) elements.
+It is also used to specify a field's description.
 
 attributes | name  | [type](#AttributeTypes) | required | description
 -----------|-------|--------|----------|------------
@@ -677,7 +947,34 @@ attributes | name  | [type](#AttributeTypes) | required | description
 
 children: [comment](#comment), [item](#item), [range](#range), [script](#script)
 
+
+The [field example](#type-Attribute) above shows a typical usage of [&lt;type&gt;](#type).
+
+<h2 id="Anonymous-Types">1.24.1 Anonymous Types</h2>
+
+
+Often it is easier to specify a field's valid values by placing them as children of the [&lt;field&gt;](#field).  The following 
+example illustrates this.
+
+    <xddl>
+     <bit name="A">
+        <item key="0" value="Goodbye World!"/>
+        <item key="1" value="Hello World!"/>
+     </bit>
+    </xddl>
+And running:
+
+    # idm anon.xddl @1 @0
+    
+    Name  Length  Value  Hex  Description
+    A     1       1      @1   Hello World!
+    Name  Length  Value  Hex  Description
+    A     1       0      @0   Goodbye World!
+Note, since an anonymous type has no *id*, it cannot be referenced from any other field.
+
 <h2 id="uint16">1.25 uint16</h2>
+
+This is equivalent to a [&lt;field&gt;](#field) with length 16.
 
 attributes | name  | [type](#AttributeTypes) | required | description
 -----------|-------|--------|----------|------------
@@ -691,6 +988,8 @@ children: [comment](#comment), [item](#item), [range](#range), [script](#script)
 
 <h2 id="uint32">1.26 uint32</h2>
 
+This is equivalent to a [&lt;field&gt;](#field) with length 32.
+
 attributes | name  | [type](#AttributeTypes) | required | description
 -----------|-------|--------|----------|------------
  | name | string| &#10004;  | 
@@ -702,6 +1001,8 @@ attributes | name  | [type](#AttributeTypes) | required | description
 children: [comment](#comment), [item](#item), [range](#range), [script](#script)
 
 <h2 id="uint64">1.27 uint64</h2>
+
+This is equivalent to a [&lt;field&gt;](#field) with length 64.
 
 attributes | name  | [type](#AttributeTypes) | required | description
 -----------|-------|--------|----------|------------
@@ -715,6 +1016,8 @@ children: [comment](#comment), [item](#item), [range](#range), [script](#script)
 
 <h2 id="uint8">1.28 uint8</h2>
 
+This is equivalent to a [&lt;field&gt;](#field) with length 8.
+
 attributes | name  | [type](#AttributeTypes) | required | description
 -----------|-------|--------|----------|------------
  | name | string| &#10004;  | 
@@ -727,6 +1030,8 @@ children: [comment](#comment), [item](#item), [range](#range), [script](#script)
 
 <h2 id="while">1.29 while</h2>
 
+Repeat the contents of the [&lt;while&gt;](#while) as long as *expr* is true.
+
 attributes | name  | [type](#AttributeTypes) | required | description
 -----------|-------|--------|----------|------------
  | name | string| | 
@@ -737,13 +1042,15 @@ children: [bit](#bit), [comment](#comment), [cstr](#cstr), [field](#field), [fra
 
 <h2 id="xddl">1.30 xddl</h2>
 
+The root element.
+
 attributes: none
 
 
 
 children: [bit](#bit), [comment](#comment), [cstr](#cstr), [field](#field), [fragment](#fragment), [jump](#jump), [if](#if), [oob](#oob), [pad](#pad), [peek](#peek), [enc](#enc), [prop](#prop), [record](#record), [repeat](#repeat), [setprop](#setprop), [switch](#switch), [uint8](#uint8), [uint16](#uint16), [uint32](#uint32), [uint64](#uint64), [while](#while), [start](#start), [type](#type), [export](#export)
 
-<h2 id="AttributeTypes">2 Attribute Types</h2>
+<h2 id="Attribute-Types">2 Attribute Types</h2>
 
 
 type | default | description
