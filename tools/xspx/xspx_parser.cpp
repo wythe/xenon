@@ -40,6 +40,7 @@ xsp_parser::xsp_parser() {
     p.add_children("choice", { "element", "group"} );
     p.add_children("group", { "child" });
     p.add_children("parser", { "name", "code" });
+    p.add_children("type", { "name", "desc" });
 
     // handlers
     p.cdata_handler([&](const char * cdata){this->cdata += cdata; });
@@ -78,9 +79,10 @@ xsp_parser::xsp_parser() {
         i->cpp_func = find_att(atts, "func"); 
         });
 
-    p.end_handler("type", [&]{ 
+    p.end_handler("type", [&] { 
         auto & a = custom_types.back();
-        a.name = ict::normalize(cdata);
+        a.name = xspx::pop_last(names);
+        a.desc = xspx::pop_last(desc);
         if (a.cpp_func.empty()) a.cpp_func = "create_" + a.name;
         cdata.clear(); });
 
@@ -138,10 +140,10 @@ xsp_parser::xsp_parser() {
         });
 
     p.end_handler("name", [&]{ names.push_back(cdata); cdata.clear(); });
+    p.end_handler("desc", [&]{ desc.push_back(cdata); cdata.clear(); });
 
     p.end_handler("parser", [&]{ 
-        class_name = ict::normalize(names.back()); 
-        names.pop_back();
+        class_name = xspx::pop_last(names);
     });
 
     p.end_handler("root", [&]{ 

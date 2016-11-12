@@ -5,19 +5,44 @@
     <base>element</base>
 
     <!-- declare types used by attributes. -->
-    <type cpp="bool" def="false">bool</type>
-    <type cpp="int64_t" def="0">integer</type>
+    <type cpp="bool" def="false">
+        <desc>*true* or *false*</desc>
+        <name>bool</name>
+    </type>
+    <type cpp="int64_t" def="0">
+        <desc>Any integer will do</desc>
+        <name>integer</name>
+    </type>
 
-    <type cpp="size_t" def="1">pos_integer</type>
-    <type cpp="size_t" def="0">size</type>
-    <type cpp="std::string">string</type>
+    <type cpp="size_t" def="1"><name>pos_integer</name>
+        <desc>Positive integer</desc>
+    </type>
+    <type cpp="size_t" def="0">
+        <name>size</name>
+        <desc>Non-negative integer</desc>
+    </type>
+    <type cpp="std::string"><name>string</name></type>
 
-    <type cpp="ict::expr">expression</type>
-    <type cpp="std::string">setprop_name</type>
+    <type cpp="ict::expr"><name>expression</name>
+        <desc>XDDL expression</desc>
+    </type>
+    <type cpp="std::string">
+        <name>setprop_name</name>
+        <desc>Name of a property that is in scope</desc>
+    </type>
 
-    <type cpp="recref">url</type>
-    <type cpp="recref">id_url</type>
-    <type cpp="std::string">jump_name</type>
+    <type cpp="recref">
+        <name>url</name>
+        <desc>Link to a record</desc>
+    </type>
+    <type cpp="recref">
+        <name>id_url</name>
+        <desc>id used in record definitions</desc>
+    </type>
+    <type cpp="std::string">
+        <name>jump_name</name>
+        <desc>Field name used for jump element</desc>
+    </type>
 
     <!-- code segment at the top of header file. -->
     <code id="head"> 
@@ -286,7 +311,7 @@
     -->
     <choice tag="record">
         <element name="record">
-            <display>record definition</display>
+            <display>Record Definition</display>
             <att type="expression">length</att>
             <att type="id_url">id</att>
             <att type="string" local="false" def="record">name</att>
@@ -295,7 +320,7 @@
             <group href="#common"/>
         </element>
         <element name="reclink">
-            <display>record link</display>
+            <display>Record Link</display>
             <att type="expression">length</att>
             <att type="string" local="false" def="record">name</att>
             <att type="url">href</att>
@@ -308,21 +333,21 @@
 
     <choice tag="repeat">
         <element name="repeat">
-            <display>repeat indefinitely</display>
+            <display>Repeat Indefinitely</display>
             <att type="string" local="false">name</att>
             <att type="size">minlen</att>
             <group href="#common"/>
             <code href="vparse"/>
         </element>
         <element name="num_repeat">
-            <display>repeat based on an expression</display>
+            <display>Numbered Repeat</display>
             <att type="string" local="false">name</att>
             <att type="expression" req="true">num</att>
             <group href="#common"/>
             <code href="vparse"/>
         </element>
         <element name="bound_repeat">
-            <display>bound repeat</display>
+            <display>Bound Repeat</display>
             <att type="string" local="false">name</att>
             <att type="integer">minlen</att>
             <att type="expression">max</att>

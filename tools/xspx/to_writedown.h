@@ -9,8 +9,8 @@ std::string attributes(const Elem & elem) {
     if (elem.attributes.empty()) {
         return "\nattributes: none\n\n";
     }
-    os << "\nattributes | name  | [type](#AttributeTypes) | required | description\n";
-    os <<     "-----------|-------|--------|----------|------------\n";
+    os << "\nattributes | name  | [type](#AttributeTypes) | required\n";
+    os <<   "-----------|-------|-------------------------|---------\n";
     for (auto & a : elem.attributes) {
         if (a.fixed.empty()) {
             os << " | " << a.name << " | " << a.type_name << "|";
@@ -24,10 +24,10 @@ std::string attributes(const Elem & elem) {
 
 std::string attribute_types(const custom_type_list & types) {
     std::ostringstream os;
-    os << "\ntype | default | description\n";
+    os << "\nType | Default | Description\n";
     os <<   "-----|---------|------------\n";
     for (auto & t : types) {
-        os << t.name << " | " << t.def << " |\n";
+        os << t.name << " | " << t.def << " | " << t.desc << "\n";
     }
     return os.str();
 }
@@ -56,7 +56,6 @@ void disp_element(OS & os, Cursor c) {
     os << ":include ex.wd#" << anchor(n) << "/summary?\n";
 
     if (!c.empty()) {
-        os << c->tag << " has multiple attribute signatures\n\n";
         for (auto choice = c.begin(); choice!=c.end(); ++choice) {
             disp_element(os, choice);
         }

@@ -54,6 +54,7 @@ typedef std::vector<xml_att_type> xml_att_list;
 
 struct custom_type {
     std::string name;
+    std::string desc;
     std::string cpp_name;
     std::string cpp_func;
     std::string def;
@@ -238,6 +239,7 @@ class xsp_parser {
     std::string cdata;
     xml_att_list atts_;
     std::vector<std::string> names;
+    std::vector<std::string> desc;
     std::vector<std::string> children;
     bool in_group_def = false;
 
@@ -283,6 +285,13 @@ void to_dispatch(Os & os, const Xsp & xsp, std::string const & name) {
     os << "\n} // end switch";
 }
 
+template <typename Cont>
+std::string pop_last(Cont & cont) {
+    if (cont.empty()) return "";
+    auto n = ict::normalize(cont.back()); 
+    cont.pop_back();
+    return n;
+}
 } // namespace xspx
 
 
