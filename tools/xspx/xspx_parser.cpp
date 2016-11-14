@@ -152,6 +152,7 @@ xsp_parser::xsp_parser() {
 
     p.end_handler("element", [&]{ 
         auto & e = elems.back().back();
+        std::sort(children.begin(), children.end());
         e.children = children;
         e.attributes = atts_;
         e.is_base = (e.name == base);
@@ -164,6 +165,9 @@ xsp_parser::xsp_parser() {
             if (i == elems.back().end()) IT_PANIC("base element " << e.isa << " not defined");
             e = merge_elems(*i, e);
         }
+
+        e.group_hrefs = group_hrefs;
+        group_hrefs.clear();
 
         children.clear();
         atts_.clear(); });
@@ -203,11 +207,10 @@ xsp_parser::xsp_parser() {
             in_group_def = false;
             xenon::recref url(p.second.c_str());
             if (url.anchor.empty()) IT_PANIC("invalid href: " << p.second);
-            auto i = xenon::find_by_name(groups.begin(), groups.end(), std::string(url.anchor.begin() + 1, 
-                url.anchor.end()));
+            group_hrefs.push_back(std::string(url.anchor.begin() + 1, url.anchor.end()));
+            auto i = xenon::find_by_name(groups.begin(), groups.end(), group_hrefs.back());
             if (i == groups.end()) IT_PANIC("cannot find group with name " << p.second);
             children.insert(children.end(), i->children.begin(), i->children.end());
-            //children = i->children;
         } 
         });
 
@@ -215,6 +218,7 @@ xsp_parser::xsp_parser() {
         if (in_group_def) { 
             if (children.empty()) groups.pop_back();
             else {
+                std::sort(children.begin(), children.end());
                 groups.back().children = children;
                 children.clear();
             }

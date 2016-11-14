@@ -84,6 +84,7 @@ struct elem_type {
     bool has_cdata;
     bool is_mod;
     std::vector<std::string> children;
+    std::vector<std::string> group_hrefs;
     xml_att_list attributes;
     std::string isa; // inheritance, defaults to element
     std::string pub_code;
@@ -229,6 +230,7 @@ class xsp_parser {
     std::string class_name;
     std::string head;
     group_list groups;
+    std::vector<std::string> group_hrefs;
     choice_list choices;
     std::map<std::string, std::string> code_refs;
     std::pair<std::string, std::string> curr_code_atts;

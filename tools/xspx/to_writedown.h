@@ -32,14 +32,35 @@ std::string attribute_types(const custom_type_list & types) {
     return os.str();
 }
 
-template <typename Elem>
-std::string children(const Elem & elem) {
-    auto v = elem.children;
-    if (v.empty()) return "none";
-    for (auto & s : v) {
+std::string child_elements(const group_list & groups) {
+    // just first group for now
+    auto dest = groups[0].children;
+    std::ostringstream os;
+    for (auto & s : dest) {
         s.insert(0, "^");
     }
-    return ict::join(v, ", ");
+    return ict::join(dest, ", ");
+}
+
+template <typename Elem>
+std::string children(xsp_parser const & parser, const Elem & elem) {
+    auto & v1 = elem.children;
+    std::vector<std::string> dest;
+    if (!elem.group_hrefs.empty()) {
+        auto i = xenon::find_by_name(parser.groups.begin(), parser.groups.end(), elem.group_hrefs.back());
+        auto & v2 = i->children;
+        std::set_difference(v1.begin(), v1.end(), v2.begin(), v2.end(), std::inserter(dest, dest.begin()));
+    } else {
+        dest = v1;
+    }
+
+    for (auto & s : dest) {
+        s.insert(0, "^");
+    }
+    if (!elem.group_hrefs.empty()) {
+        dest.push_back("[Common Children](#Common-Children)");
+    }
+    return ict::join(dest, ", ");
 }
 
 inline std::string anchor(const std::string & x) {
@@ -49,7 +70,7 @@ inline std::string anchor(const std::string & x) {
 }
 
 template <typename OS, typename Cursor>
-void disp_element(OS & os, Cursor c) {
+void disp_element(OS & os, xsp_parser const & parser, Cursor c) {
     std::string n = (c->display.empty()) ? c->tag.c_str() : c->display; 
     os << "# " << n << " {\n\n";
     
@@ -57,12 +78,12 @@ void disp_element(OS & os, Cursor c) {
 
     if (!c.empty()) {
         for (auto choice = c.begin(); choice!=c.end(); ++choice) {
-            disp_element(os, choice);
+            disp_element(os, parser, choice);
         }
     } else {
         os << attributes(*c) << "\n\n";
 
-        os << "children: " << children(*c) << "\n\n";
+        os << "children: " << children(parser, *c) << "\n\n";
     }
 
     os << ":include ex.wd#" << anchor(n) << "/detail?\n";
@@ -80,15 +101,6 @@ void for_each_cursor(Cursor & parent, Pred op) {
 }
 }
 
-template <typename OS>
-void disp_choices(OS & os, const choice_type & choice) {
-    os << "# " <<  choice.name << "{\n";
-    ict::for_each_cursor(choice.elems, [&](auto c){ disp_element(os, c); });
-
-    // for (auto c = choice.elems.begin(); : choice.elems) disp_element(os, elem);
-    os << "}\n\n";
-}
-
 void to_writedown(std::ostream & os, const xsp_parser & xspx) {
     os << ":title XDDL Element Reference\n\n";
     os << ":toc(\"auto\")\n\n";
@@ -96,20 +108,17 @@ void to_writedown(std::ostream & os, const xsp_parser & xspx) {
     auto tree = xspx::elem_tree(xspx);
     os << "# Elements {\n";
     for (auto c = tree.begin(); c != tree.end(); ++c) {
-        disp_element(os, c);
+        disp_element(os, xspx, c);
     }    
     os << "} // Elements\n";
-#if 0
-    os << "# Polymorphic Elements {\n";
-    for (auto & choice : xspx.choices)disp_choices(os, choice); 
-    os << "} // Polymorphic Elements\n\n";
-#endif
+
     os << "# Attribute Types {\n";
     os << attribute_types(xspx.custom_types);
     os << "} // Attributes\n";
 
-#if 0
-#endif
+    os << "# Common Children {\n";
+    os << child_elements(xspx.groups) << '\n';
+    os << "}\n";
 
 }
 
