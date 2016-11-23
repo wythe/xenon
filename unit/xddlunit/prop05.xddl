@@ -2,7 +2,7 @@
 <!-- - Copyright 2016 Intrig -->
 <!-- - See https://github.com/intrig/xenon for license. -->
 <xddl>
-  <comment>
+  <!-- 
   Setting Global Properites declared after reference.
   This feature was removed for modern version, let's see if that is ok.
   </comment>

@@ -10,7 +10,7 @@
 -->
 <xddl>
   <type id="CdmaTime">
-    <comment>
+    <!-- 
       TODO: uint64 is not supported. We should make everything 64 bit IMO.
       CDMA time is number of 1.25 ms clock tics since Jan 6, 1980 at
       00:00:00.
