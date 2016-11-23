@@ -2,7 +2,7 @@
 <!-- - Copyright 2016 Intrig -->
 <!-- - See https://github.com/intrig/xenon for license. -->
 <xddl>
-  <!-- Record Links</comment>
+  <!-- Record Links -->
   <record id="frag1">
     <field name="E" length="1"/>
     <field name="F" length="1"/>

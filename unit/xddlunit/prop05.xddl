@@ -5,7 +5,7 @@
   <!-- 
   Setting Global Properites declared after reference.
   This feature was removed for modern version, let's see if that is ok.
-  </comment>
+   -->
   <export>
     <prop name="x" value="8"/>
   </export>

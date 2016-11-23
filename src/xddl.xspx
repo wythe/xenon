@@ -178,9 +178,6 @@
         <group href="#common"/>
     </element>
 
-    <element tag="comment">
-    </element>
-
     <element tag="default" name="xdefault" end_handler="true">
         <code href="vend_handler"/>
         <group href="#common"/>
