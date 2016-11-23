@@ -61,7 +61,6 @@
     <!-- commonly used group of child elements -->
     <group name="common">
         <child>bit</child>
-        <child>comment</child>
         <child>cstr</child>
         <child>field</child>
         <child>fragment</child>
@@ -282,7 +281,6 @@
         <att type="bool">visible</att>
         <att type="url" member="href">type</att>
         <code href="vto_html"/>
-        <child>comment</child>
         <child>item</child>
         <child>range</child>
         <child>script</child>
@@ -362,7 +360,6 @@
         <att type="expression" req="true">value</att>
         <att type="url" member="href">type</att>
         <att type="setprop_name" local="false" req="true">name</att>
-        <child>comment</child>
         <child>item</child>
         <child>range</child>
         <child>script</child>
@@ -393,7 +390,6 @@
     <element tag="type" name="type" end_handler="true">
         <att type="id_url" req="true">id</att>
         <att type="string" local="false">name</att>
-        <child>comment</child>
         <child>item</child>
         <child>range</child>
         <child>script</child>
@@ -432,7 +428,6 @@
         <att type="integer" req="true">key</att>
         <att type="string" req="true">value</att>
         <att type="url">href</att>
-        <child>comment</child>
     </element>
 
     <element tag="range">
@@ -440,7 +435,6 @@
         <att type="integer" req="true">end</att>
         <att type="string">value</att>
         <att type="url">href</att>
-        <child>comment</child>
     </element>
 
     <element tag="script" has_cdata="true" end_handler="true">

@@ -60,7 +60,7 @@ std::string children(xsp_parser const & parser, const Elem & elem) {
     if (!elem.group_hrefs.empty()) {
         dest.push_back("[Common Children](#Common-Children)");
     }
-    return ict::join(dest, ", ");
+    return dest.empty() ? "none" : ict::join(dest, ", ");
 }
 
 inline std::string anchor(const std::string & x) {
