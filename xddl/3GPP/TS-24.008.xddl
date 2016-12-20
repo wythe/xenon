@@ -6822,12 +6822,13 @@
   <record name="Void" id="10.5.4.31">
     <!-- formerly ImmediateModificationIndicator -->
   </record>
+
   <record name="Supported codec list" id="10.5.4.32">
-    <field name="Length" length="8"/>
-    <repeat name="Codec List" num="Length/4">
-      <field name="System Identification" length="8" default="#04" type="TS-26.103.xddl#6.1"/>
-      <field name="Length Of Bitmap" length="8" default="2" type="#10.5.4.32b"/>
-      <record name="Codec Bitmap">
+    <uint8 name="Length"/>
+    <repeat name="Codec List" num="Length">
+      <uint8 name="System Identification" default="#04" type="TS-26.103.xddl#6.1"/>
+      <uint8 name="Length Of Bitmap"/>
+      <record name="Codec Bitmap" length="{Length Of Bitmap} * 8">
         <if expr="{Length Of Bitmap} &gt; 0">
           <record name="Codec Bitmap, bits 1 to 8" href="TS-26.103.xddl#6.2a"/>
           <if expr="{Length Of Bitmap} &gt; 1">
@@ -6837,6 +6838,7 @@
       </record>
     </repeat>
   </record>
+
   <type name="Codec Bitmap length range" id="10.5.4.32b">
     <item key="2" value="2"/>
   </type>
