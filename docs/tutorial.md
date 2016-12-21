@@ -39,7 +39,7 @@ The `xenon::node` represents a node in a [message](#message).  Users do not have
 A node is assigned a `node_type` during runtime as the message is being parsed.  
 
 node_type type          |  mnemonic() |  Description
-------------------------|--------------------------------------------------------------
+------------------------|-------------|------------------------------------------------
 nil_node                |  "EMP"      |  The node exists but is undefined ?
 root_node               |  "ROT"      |  This is the root of the message ?
 extra_node              |  "EXT"      |  Data that is unparsed is placed in this node
