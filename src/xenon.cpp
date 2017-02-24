@@ -494,6 +494,12 @@ void peek::vparse(spec::cursor self, message::cursor parent, ict::ibitstream &bs
     auto l = length.value(leaf(parent));
     auto bits = bs.peek(l, offset);
     parent.emplace_back(node::prop_node, self, bits);
+#if 1
+    auto n = leaf(parent);
+    std::ostringstream os;
+    os << "Ok! " << bs.remaining() << " " << n->bits;
+    n->desc = os.str();
+#endif
 }
 
 void prop::vparse(spec::cursor self, message::cursor parent, ict::ibitstream &) const {
