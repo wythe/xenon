@@ -284,7 +284,8 @@ void to_dispatch(Os & os, const Xsp & xsp, std::string const & name) {
         }
     }
 
-    os << "\n} // end switch";
+    os << "\n    } // end switch\n";
+    os << "} // end " << name << '\n';
 }
 
 template <typename Cont>
