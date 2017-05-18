@@ -160,7 +160,7 @@
         void vto_wd(std::ostream &amp; os) const {}
 
         void to_wd(std::ostream &amp; os) const {
-            vto_wd(std::ostream &amp; os);
+            vto_wd(os);
         }
 
         template &lt;typename Cursor&gt;

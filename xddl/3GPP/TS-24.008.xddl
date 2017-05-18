@@ -6825,18 +6825,20 @@
 
   <record name="Supported codec list" id="10.5.4.32">
     <uint8 name="Length"/>
-    <repeat name="Codec List" num="Length/4">
-      <uint8 name="System Identification" default="#04" type="TS-26.103.xddl#6.1"/>
-      <uint8 name="Length Of Bitmap"/>
-      <record name="Codec Bitmap" length="{Length Of Bitmap} * 8">
-        <if expr="{Length Of Bitmap} &gt; 0">
-          <record name="Codec Bitmap, bits 1 to 8" href="TS-26.103.xddl#6.2a"/>
-          <if expr="{Length Of Bitmap} &gt; 1">
-            <record name="Codec Bitmap, bits 9 to 16" href="TS-26.103.xddl#6.2b"/>
+    <record name="Codec List" length="Length*8">
+      <repeat>
+        <uint8 name="System Identification" default="#04" type="TS-26.103.xddl#6.1"/>
+        <uint8 name="Length Of Bitmap"/>
+        <record name="Codec Bitmap" length="{Length Of Bitmap} * 8">
+          <if expr="{Length Of Bitmap} &gt; 0">
+            <record name="Codec Bitmap, bits 1 to 8" href="TS-26.103.xddl#6.2a"/>
+            <if expr="{Length Of Bitmap} &gt; 1">
+              <record name="Codec Bitmap, bits 9 to 16" href="TS-26.103.xddl#6.2b"/>
+            </if>
           </if>
-        </if>
-      </record>
-    </repeat>
+        </record>
+      </repeat>
+    </record>
   </record>
 
   <type name="Codec Bitmap length range" id="10.5.4.32b">
