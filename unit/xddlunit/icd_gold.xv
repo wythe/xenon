@@ -1195,7 +1195,7 @@ f: /c1/rrcConnectionReconfiguration/criticalExtensions/c1/rrcConnectionReconfigu
 f: /c1/rrcConnectionReconfiguration/criticalExtensions/c1/rrcConnectionReconfiguration-r8/radioResourceConfigDedicated/drb-ToAddModList/repeat/record/logicalChannelConfig/ul-SpecificParameters/logicalChannelGroup: 1: 2: @01: 
 
 m: icd.xddl: #C308CE82BA9C048069000000000007600000
-count: 15
+count: 16
 f: /TimestampIncl: 1: 1: @1: true
 f: /SourceDestIncl: 1: 1: @1: true
 f: /Reserved: 0: 1: @0: zero
@@ -1209,8 +1209,9 @@ f: /Channel: 7: 8: #07: BCCH-BCH
 f: /message/dl-Bandwidth: 3: 3: @011: n50
 f: /message/phich-Config/phich-Duration: 0: 1: @0: normal
 f: /message/phich-Config/phich-Resource: 0: 2: @00: oneSixth
-f: /message/systemFrameNumber: 0: 8: #00: 
-f: /message/spare: 0: 10: @0000000000: 
+f: /message/systemFrameNumber: 0: 8: #00:
+f: /message/schedulingInfoSIB1-BR-r13: 0: 5: @00000:
+f: /message/spare: 0: 5: @00000:
 
 m: icd.xddl: #C308CE82BA9C0488770000000000064040040300010000001C48C110208184B400
 count: 46
