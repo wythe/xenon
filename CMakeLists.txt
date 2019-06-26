@@ -1,7 +1,8 @@
 cmake_minimum_required(VERSION 2.8)
+add_definitions(-std=c++17)
 
 if(WIN32)
-set(CMAKE_PREFIX_PATH ${CMAKE_CURRENT_SOURCE_DIR}/win) 
+set(CMAKE_PREFIX_PATH ${CMAKE_CURRENT_SOURCE_DIR}/win)
 endif()
 
 add_subdirectory(tools)
