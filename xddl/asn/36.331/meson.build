@@ -1,0 +1,2 @@
+# add_custom_command(['OUTPUT', cmake_current_source_dir, '/../../3GPP/TS-36.331.xddl', 'DEPENDS', '36.331.asn', 'substitute.txt', 'asnx', 'xml-patch', 'COMMAND', 'asnx', '-t', cmake_current_source_dir, '/36.331.asn', '>', 'temp.xddl', 'COMMAND', 'xml-patch', 'temp.xddl', cmake_current_source_dir, '/substitute.txt', '>', cmake_current_source_dir, '/../../3GPP/TS-36.331.xddl'])
+# add_custom_target(['36_331', 'ALL', 'DEPENDS', cmake_current_source_dir, '/../../3GPP/TS-36.331.xddl'])

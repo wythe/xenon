@@ -1,0 +1,8 @@
+decode_exe = executable('decode', 'decode.cpp')
+# target_link_libraries(['decode', 'xenon'])
+sibs_exe = executable('sibs', 'sibs.cpp')
+# target_link_libraries(['sibs', 'xenon'])
+tut_exe = executable('tut', 'tutorial.cpp')
+# target_link_libraries(['tut', 'xenon'])
+tut2_exe = executable('tut2', 'tutorial2.cpp')
+# target_link_libraries(['tut2', 'xenon'])
