@@ -1,8 +1,35 @@
-bison = find_program('bison', required : true)
-flex = dependency('flex'), required : true)
+#bison = find_program('bison', required : true)
+#flex = dependency('flex'), required : true)
 # bison_target(['MyParser', 'asn1.ypp', cmake_current_binary_dir, '/parser.cc'])
 # flex_target(['MyScanner', 'asn1.l', cmake_current_binary_dir, '/lexer.cc'])
 # add_flex_bison_dependency(['MyScanner', 'MyParser'])
 # include_directories(cmake_current_source_dir)
-asnx_exe = executable('asnx', 'asnast.cpp', bison_myparser_outputs, flex_myscanner_outputs)
+#asnx_exe = executable('asnx', 'asnast.cpp', bison_myparser_outputs, flex_myscanner_outputs)
 # target_link_libraries(['asnx', 'xenon'])
+
+flex = find_program('flex', required: false)
+bison = find_program('bison', required: false)
+
+if not flex.found()
+  error('flex not found.')
+endif
+
+if not bison.found()
+  error('bison not found.')
+endif
+
+lgen = generator(flex,
+output : '@PLAINNAME@.yy.c',
+arguments : ['-o', '@OUTPUT@', '@INPUT@'])
+
+lfiles = lgen.process('asn1.l')
+
+pgen = generator(bison,
+output : ['@BASENAME@.tab.cpp', '@BASENAME@.tab.h'],
+arguments : ['@INPUT@', '--defines=@OUTPUT1@', '--output=@OUTPUT0@'])
+
+pfiles = pgen.process('asn1.ypp')
+
+e = executable('asnx', 'asnast.cpp', lfiles, pfiles)
+
+#test('parsertest', e)

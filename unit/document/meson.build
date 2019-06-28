@@ -1,12 +1,12 @@
 spec_exe = executable('spec', 'specunit.cpp', 'fieldtypes.cpp')
 # target_link_libraries(['spec', 'xenon'])
-test('NAME', 'spec', 'WORKING_DIRECTORY', cmake_current_source_dir, 'COMMAND', 'spec')
+test('spec', spec_exe)
 Boost_dep = dependency('Boost')
-if 'Boost_FOUND'
+if Boost_dep.found()
   # include_directories(boost_include_dirs)
   # message('adding load test')
   load_exe = executable('load', 'loadunit.cpp')
   # target_link_libraries(['load', 'xenon'])
   # target_link_libraries(['load', boost_libraries])
-  test('NAME', 'load', 'WORKING_DIRECTORY', cmake_current_source_dir, 'COMMAND', 'load')
+  test('load', load_exe)
 endif
