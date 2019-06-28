@@ -1,7 +1,6 @@
-Boost_dep = dependency('Boost')
-if Boost_dep.found()
-  # include_directories(boost_include_dirs)
-  decodeperf_exe = executable('decodeperf', 'decode.cpp')
-  # target_link_libraries(['decodeperf', 'xenon'])
-  # target_link_libraries(['decodeperf', boost_libraries])
+if boost_dep.found()
+    decodeperf_exe = executable('decodeperf', 'decode.cpp', xddl_h,
+        include_directories : inc,
+        dependencies : boost_dep,
+        link_with : xenon_lib)
 endif

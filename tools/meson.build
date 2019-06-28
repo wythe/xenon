@@ -1,17 +1,29 @@
 # Tools with just one source file are in this directory.  Otherwise they are in a subdirectory.
-subdir('xspx')
 subdir('asnx')
-asn_strip_exe = executable('asn-strip', 'asnstrip.cpp', link_with : xenon_lib)
-# target_link_libraries(['asn-strip', 'xenon'])
-idm_exe = executable('idm', 'idm.cpp', link_with : xenon_lib)
-# target_link_libraries(['idm', 'xenon'])
-xddl2wd_exe = executable('xddl2wd', 'xddl2wd.cpp', link_with : xenon_lib)
-# target_link_libraries(['xddl2wd', 'xenon'])
-xml_patch_exe = executable('xml-patch', 'xmlpatch.cpp', link_with : xenon_lib)
-# target_link_libraries(['xml-patch', 'xenon'])
-xml_pp_exe = executable('xml-pp', 'xmlpp.cpp', link_with : xenon_lib)
-# target_link_libraries(['xml-pp', 'xenon'])
-xv_exe = executable('xv', 'xv.cpp', link_with : xenon_lib)
-# target_link_libraries(['xv', 'xenon'])
-recombobulator_exe = executable('recombobulator', 'recombobulator.cpp', link_with : xenon_lib)
-# target_link_libraries(['recombobulator', 'xenon'])
+asn_strip_exe = executable('asn-strip', 'asnstrip.cpp',
+    include_directories : inc,
+    link_with : xenon_lib)
+
+idm_exe = executable('idm', 'idm.cpp', xddl_h,
+    include_directories : inc,
+    link_with : xenon_lib)
+
+xddl2wd_exe = executable('xddl2wd', 'xddl2wd.cpp', xddl_h,
+    include_directories : [inc, xenon_inc],
+    link_with : xenon_lib)
+
+xml_patch_exe = executable('xml-patch', 'xmlpatch.cpp',
+    include_directories : inc,
+    link_with : xenon_lib)
+
+xml_pp_exe = executable('xml-pp', 'xmlpp.cpp',
+    include_directories : inc,
+    link_with : xenon_lib)
+
+xv_exe = executable('xv', 'xv.cpp', xddl_h,
+    include_directories : [inc, xenon_inc],
+    link_with : xenon_lib)
+
+recombobulator_exe = executable('recombobulator', 'recombobulator.cpp', xddl_h,
+    include_directories : [inc, xenon_inc],
+    link_with : xenon_lib)

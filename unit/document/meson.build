@@ -1,12 +1,14 @@
-spec_exe = executable('spec', 'specunit.cpp', 'fieldtypes.cpp')
-# target_link_libraries(['spec', 'xenon'])
-test('spec', spec_exe)
-Boost_dep = dependency('Boost')
-if Boost_dep.found()
-  # include_directories(boost_include_dirs)
-  # message('adding load test')
-  load_exe = executable('load', 'loadunit.cpp')
-  # target_link_libraries(['load', 'xenon'])
-  # target_link_libraries(['load', boost_libraries])
-  test('load', load_exe)
+spec_exe = executable('spec', 'specunit.cpp', 'fieldtypes.cpp', xddl_h,
+    include_directories : inc,
+    link_with : xenon_lib)
+test('spec', spec_exe,
+    workdir : meson.source_root() + '/unit/document')
+
+boost_dep = dependency('boost', modules : ['system', 'filesystem'])
+if boost_dep.found()
+    load_exe = executable('load', 'loadunit.cpp', xddl_h,
+        include_directories : inc,
+        dependencies : boost_dep,
+        link_with : xenon_lib)
+    test('load', load_exe)
 endif

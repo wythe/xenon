@@ -1,9 +1,14 @@
-recref_exe = executable('recref', 'recref_unit.cpp')
+recref_exe = executable('recref', 'recref_unit.cpp',
+    include_directories : inc,
+    link_with : xenon_lib)
 test('recref', recref_exe)
-msg_exe = executable('msg', 'message_unit.cpp', link_with : xenon_lib)
-test('msg', msg_exe)
-# target_link_libraries(['msg', 'xenon'])
-#test('NAME', 'msg', 'WORKING_DIRECTORY', cmake_current_source_dir, 'COMMAND', 'msg')
+
+msg_exe = executable('msg', 'message_unit.cpp', xddl_h,
+    include_directories : inc,
+    link_with : xenon_lib)
+test('msg', msg_exe,
+    workdir : meson.source_root() + '/unit')
+
 subdir('itu')
 subdir('xmlparse')
 subdir('document')

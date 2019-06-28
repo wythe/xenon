@@ -19,7 +19,7 @@ if not bison.found()
 endif
 
 lgen = generator(flex,
-output : '@PLAINNAME@.yy.c',
+output : '@PLAINNAME@.yy.cpp',
 arguments : ['-o', '@OUTPUT@', '@INPUT@'])
 
 lfiles = lgen.process('asn1.l')
@@ -30,6 +30,11 @@ arguments : ['@INPUT@', '--defines=@OUTPUT1@', '--output=@OUTPUT0@'])
 
 pfiles = pgen.process('asn1.ypp')
 
-e = executable('asnx', 'asnast.cpp', lfiles, pfiles)
+asnx_exe = executable('asnx', 'asnast.cpp', lfiles, pfiles,
+    include_directories : [inc, xenon_inc],
+    link_with : xenon_lib)
 
+#asnx_gen = generator(asnx_exe,
+#output : '@PLAINNAME
+#arguments : [ '-t', '@INPUT@', 
 #test('parsertest', e)
