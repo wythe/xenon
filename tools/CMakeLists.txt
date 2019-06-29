@@ -2,7 +2,6 @@ cmake_minimum_required(VERSION 2.8)
 include(${CMAKE_SOURCE_DIR}/xenonapp.txt)
 
 # Tools with just one source file are in this directory.  Otherwise they are in a subdirectory.
-add_subdirectory(xspx)
 add_subdirectory(asnx)
 
 add_executable(asn-strip asnstrip.cpp)

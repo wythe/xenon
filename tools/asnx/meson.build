@@ -25,7 +25,7 @@ arguments : ['-o', '@OUTPUT@', '@INPUT@'])
 lfiles = lgen.process('asn1.l')
 
 pgen = generator(bison,
-output : ['@BASENAME@.tab.cpp', '@BASENAME@.tab.h'],
+output : ['@BASENAME@.tab.cpp', '@BASENAME@.tab.hh'],
 arguments : ['@INPUT@', '--defines=@OUTPUT1@', '--output=@OUTPUT0@'])
 
 pfiles = pgen.process('asn1.ypp')
