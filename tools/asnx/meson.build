@@ -7,16 +7,8 @@
 #asnx_exe = executable('asnx', 'asnast.cpp', bison_myparser_outputs, flex_myscanner_outputs)
 # target_link_libraries(['asnx', 'xenon'])
 
-flex = find_program('flex', required: false)
-bison = find_program('bison', required: false)
-
-if not flex.found()
-  error('flex not found.')
-endif
-
-if not bison.found()
-  error('bison not found.')
-endif
+flex = find_program('flex', required: true)
+bison = find_program('bison', required: true)
 
 lgen = generator(flex,
 output : '@PLAINNAME@.yy.cpp',
