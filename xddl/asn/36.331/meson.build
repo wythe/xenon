@@ -6,12 +6,12 @@ temp_xddl = custom_target(
     'temp_xddl',
     output : 'temp.xddl',
     input : '36.331.asn',
-    command : [asnx_exe, '-t', '@INPUT@', '>', '@OUTPUT@'])
+    command : [asnx_exe, '-o', '@OUTPUT@', '-t', '@INPUT@'])
 
 x36_331 = custom_target(
     'x36_331',
     output : 'TS-36.331.xddl',
     input : [temp_xddl, 'substitute.txt'],
     build_by_default : true,
-    command : [xml_patch_exe, '@INPUT0@', '@INPUT1@', '>', '@OUTPUT'])
+    command : [xml_patch_exe, '-o', '@OUTPUT', '@INPUT0@', '@INPUT1@'])
 
