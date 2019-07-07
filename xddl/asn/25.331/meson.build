@@ -1,2 +1,12 @@
-# add_custom_command(['OUTPUT', cmake_current_source_dir, '/../../3GPP/TS-25.331.xddl', 'DEPENDS', '25.331.asn', 'substitute.txt', 'asnx', 'xml-patch', 'COMMAND', 'asnx', '-t', cmake_current_source_dir, '/25.331.asn', '>', 'temp.xddl', 'COMMAND', 'xml-patch', 'temp.xddl', cmake_current_source_dir, '/substitute.txt', '>', cmake_current_source_dir, '/../../3GPP/TS-25.331.xddl'])
-# add_custom_target(['25_331', 'ALL', 'DEPENDS', cmake_current_source_dir, '/../../3GPP/TS-25.331.xddl'])
+temp_25_331 = custom_target(
+    'temp_25_331',
+    output : 'temp_25_331.xddl',
+    input : '25.331.asn',
+    command : [asnx_exe, '-o', '@OUTPUT@', '-t', '@INPUT@'])
+
+x25_331 = custom_target(
+    'x25_331',
+    output : 'TS-25.331.xddl',
+    input : [temp_25_331, 'substitute.txt'],
+    build_by_default : true,
+    command : [xml_patch_exe, '-o', '@OUTPUT@', '@INPUT0@', '@INPUT1@'])
