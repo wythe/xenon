@@ -2,6 +2,7 @@
 //-- See https://github.com/intrig/xenon for license.
 #include <ict/command.h>
 #include <xenon/xenon.h>
+#include <experimental/filesystem>
 
 using std::cout;
 using std::cerr;
@@ -167,6 +168,7 @@ class XvFile {
         std::string line;
         XvMessage msg;
         int line_no = 0;
+        if (!std::experimental::filesystem::exists(filename)) IT_PANIC(filename << " doesn't exist");
         std::ifstream file(filename.c_str());
         if (file.is_open()) {
             while (file.good()) {
@@ -329,7 +331,7 @@ int main(int argc, char **argv) {
         if (show_time) std::cout << "total time: " << ict::to_string(timer) << "\n";
 
     } catch (std::exception & e) {
-        cerr << e.what() << '\n';
+        cerr << "error" << e.what() << '\n';
         return 1;
     }
 }

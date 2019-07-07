@@ -252,9 +252,9 @@ void doc_unit::get_record() {
         xenon::spec_server s2("../../xddl");
         auto r1 = xenon::get_record(s2, "icd.xddl");
         IT_ASSERT(!r1.is_root());
-        auto r2 = xenon::get_record(s2, "3GPP/TS-36.331.xddl#DL-DCCH-Message");
+        auto r2 = xenon::get_record(s2, "3GPP/TS-24.008.xddl#9.4.1");
         IT_ASSERT(!r2.is_root());
-        auto rec = xenon::get_record(s2, "3GPP/TS-36.331/DL-DCCH-Message");
+        auto rec = xenon::get_record(s2, "3GPP/TS-24.008/9.4.1");
         IT_ASSERT(!rec.is_root());
     } catch (const std::exception & e) {
         IT_FORCE_ASSERT(e.what());
