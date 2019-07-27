@@ -20,7 +20,7 @@ add_executable(xml-pp xmlpp.cpp)
 target_link_libraries(xml-pp xenon)
 
 add_executable(xv xv.cpp)
-target_link_libraries(xv xenon)
+target_link_libraries(xv xenon stdc++fs)
 
 add_executable(recombobulator recombobulator.cpp)
 target_link_libraries(recombobulator xenon)
