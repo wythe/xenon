@@ -109,7 +109,6 @@ private:
     // given a file name, locate it relative to the xddl_path.  The filename is then mutated to reflect the 
     // true path.
     inline bool locate(std::string & fname) {
-        auto ext = ict::extension(fname);
         if (ict::is_file(fname)) return true;
         if (!ict::is_absolute_path(fname)) {
             for (auto const & path : xddl_path) {

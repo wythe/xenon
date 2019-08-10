@@ -28,5 +28,5 @@ asnx_exe = executable('asnx', 'asnast.cpp', lfiles, pfiles,
 
 #asnx_gen = generator(asnx_exe,
 #output : '@PLAINNAME
-#arguments : [ '-t', '@INPUT@', 
+#arguments : [ '-t', '@INPUT@',
 #test('parsertest', e)

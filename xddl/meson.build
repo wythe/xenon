@@ -1,1 +1,1 @@
-subdir('asn')
+subdir('3GPP')
