@@ -25,15 +25,12 @@ x25_331 = custom_target(
     input : [temp_25_331, '25.331-sub.txt'],
     command : [xml_patch_exe, '-o', '@OUTPUT@', '@INPUT0@', '@INPUT1@'])
 
-run_command('cp', meson.build_root() + '/xddl/3GPP/TS-36.331.xddl',
-    meson.build_root() + '/xddl/3GPP/TS-25.331.xddl',
-    meson.source_root() + '/xddl/3GPP/')
-
 copy_xddl = custom_target(
     'cp_xddl',
     build_by_default : true,
     output : 'nothing',
     depends : [x36_331, x25_331],
-    command : [cp_exe, '-u', [meson.current_build_dir() + '/TS-36.331.xddl', meson.current_build_dir() + '/TS-25.331.xddl'],
+    command : [cp_exe, '-u',
+        [meson.current_build_dir() + '/TS-36.331.xddl', meson.current_build_dir() + '/TS-25.331.xddl'],
         meson.current_source_dir()])
 
