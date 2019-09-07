@@ -1,8 +1,8 @@
 #pragma once
+#include "recref.h"
 #include "xddl.h"
 #include <list>
 #include <vector>
-#include <xenon/recref.h>
 
 namespace xenon {
 

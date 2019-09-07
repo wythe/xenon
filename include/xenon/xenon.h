@@ -1,10 +1,11 @@
 #pragma once
 #include "ict/bitstring.h"
+#include "message.h"
+#include "recref.h"
+#include "spec_server.h"
 #include <functional>
-#include <xenon/recref.h>
 #include <random>
-#include <xenon/message.h>
-#include <xenon/spec_server.h>
+
 namespace xenon {
 inline ict::bitstring serialize(const message &m) {
     ict::obitstream bs;

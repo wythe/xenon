@@ -1,11 +1,11 @@
 #pragma once
 #include "ict/ict.h"
-
 #include <iostream>
 #include <string>
 #include <vector>
 
 namespace xenon {
+// a cheap version of clang-format
 class cpp_code {
   public:
     cpp_code(int starting_indent = 0) : _indent(starting_indent) {}

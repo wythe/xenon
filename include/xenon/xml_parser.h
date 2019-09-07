@@ -1,11 +1,9 @@
 #pragma once
+#include "att_pair.h"
+#include "ict/string64.h"
+#include "xml_parser_base.h"
 #include <functional>
 #include <vector>
-
-#include <xenon/xml_parser_base.h>
-
-#include <xenon/att_pair.h>
-#include <xenon/ict/string64.h>
 
 // TODO: rewrite XmlParserBase to be
 // template <typename T>

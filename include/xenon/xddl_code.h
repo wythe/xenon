@@ -1,9 +1,6 @@
 #pragma once
-//-- Copyright 2016 Intrig
-//-- See https://github.com/intrig/xenon for license.
-#include <xenon/ict/osstream.h>
-#include <xenon/xml_parser_base.h>
-
+#include "ict/osstream.h"
+#include "xml_parser_base.h"
 #include <map>
 #include <memory>
 #include <stack>

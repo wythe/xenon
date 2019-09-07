@@ -1,5 +1,3 @@
-//-- Copyright 2016 Intrig
-//-- See https://github.com/intrig/xenon for license.
 #include <xenon/message.h>
 #include <xenon/spec_server.h>
 #include <xenon/xddl.h>

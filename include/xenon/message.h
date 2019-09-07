@@ -1,7 +1,5 @@
 #pragma once
-#include "ict/bitstring.h"
 #include "xddl.h"
-#include <xenon/node.h>
 
 namespace xenon {
 

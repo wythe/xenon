@@ -1,12 +1,9 @@
 #include <algorithm>
 #include <set>
 #include <xenon/DateTime.h>
-#include <xenon/ict/bitstring.h>
+#include <xenon/lua.hpp>
 #include <xenon/xenon.h>
 #include <xenon/ximsi.h>
-
-// xddl script
-#include <xenon/lua.hpp>
 
 namespace xenon {
 
