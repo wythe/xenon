@@ -3,10 +3,10 @@ sudo: required
 dist: bionic
 install:
     - choco install python3
-    - choco install pip
-    - pip3 install meson
-    - choco install make
+    - git clone https://github.com/mesonbuild/meson
     - choco install ninja
+    - meson/meson.py --buildtype release build
+    - choco install make
     #- make get-deps
 notifications:
     email: false
