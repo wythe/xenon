@@ -2,6 +2,7 @@ language: cpp
 sudo: required
 dist: bionic
 install:
+    - choco install make
     - choco install python3
     #- make get-deps
 notifications:
