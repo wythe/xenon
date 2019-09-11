@@ -2,7 +2,7 @@ language: cpp
 sudo: required
 dist: bionic
 install:
-    - choco install meson
+    - choco install python3
     #- make get-deps
 notifications:
     email: false
