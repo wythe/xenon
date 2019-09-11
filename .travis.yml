@@ -4,6 +4,8 @@ dist: bionic
 install:
     - choco install make
     - choco install python3
+    - choco install ninja
+    - pip3 install meson
     #- make get-deps
 notifications:
     email: false
