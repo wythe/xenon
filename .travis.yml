@@ -1,7 +1,9 @@
 language: cpp
 sudo: required
 dist: bionic
-install: make get-deps
+install:
+    - choco install meson
+    #- make get-deps
 notifications:
     email: false
 compiler:
