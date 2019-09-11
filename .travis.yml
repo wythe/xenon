@@ -2,10 +2,8 @@ language: cpp
 sudo: required
 dist: bionic
 install:
-    - wget --progress=dot:mega https://bootstrap.pypa.io/get-pip.py
-    - wget --progress=dot:mega https://github.com/ninja-build/ninja/releases/download/v1.9.0/ninja-win.zip
     - choco install python --version 3.7.4
-    - python get-pip.py
+    - choco install pip
     - choco install ninja
     - pip3 install meson
     - choco install make
