@@ -2,10 +2,11 @@ language: cpp
 sudo: required
 dist: bionic
 install:
-    - choco install make
     - choco install python3
-    - choco install ninja
+    - choco install pip
     - pip3 install meson
+    - choco install make
+    - choco install ninja
     #- make get-deps
 notifications:
     email: false
