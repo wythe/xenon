@@ -2,7 +2,8 @@ language: cpp
 sudo: required
 dist: bionic
 install:
-    - choco install python --version 3.7.4
+    - choco install python
+    - RefreshEnv
     - choco install pip
     - choco install ninja
     - pip3 install meson
