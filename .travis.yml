@@ -5,6 +5,7 @@ install:
     - choco install python3
     - git clone https://github.com/mesonbuild/meson
     - choco install ninja
+    - refreshenv
     - meson/meson.py --buildtype release build
     - choco install make
     #- make get-deps
