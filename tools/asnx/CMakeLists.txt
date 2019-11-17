@@ -16,4 +16,4 @@ add_executable(asnx
   ${BISON_MyParser_OUTPUTS}
   ${FLEX_MyScanner_OUTPUTS}
 )
-
+target_link_libraries(asnx PUBLIC xenon)
