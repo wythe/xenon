@@ -295,7 +295,7 @@ void xsp_parser::to_stream(std::ostream & h, std::ostream & s) const {
     s << code.str();
 }
 
-std::ostream& xsp_parser::to_decl(std::ostream& os, const elem_type & elem, const std::string & root) const {
+std::ostream& xsp_parser::to_decl(std::ostream& os, const elem_type & elem, const std::string & /* root */) const {
     if (!elem.isa.empty()) return os;
 
     os << "struct " << elem.name;

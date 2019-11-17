@@ -15,7 +15,7 @@ WHITESPC  [ \t\r]
 #include <iostream>
 #include <string>
 #include "asnast.h"
-#include "asn1.tab.hh"
+#include "parser.hpp"
 
 
 using namespace std;
