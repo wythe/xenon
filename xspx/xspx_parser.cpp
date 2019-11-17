@@ -279,12 +279,10 @@ void xsp_parser::header(std::ostream & h, st::type t) const  {
 }
 
 void xsp_parser::to_stream(std::ostream & h) const {
-    header(h, st::header_impl);
+    header(h, st::header_decl);
 }
 
-void xsp_parser::to_stream(std::ostream & h, std::ostream & s) const {
-    header(h, st::header_decl);
-
+void xsp_parser::src_to_stream(std::ostream & s) const {
     std::ostringstream os;
     xenon::cpp_code code;
     os << "#include <xenon/xenon.h>";

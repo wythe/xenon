@@ -6,18 +6,23 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 set(CMAKE_BUILD_TYPE "Release")
 add_compile_options(-Wall -Wextra -Werror)
-
-if (APPLE)
+add_compile_options(-Wno-implicit-fallthrough)
 add_compile_options(-fdiagnostics-color=always)
-endif (APPLE)
 
-include_directories("include")
-include_directories("src")
+include_directories(include)
+include_directories(src)
 
 if (APPLE)
 include_directories(SYSTEM "/usr/local/include")
 endif (APPLE)
 
 add_subdirectory(xspx)
+add_subdirectory(include)
+#add_subdirectory(src)
 #add_subdirectory(tools)
+#add_subdirectory(xddl)
+#add_subdirectory(unit)
+#add_subdirectory(examples)
 
+install(TARGETS xspx
+        DESTINATION bin)
