@@ -1,6 +1,7 @@
 cmake_minimum_required(VERSION 3.12)
 project(xenon VERSION 2.4.0)
 configure_file(config.h.in config.h)
+enable_testing()
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
@@ -22,8 +23,8 @@ add_subdirectory(include)
 add_subdirectory(src)
 add_subdirectory(tools)
 #add_subdirectory(xddl)
-#add_subdirectory(unit)
-#add_subdirectory(examples)
+add_subdirectory(unit)
+add_subdirectory(examples)
 
 install(TARGETS xspx
         DESTINATION bin)

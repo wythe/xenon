@@ -9,7 +9,7 @@ add_custom_command(
 
 include_directories(lua-5.1.4/src)
 
-add_library(xenon
+add_library(xenon SHARED
     lua-5.1.4/src/lua_all.cpp
     xml_parser_base.cpp 
     message.cpp
