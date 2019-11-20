@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.12)
-project(xenon VERSION 2.4.0)
+project(xenon VERSION 2.3.0)
 configure_file(config.h.in config.h)
 enable_testing()
 
