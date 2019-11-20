@@ -11,7 +11,6 @@ add_compile_options(-Wno-implicit-fallthrough)
 add_compile_options(-fdiagnostics-color=always)
 
 include_directories(include)
-include_directories(${CMAKE_BINARY_DIR}/include)
 include_directories(src)
 
 if (APPLE)
@@ -19,12 +18,7 @@ include_directories(SYSTEM "/usr/local/include")
 endif (APPLE)
 
 add_subdirectory(xspx)
-add_subdirectory(include)
 add_subdirectory(src)
 add_subdirectory(tools)
-#add_subdirectory(xddl)
 add_subdirectory(unit)
 add_subdirectory(examples)
-
-install(TARGETS xspx
-        DESTINATION bin)
