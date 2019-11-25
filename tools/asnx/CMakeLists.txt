@@ -11,6 +11,7 @@ if (BISON_FOUND AND FLEX_FOUND)
     include_directories(${CMAKE_CURRENT_BINARY_DIR})
     include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 
+    add_compile_options(-Wno-unneeded-internal-declaration)
     add_executable(asnx
       asnast.cpp
       ${BISON_MyParser_OUTPUTS}
