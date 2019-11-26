@@ -12,9 +12,7 @@ config_h = custom_target(
     'config_h',
     input : meson.source_root() + '/config.meson.in',
     output : 'config.h',
-    command : [ copy, '@INPUT@', '@OUTPUT@' ],
-    install : true,
-    install_dir : get_option('includedir') + '/xenon')
+    command : [ copy, '@INPUT@', '@OUTPUT@' ])
 
 install_headers(
     'DateTime.h',
