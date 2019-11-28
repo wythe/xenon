@@ -19,7 +19,7 @@ include_directories(src)
 
 if (APPLE)
     include_directories(SYSTEM "/usr/local/include")
-endif (APPLE)
+endif ()
 
 if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
     set(FSLIB -lstdc++fs)
@@ -31,3 +31,21 @@ add_subdirectory(tools)
 add_subdirectory(unit)
 add_subdirectory(examples)
 add_subdirectory(perf)
+
+#set(CMAKE_INSTALL_PREFIX ${CMAKE_BINARY_DIR}/install)
+
+install(DIRECTORY include/xenon
+    DESTINATION include
+    FILES_MATCHING PATTERN "*.h"
+    PATTERN "ict/*/*" EXCLUDE
+)
+
+install(DIRECTORY ${CMAKE_BINARY_DIR}/include/xenon
+    DESTINATION include
+)
+
+install(DIRECTORY xddl
+    DESTINATION share
+    FILES_MATCHING PATTERN "*.xddl"
+)
+install(TARGETS idm xv DESTINATION bin)
