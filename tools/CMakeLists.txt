@@ -21,7 +21,7 @@ add_executable(asn-strip asnstrip.cpp)
 target_link_libraries(asn-strip PUBLIC xenon ${FSLIB})
 
 add_executable(procadoc procadoc.cpp)
-target_link_libraries(procadoc PUBLIC ${FSLIB})
+target_link_libraries(procadoc PUBLIC xenon ${FSLIB})
 endif()
 
 install(TARGETS idm xv DESTINATION bin)
