@@ -48,4 +48,3 @@ install(DIRECTORY xddl
     DESTINATION share
     FILES_MATCHING PATTERN "*.xddl"
 )
-install(TARGETS idm xv DESTINATION bin)
