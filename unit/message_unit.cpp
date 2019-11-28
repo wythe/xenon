@@ -119,7 +119,7 @@ void unit::for_each_path_test() {
         IT_ASSERT(count_test(m, "c") == 2);
         IT_ASSERT(count_test(m, "b/c") == 2);
         IT_ASSERT(count_test(m, "a/b/c") == 2);
-        IT_ASSERT(count_test(m, "C/a/q/c") == 1);
+        IT_ASSERT(count_test(m, "C/a/b/c") == 1);
     }
 }
 
