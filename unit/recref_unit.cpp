@@ -63,7 +63,7 @@ void unit::relative_url() {
 
         {"3GPP2/C.S0005.xddl", "", "3GPP2/C.S0005.xddl"},
         {"3GPP2/C.S0005.xddl", "#3.1.1", "3GPP2/C.S0005.xddl#3.1.1"},
-        {"3GPP2/C.S0005.xddl", "C.R1001-G.xddl", "3GPP2/C.R1001-G.xddl"},
+        {"3GPP2/C.S005.xddl", "C.R1001-G.xddl", "3GPP2/C.R1001-G.xddl"},
         {"3GPP2/C.S0005.xddl", "C.R1001-G.xddl#3.1.1",
          "3GPP2/C.R1001-G.xddl#3.1.1"},
 
