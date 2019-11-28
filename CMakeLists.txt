@@ -23,7 +23,7 @@ endif (APPLE)
 
 if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
     set(FSLIB -lstdc++fs)
-endif()
+endif ()
 
 add_subdirectory(xspx)
 add_subdirectory(src)
