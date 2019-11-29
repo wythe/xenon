@@ -1,8 +1,8 @@
 #pragma once
 #include "att_pair.h"
-#include "ict/string64.h"
 #include "xml_parser_base.h"
 #include <functional>
+#include <string>
 #include <vector>
 
 // TODO: rewrite XmlParserBase to be
@@ -14,8 +14,8 @@
 namespace xenon {
 
 template <typename Op> struct named_handler {
-    named_handler(const ict::string64 &name, Op op) : name(name), op(op) {}
-    ict::string64 name;
+    named_handler(const std::string &name, Op op) : name(name), op(op) {}
+    std::string name;
     Op op;
 };
 
@@ -42,9 +42,9 @@ class xml_parser : public xml_parser_base {
     typedef std::function<void(const att_list &)> start_handler_type;
     typedef std::function<void()> end_handler_type;
 
-    typedef std::function<void(const ict::string64 &tag, const att_list &)>
+    typedef std::function<void(const std::string &tag, const att_list &)>
         post_start_handler_type;
-    typedef std::function<void(const ict::string64 &tag)> post_end_handler_type;
+    typedef std::function<void(const std::string &tag)> post_end_handler_type;
 
     typedef named_handler<start_handler_type> named_start_handler;
     typedef std::vector<named_start_handler> start_handler_list;
@@ -52,8 +52,9 @@ class xml_parser : public xml_parser_base {
     typedef named_handler<end_handler_type> named_end_handler;
     typedef std::vector<named_end_handler> end_handler_list;
 
-    typedef std::pair<ict::string64, std::vector<ict::string64>>
-        named_string64_list;
+    typedef std::vector<std::string> string_list;
+    typedef std::pair<std::string, std::vector<std::string>>
+        named_string_list;
 
   public:
     xml_parser() {}
@@ -62,7 +63,7 @@ class xml_parser : public xml_parser_base {
 
     void cdata_handler(text_handler_type handler) { cdata_function = handler; }
 
-    void start_handler(const ict::string64 &tag, start_handler_type handler) {
+    void start_handler(const std::string &tag, start_handler_type handler) {
         start_handlers.emplace_back(tag, handler);
     }
 
@@ -70,19 +71,19 @@ class xml_parser : public xml_parser_base {
         post_start = handler;
     }
 
-    void end_handler(const ict::string64 &tag, end_handler_type handler) {
+    void end_handler(const std::string &tag, end_handler_type handler) {
         end_handlers.emplace_back(tag, handler);
     }
 
     void post_end_handler(post_end_handler_type handler) { post_end = handler; }
 
-    void root_tag(const ict::string64 &value) { root = value; }
+    void root_tag(const std::string &value) { root = value; }
 
-    void add_children(const ict::string64 &parent,
-                      const ict::string64_list &children) {
+    void add_children(const std::string &parent,
+                      const string_list &children) {
         auto i = std::find_if(
             child_table.begin(), child_table.end(),
-            [&](const named_string64_list &p) { return p.first == parent; });
+            [&](const named_string_list &p) { return p.first == parent; });
         if (i != child_table.end())
             IT_PANIC("children of " << parent << " already defined");
         child_table.emplace_back(std::make_pair(parent, children));
@@ -108,15 +109,15 @@ class xml_parser : public xml_parser_base {
     text_handler_type cdata_function = [](const char *) {};
     text_handler_type comment_handler = [](const char *) {};
     start_handler_list start_handlers;
-    post_start_handler_type post_start = [](const ict::string64,
+    post_start_handler_type post_start = [](const std::string,
                                             const att_list &) {};
     end_handler_list end_handlers;
-    post_end_handler_type post_end = [](const ict::string64 &) {};
+    post_end_handler_type post_end = [](const std::string &) {};
 
     // parser state
-    std::vector<ict::string64> parents;
-    ict::string64 root;
-    std::vector<named_string64_list> child_table;
+    std::vector<std::string> parents;
+    std::string root;
+    std::vector<named_string_list> child_table;
 
     // temporary
     att_list atts;
@@ -127,7 +128,7 @@ class xml_parser : public xml_parser_base {
     virtual void comment(const char *s) { comment_handler(s); }
 
     virtual void startElement(const char *n, const char **att_array) {
-        ict::string64 name(n);
+        std::string name(n);
         if (parents.empty()) {
             if (root != name)
                 IT_THROW_XML(name << " is an invalid root node, expecting "
@@ -137,7 +138,7 @@ class xml_parser : public xml_parser_base {
             // verify this is a valid child of parent
             auto i = std::find_if(
                 child_table.begin(), child_table.end(),
-                [&](const std::pair<ict::string64, std::vector<ict::string64>>
+                [&](const std::pair<std::string, std::vector<std::string>>
                         &p) { return p.first == parents.back(); });
             if (i == child_table.end())
                 IT_THROW_XML(name << " is not a valid element name");
@@ -161,7 +162,7 @@ class xml_parser : public xml_parser_base {
     }
 
     virtual void endElement(const char *n) {
-        ict::string64 name(n);
+        std::string name(n);
         parents.pop_back();
         auto i = find_by_name(end_handlers.begin(), end_handlers.end(), name);
         if (i != end_handlers.end())

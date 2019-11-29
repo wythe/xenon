@@ -1,36 +1,54 @@
 #pragma once
+#include "ict/exception.h"
 #include <vector>
-#include "ict/string64.h"
+#include <string>
 
 namespace xenon {
 struct att_pair {
-    operator ict::string64() const { return name; }
-    att_pair(ict::string64 name, std::string value)
+    operator std::string() const { return name; }
+    att_pair(std::string name, std::string value)
         : name(name), value(value) {}
-    ict::string64 name;
+    std::string name;
     std::string value;
 };
 
 typedef std::vector<att_pair> att_list;
 
-inline bool att_exists(const att_list &atts, ict::string64 name) {
+template <typename T>
+inline auto find_att_by_name(T first, T last, const std::string & name) -> T {
+    return std::find_if(first, last, [&](auto a) { return a.name == name; });
+}
+
+inline bool att_exists(const att_list &atts, std::string name) {
+#if 1
+    auto i = find_att_by_name(atts.begin(), atts.end(), name);
+#else
     auto i = std::find(atts.begin(), atts.end(), name);
+#endif
     if (i != atts.end())
         return true;
     return false;
 }
 
-inline std::string find_att(const att_list &atts, ict::string64 name,
+inline std::string find_att(const att_list &atts, std::string name,
                             const std::string &def = "") {
+#if 1
+    auto i = find_att_by_name(atts.begin(), atts.end(), name);
+#else
     auto i = std::find(atts.begin(), atts.end(), name);
+#endif
     if (i == atts.end())
         return def;
     return i->value;
 }
 
 inline std::string find_required_att(const att_list &atts,
-                                     const ict::string64 &name) {
+                                     const std::string &name) {
+#if 1
+    auto i = find_att_by_name(atts.begin(), atts.end(), name);
+#else
     auto i = std::find(atts.begin(), atts.end(), name);
+#endif
     if (i == atts.end())
         IT_PANIC("missing required attribute: " << name);
     return i->value;
@@ -58,7 +76,7 @@ inline void create_att_list(att_list &atts, const char **att_array) {
     // names
     for (const char **ai = att_array; (*ai)[0] != '\0'; ai += 2) {
         atts.emplace_back(*ai, *(ai + 1));
-        if (std::find(atts.begin(), atts.end(), ict::string64(*ai)) !=
+        if (find_att_by_name(atts.begin(), atts.end(), std::string(*ai)) !=
             (atts.end() - 1)) {
             IT_PANIC("duplicate attribute: \"" << *ai << "\"");
         }
@@ -67,8 +85,8 @@ inline void create_att_list(att_list &atts, const char **att_array) {
 
 // make sure incorrect att doesn't appear nor duplicates
 inline void validate_att_list(const att_list &atts,
-                              std::vector<ict::string64> valid) {
-    auto names = std::vector<ict::string64>();
+                              std::vector<std::string> valid) {
+    auto names = std::vector<std::string>();
     valid.reserve(atts.size());
     for (auto &i : atts)
         names.push_back(i.name);

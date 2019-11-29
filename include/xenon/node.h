@@ -1,10 +1,10 @@
 #pragma once
 #include "ict/bitstring.h"
 #include "ict/multivector.h"
-#include "ict/string64.h"
 #include <functional>
 #include <iostream>
 #include <memory>
+#include <string>
 
 namespace xenon {
 struct node_info_type;
@@ -37,7 +37,7 @@ struct node {
         : type(type), elem(elem), bits(bs){};
 
     bool empty() { return bits.empty(); }
-    ict::string64 tag() const;
+    std::string tag() const;
     std::string name() const;
     size_t line() const;
     std::string file() const;

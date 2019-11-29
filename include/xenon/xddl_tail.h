@@ -25,6 +25,9 @@ inline std::ostream &operator<<(std::ostream &os, const element &e) {
 inline element &elem_of(spec::cursor c) { return *c; }
 
 inline void parse(spec::cursor self, msg_cursor parent, ict::ibitstream &bs) {
+    self->to_string(std::cerr);
+    std::cerr << " " << self->parser->file << ':' << self->line;
+    std::cerr << '\n';
     self->v->vparse(self, parent, bs);
 }
 

@@ -1,19 +1,16 @@
 #pragma once
-#include <xenon/cpp_code.h>
-
 #include <algorithm>
+#include <map>
 #include <sstream>
 #include <vector>
-
+#include <xenon/cpp_code.h>
 #include <xenon/ict/multivector.h>
-#include <xenon/ict/string64.h>
 #include <xenon/xml_parser.h>
-
 #define qt(x) "\"" << x << "\""
 
 // an xml attribute
 struct xml_att_type {
-    ict::string64 name;
+    std::string name;
     std::string fixed;
     std::string type_name;
     std::string member_name;
@@ -74,7 +71,7 @@ struct elem_type {
     friend bool operator!=(const elem_type &a, const elem_type &b) {
         return !(a.name == b.name);
     }
-    ict::string64 tag;   // the xml tag
+    std::string tag;   // the xml tag
     std::string name;    // the cpp type, same as tag by defualt
     std::string display; // the display name for documentation
     bool end_handler;
@@ -118,7 +115,7 @@ struct group_type {
 typedef std::vector<group_type> group_list;
 
 struct choice_type {
-    ict::string64 tag;
+    std::string tag;
     std::string name;
     elem_list elems;
     std::vector<std::string> children;
@@ -144,7 +141,6 @@ inline std::string to_param_list(const xml_att_list &atts,
                                  const custom_type_list &custom_types) {
     std::vector<std::string> params;
 
-    // params.push_back("string64 tag");
     for (const auto &att : atts) {
         if (att.local) {
             std::ostringstream s;

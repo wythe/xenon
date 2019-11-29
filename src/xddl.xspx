@@ -86,7 +86,6 @@
     <parser>
         <name>spec</name>
         <code id="class">
-            <!-- xddl::cursor open(string64 tag, const recref &amp; href); -->
             std::map&lt;recref, spec_cursor&gt; recdef_map;
             std::map&lt;recref, spec_cursor&gt; type_map;
             class spec_server * owner = 0;

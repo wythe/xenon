@@ -1,5 +1,6 @@
 #include <algorithm>
 #include <set>
+#include <string>
 #include <xenon/DateTime.h>
 #include <xenon/lua.hpp>
 #include <xenon/xenon.h>
@@ -270,7 +271,7 @@ void type::vend_handler(spec::cursor self, spec & /* parser */) {
 }
 
 template <typename T, typename Cursor, typename Map>
-void create_url_map(Cursor parent, Map &m, ict::string64 tag) {
+void create_url_map(Cursor parent, Map &m, std::string tag) {
     auto anon = recref("anon");
     ict::recurse(parent, [&](spec::cursor &i) {
         if (i->tag() == tag) {
@@ -835,7 +836,7 @@ std::string setprop::venum_string(spec::cursor self,
 }
 
 // node
-ict::string64 node::tag() const { return elem_of(elem).tag(); }
+std::string node::tag() const { return elem_of(elem).tag(); }
 
 std::string node::name() const {
     switch (type) {

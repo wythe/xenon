@@ -4,7 +4,6 @@
 #include "ict/expr.h"
 #include "ict/ict.h"
 #include "ict/multivector.h"
-#include "ict/string64.h"
 #include "recref.h"
 #include <string>
 

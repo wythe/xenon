@@ -304,9 +304,9 @@ std::ostream& xsp_parser::to_decl(std::ostream& os, const elem_type & elem, cons
         os << "struct var_type;";
         // os << "template <typename T> struct model;";
         os << "inline " << elem.name << "();";
-        os << "inline " << elem.name << "(std::shared_ptr<var_type> v, ict::string64 tag, const std::string & name = \"\"" << ");";
+        os << "inline " << elem.name << "(std::shared_ptr<var_type> v, std::string tag, const std::string & name = \"\"" << ");";
         os << "template <typename T> \n";
-        os << "inline " << elem.name << "(T x, ict::string64 tag, const std::string & name = \"\"" << ");";
+        os << "inline " << elem.name << "(T x, std::string tag, const std::string & name = \"\"" << ");";
     } else {
         auto plist = to_param_list(elem.attributes, custom_types);
         if (!plist.empty()) {
@@ -317,13 +317,13 @@ std::ostream& xsp_parser::to_decl(std::ostream& os, const elem_type & elem, cons
     //if (elem.end_handler) os << "void end_handler(" << root << "_cursor self, " << root << " & parser);";
 
     if (elem.is_base) {
-        os << "ict::string64 tag() const { return tag_;}";
+        os << "std::string tag() const { return tag_;}";
         os << "std::string name() const { return name_.empty() ? tag_.c_str() : name_;}";
         os << "std::shared_ptr<var_type> v;";
         // os << "std::shared_ptr<model<var_type>> v2;";
         os << "size_t line = 0;" <<
         class_name << " * parser = 0;" << 
-        "ict::string64 tag_;" << 
+        "std::string tag_;" << 
         "std::string name_;";
     }
     for (const auto & a : elem.attributes) to_code(os, a, custom_types);
@@ -343,10 +343,10 @@ std::ostream& xsp_parser::to_decl(std::ostream& os, const elem_type & elem, cons
 
         os << R"(
         inline element::element() : v(std::make_shared<var_type>()) {};
-        inline element::element(std::shared_ptr<var_type> v, ict::string64 tag, const std::string & name) : 
+        inline element::element(std::shared_ptr<var_type> v, std::string tag, const std::string & name) : 
             v(v), tag_(tag), name_(name) {};
         template <typename T> 
-        inline element::element(T x, ict::string64 tag, const std::string & name) : 
+        inline element::element(T x, std::string tag, const std::string & name) : 
             v(std::make_shared<T>(x)), 
             tag_(tag), name_(name) { };
         )";
