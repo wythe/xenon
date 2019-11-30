@@ -5,7 +5,7 @@
 
 namespace xenon {
 struct att_pair {
-    operator std::string() const { return name; }
+    //operator std::string() const { return name; }
     att_pair(std::string name, std::string value)
         : name(name), value(value) {}
     std::string name;
@@ -15,16 +15,12 @@ struct att_pair {
 typedef std::vector<att_pair> att_list;
 
 template <typename T>
-inline auto find_att_by_name(T first, T last, const std::string & name) -> T {
+inline auto find_att_by_name(T first, T last, const std::string & name) {
     return std::find_if(first, last, [&](auto a) { return a.name == name; });
 }
 
 inline bool att_exists(const att_list &atts, std::string name) {
-#if 1
     auto i = find_att_by_name(atts.begin(), atts.end(), name);
-#else
-    auto i = std::find(atts.begin(), atts.end(), name);
-#endif
     if (i != atts.end())
         return true;
     return false;
@@ -32,11 +28,7 @@ inline bool att_exists(const att_list &atts, std::string name) {
 
 inline std::string find_att(const att_list &atts, std::string name,
                             const std::string &def = "") {
-#if 1
     auto i = find_att_by_name(atts.begin(), atts.end(), name);
-#else
-    auto i = std::find(atts.begin(), atts.end(), name);
-#endif
     if (i == atts.end())
         return def;
     return i->value;
@@ -44,11 +36,7 @@ inline std::string find_att(const att_list &atts, std::string name,
 
 inline std::string find_required_att(const att_list &atts,
                                      const std::string &name) {
-#if 1
     auto i = find_att_by_name(atts.begin(), atts.end(), name);
-#else
-    auto i = std::find(atts.begin(), atts.end(), name);
-#endif
     if (i == atts.end())
         IT_PANIC("missing required attribute: " << name);
     return i->value;
