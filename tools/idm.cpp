@@ -21,6 +21,7 @@ struct command_flags {
 void process_xddl(ict::command const &line, command_flags const &flags) {
     auto i = line.targets.begin();
     xenon::spec_server d;
+    d.add_spec(xenon::xddl_dir());
     try {
         d.clear();
         auto u = xenon::recref(*i);
