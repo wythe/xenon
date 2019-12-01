@@ -88,8 +88,8 @@ int main(int argc, char **argv) {
     try {
         command_flags flags;
 
-        command line("idm", "A cli message decoder.",
-                     "idm [options] xddl_file [message]...\n",
+        command line("xenon-dm", "A cli message decoder.",
+                     "xenon-dm [options] xddl_file [message]...\n",
                      xenon::version());
 
         line.add(option("encoding", 'e', "Display encoding fields",
