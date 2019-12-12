@@ -287,7 +287,19 @@ std::string to_text(const message &m, const std::string &format,
 message::cursor create_global(spec::cursor self, message::cursor globs,
                               const std::string &name, bitstring bits) {
     auto c = find_prop(self, name);
-    if (c != self.end() && bits.empty()) {
+    if (c == self.end()) {
+        // There is no field in the message, and there is no export property
+        // defined.  This is due to bad xddl.  See the expression06.xddl unit test.
+        // We just set c to the corresponding spec element.
+        c = rfind_first(self, name);
+        if (!c.is_root()) {
+            IT_PANIC("internal panic: cannot create property " << name);
+        }
+    }
+    else if (bits.empty()) {
+        // found the property export, but the bitstring is empty,
+        // so go get the default value from the corresponsing spec element
+        // and use that for the bits.
         if (auto prop_elem = get_ptr<prop>(c->v)) {
             if (!prop_elem)
                 IT_PANIC("internal panic");
@@ -295,15 +307,6 @@ message::cursor create_global(spec::cursor self, message::cursor globs,
             bits = ict::from_integer(v);
         }
     }
-    if (c == self.end()) {
-#if 0
-        // FIXME: c = rfind the name i the xddl here?
-#else
-        IT_PANIC("cannot create property, export doesn't exist: " << name);
-#endif
-
-    }
-
     return globs.emplace(node::prop_node, c, bits);
 }
 
