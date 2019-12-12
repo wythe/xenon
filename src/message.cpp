@@ -289,14 +289,13 @@ message::cursor create_global(spec::cursor self, message::cursor globs,
     auto c = find_prop(self, name);
     if (c == self.end()) {
         // There is no field in the message, and there is no export property
-        // defined.  This is due to bad xddl.  See the expression06.xddl unit test.
-        // We just set c to the corresponding spec element.
+        // defined.  This is due to bad xddl.  See the expression06.xddl unit
+        // test. We just set c to the corresponding spec element.
         c = rfind_first(self, name);
-        if (!c.is_root()) {
+        if (!c.is_root())
             IT_PANIC("internal panic: cannot create property " << name);
-        }
-    }
-    else if (bits.empty()) {
+
+    } else if (bits.empty()) {
         // found the property export, but the bitstring is empty,
         // so go get the default value from the corresponsing spec element
         // and use that for the bits.
