@@ -98,12 +98,15 @@ jobs:
         echo "::set-env name=PATH::$env:PATH"
         .github\workflows\vsenv.bat -arch=amd64 -host_arch=amd64
 
-    - name: Build and Test
+    - name: Build
       run: |
         git submodule update --init --recursive
         cmake -E remove_directory build
         cmake -B build -S . -DCMAKE_BUILD_TYPE=Release
         cmake --build build
+
+    - name: Test
+      run: |
         cd build
         ctest
 
