@@ -1,5 +1,5 @@
 .PHONY: all clean realclean check test upgrade-ict get-deps install uninstall
-.PHONY: check-install tags check-install2
+.PHONY: check-install tags check-install2 update-ict
 
 all: include/xenon/ict/ict.h build debug
 	ninja -C build
@@ -27,18 +27,6 @@ install: build
 
 uninstall:
 
-check-install: build
-ifeq ($(TRAVIS_OS_NAME),ubuntu-latest)
-	sudo ldconfig
-endif
-ifeq ($(TRAVIS_OS_NAME),linux)
-	sudo ldconfig
-endif
-	rm -rf instacheck/build
-	cd instacheck && mkdir build && cd build && cmake -GNinja ..
-	ninja -C instacheck/build
-	CTEST_OUTPUT_ON_FAILURE=1 ninja -C instacheck/build test
-
 tags:
 	@echo Making tags...
 	@$(RM) tags; find . -name '*.cpp' -o -name '*.c' \
@@ -46,26 +34,13 @@ tags:
 	ctags --file-tags=yes -L flist --totals && rm flist
 	@echo tags complete.
 
-include/xenon/ict/ict.h:
+update-ict:
 	git submodule update --init --recursive
 
 upgrade-ict:
 	git submodule foreach git pull origin master
 
-copy-ict:
-	cp -r ../ict/*.h include/xenon
-
-get-deps:
-	@echo OS is $(TRAVIS_OS_NAME)
-ifeq ($(TRAVIS_OS_NAME),linux)
-	sudo apt-get update
-	sudo apt-get install -y ninja-build
-endif
-ifeq ($(TRAVIS_OS_NAME),osx)
-	sudo cp deps/osx/ninja /usr/local/bin
-endif
-
-check-install2:
+check-install:
 	cmake -E remove_directory instacheck/build
 	cmake -B instacheck/build -S instacheck -GNinja -DCMAKE_BUILD_TYPE=Release
 	cmake --build instacheck/build
