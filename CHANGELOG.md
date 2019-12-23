@@ -51,7 +51,7 @@ a solid base for our next primary objective: Upgrading to 5G.
 6. [1.0.0] - 2016-7-22
 
 [Keep a Changelog]: https://keepachangelog.com/en/1.0.0/
-[Semantic Versioning]: https://semver.org/spec/v2.0.0.html/
+[Semantic Versioning]: https://semver.org/spec/v2.0.0.html
 
 [2.2.0]: https://github.com/intrig/xenon/releases/tag/v2.2.0
 [2.1.2]: https://github.com/intrig/xenon/releases/tag/v2.1.2
