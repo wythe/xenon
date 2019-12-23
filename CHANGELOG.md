@@ -1,8 +1,8 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
-The format is based on [Keep].
-and this project adheres to [Semantic].
+The format is based on [Keep a Changelog].
+and this project adheres to [Semantic Versioning].
 
 ## v2.3.0
 
@@ -50,8 +50,8 @@ a solid base for our next primary objective: Upgrading to 5G.
 5. [2.0.0] - 2016-7.22
 6. [1.0.0] - 2016-7-22
 
-[Keep]: https://keepachangelog.com/en/1.0.0/
-[Semantic]: https://semver.org/spec/v2.0.0.html/
+[Keep a Changelog]: https://keepachangelog.com/en/1.0.0/
+[Semantic Versioning]: https://semver.org/spec/v2.0.0.html/
 
 [2.2.0]: https://github.com/intrig/xenon/releases/tag/v2.2.0
 [2.1.2]: https://github.com/intrig/xenon/releases/tag/v2.1.2
