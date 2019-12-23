@@ -45,7 +45,7 @@ It for our next primary objective: Upgrading to 5G.
 
 ## Older versions
 
-1. [2.3.0] - 2016-9-17
+1. [2.3.0] - 2016-9-18
 2. [2.2.0] - 2016-9-17
 3. [2.1.2] - 2016-8-19
 4. [2.1.1] - 2016-8-10
